@@ -1,0 +1,96 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+<div class="wp-wrapper"> 
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="/re">Real Estate</a></li>
+        <li>Properties Sales</li>
+      </ul>
+    <h1 class="main-page-heading">Properties Sale</h1>
+    <div class="wp-inner">
+        <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
+        <div class="modal" id="modal">
+          <div class="modal-head">
+            <h3>Properties sales form</h3>
+            <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+          </div>               
+            <form action="/rsPropertiesSales" method="POST">
+                <div>
+                    <label for="custName">Customer Name:</label>
+                    <input type="text" name="custName" required >
+                </div>
+                <div>
+                    <label for="phNumber">Customer Phone No:</label>
+                    <input type="number" name="phNumber" required>
+                </div>
+                <div>
+                    <label for="surveyNo">Survey Number:</label>
+                    <input type="number" name="surveyNo" required>
+                </div>
+                <div>
+                    <label for="sqYds">Square Yards:</label>
+                    <input type="number" name="sqYds" required>
+                </div>
+                <div>
+                    <label for="sLocation">Site Location:</label>
+                    <input type="text" name="sLocation" required>
+                </div>
+                <div>
+                    <label for="plNo">Plot Number:</label>
+                    <input type="number" name="plNo" required>
+                </div>
+                <div>
+                    <label for="pps">Price Per Square:</label>
+                    <input type="number" name="pps" required>
+                </div>
+                <div>
+                    <label for="towards">Towards:</label>
+                    <div class="radio-btn-wrapper"><label for="towards">Plot Booking</label> <input type="radio" name="towards" value="Plot Booking" > </div>
+                    <div class="radio-btn-wrapper"><label for="towards">Plot Registration</label> <input type="radio" name="towards" value="Plot Registration" required> </div>
+                    <div class="radio-btn-wrapper"><label for="towards">Plot Instalments</label> <input type="radio" name="towards" value="Plot Instalments" > </div>
+                    <div class="radio-btn-wrapper"><label for="towards">Outstanding</label> <input type="radio" name="towards" value="Outstanding" > </div>
+                </div>
+                <div>
+                    <label for="paymentMode">Payment Mode:</label>
+                    <div class="radio-btn-wrapper"><label for="paymentMode">Cash</label> <input type="radio" name="paymentMode" value="Cash" > </div>
+                    <div class="radio-btn-wrapper"><label for="paymentMode">CheckBook</label> <input type="radio" name="paymentMode" value="CheckBook" required> </div>
+                </div>
+                <button type="submit">Add</button>
+            </form>
+        </div>
+
+        <table class="wptable">
+            <tr>
+                <th>S.No</th>
+                <th>Customer Name</th>
+                <th>Phone Number</th>
+                <th>Survey Number</th>
+                <th>Sq Yards</th>
+                <th>Site Location</th>
+                <th>Plot Number</th>
+                <th>Price per Sq</th>
+                <th>Towards</th>
+                <th>Payment Mode</th>
+            </tr>
+            <% if(properties.length > 0){ %>
+                <% properties.forEach((property, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= property.CustomerName %></td>
+                        <td><%= property.MobileNumber %></td>
+                        <td><%= property.SurveyNumber %></td>
+                        <td><%= property.SquareYards %> yd<sup>2</sup></td>
+                        <td><%= property.SiteLocation %></td>
+                        <td><%= property.PlotNumber %></td>
+                        <td>&#8377; <%= property.PricePerSquare %></td>
+                        <td><%= property.Towards %></td>
+                        <td><%= property.PaymentMode %></td>
+                    </tr>
+                <% }) %>
+            <% } %>
+            
+          </table>
+    </div>
+</div>
+
+<%- include('../partials/footer') -%>

@@ -1,0 +1,100 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+<div class="wp-wrapper">
+  <ul class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li><a href="/solar">Solar</a></li>
+    <li>Total Sales</li>
+  </ul>
+    <div class="wp-inner">
+      <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
+            <div class="modal" id="modal">
+              <div class="modal-head">
+                <h3>Add a client</h3>
+                <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+              </div>               
+                <form action="/totalSales" method="POST">
+                    <div>
+                        <label for="custName">Customer Name:</label>
+                        <input type="text" name="custName" required >
+                    </div>
+                    <div>
+                        <label for="phNumber">Phone Number:</label>
+                        <input type="text" name="phNumber" required>
+                    </div>
+                    <div>
+                        <label for="address">Address:</label>
+                        <input type="text" name="address" required>
+                    </div>
+                    <div>
+                        <label for="instDate">Installation Date:</label>
+                        <input type="date" name="instDate" required>
+                    </div>
+                    <div>
+                        <label for="instExec">Installation Executive:</label>
+                        <input type="text" name="instExec" required>
+                    </div>
+                    <div>
+                        <label for="amount">Amount:</label>
+                        <input type="number" name="amount" required>
+                    </div>
+                    <div class="emi-checkbox">
+                        <input type="checkbox" name="emi" > EMI
+                    </div>
+                    <div id="advanceAmount">
+                      <label for="advAmount">Advance Amount:</label>
+                      <input type="number" name="advAmount" >
+                    </div>
+                    <div id="duration">
+                      <div>
+                        <div class="radio-btn-wrapper">
+                          <label for="duration">2 Months</label>
+                          <input type="radio" name="duration" value="2 Months"> 
+                        </div>
+                        <div class="radio-btn-wrapper">
+                          <label for="radioBtn">3 Months</label>
+                          <input type="radio" name="duration" value="3 Months"> 
+                        </div>
+                      </div>
+                    </div>
+                    <button type="submit">Add</button>
+                </form>
+            </div>
+        <table class="wptable">
+            <tr>
+              <th>S.No</th>
+              <th>Customer name</th>
+              <th>Ph Number</th>
+              <th>Address</th>
+              <th>Installation Date</th>
+              <th>Installation Executive</th>
+              <th>Amount</th>
+              <th>EMI</th>
+            </tr>
+            <% if(total.length > 0){ %> 
+              <% total.forEach((client, index) => { %>
+                <tr>
+                  <td><%= index + 1 %></td>
+                  <td><%= client.customerName %></td>
+                  <td><%= client.phoneNumber %></td>
+                  <td><%= client.address %></td>
+                  <td><%= client.installationDate.toDateString() %></td>
+                  <td><%= client.installationExecutive %></td>
+                  <td>&#8377; <%= client.amount %></td>
+                  <td>
+                    <% if(client.emi){ %>
+                      <form action="/solarCheckEmi" method="POST">
+                        <input type="hidden" name="id" value="<%= client._id %>">
+                        <button class="true-emi"><i class="fas fa-check"></i></button>
+                      </form>
+                    <% }else{ %>
+                      <button class="false-emi" style="pointer-events: none"><i class="fas fa-times"></i></button>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }) %>                      
+            <% } %>                     
+          </table>
+    </div>
+</div>
+<%- include('../partials/footer') -%>

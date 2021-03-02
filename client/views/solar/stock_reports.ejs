@@ -1,0 +1,104 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+<div class="wp-wrapper"> 
+  <ul class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li><a href="/solar">Solar</a></li>
+    <li>Stock Reports</li>
+  </ul>
+    <div class="wp-inner">
+      <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
+            <div class="modal" id="modal">
+                <div class="modal-head">
+                <h3>Stock inwards form</h3>
+                <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+                </div>               
+                <form action="/solarStockInward" method="POST"> 
+                    <div>
+                        <label for="prodName">Product Name:</label>
+                        <select name="prodName" id="prodName">
+                          <option value="Card">Card</option>
+                          <option value="Paper">Paper</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="noOfProd">Number of Products:</label>
+                        <input type="number" name="noOfProd" required>
+                    </div>
+                    <button type="submit">Add</button>
+                </form>
+            </div>
+
+            <h3 class="tableHeadin">Stock Inwards</h3>
+            <table class="wptable">
+                <tr>
+                    <th>S.No</th>
+                    <th>Product name</th>
+                    <th>Number of Products</th>
+                </tr>
+                <% if(stocks.length > 0) { %>
+                    <% stocks.forEach((stock, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td class="stockInwardPName"><%= stock.productName.toUpperCase() %></td>
+                        <td class="stockInwardNoOfProd"><%= stock.numberOfProducts %></td>
+                    </tr>
+                    <% }) %>
+                <% } %>
+            </table>
+
+            <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
+                <div class="modal" id="modal">
+                  <div class="modal-head">
+                    <h3>Stock Outwards form</h3>
+                    <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+                  </div>               
+                    <form action="/solarStockOutward" method="POST">
+                        <div>
+                            <label for="prodName">Product Name:</label>
+                            <select name="prodName" id="prodName">
+                              <option value="Card">Card</option>
+                              <option value="Paper">Paper</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="noOfProd">Number of Products:</label>
+                            <input type="number" name="noOfProd" required>
+                        </div>
+                        <div>
+                            <label for="clientName">Client Name:</label>
+                            <input type="text" name="clientName" required>
+                        </div>
+                        <div>
+                            <label for="clientPhNo">Client Phone number:</label>
+                            <input type="number" name="clientPhNo" required>
+                        </div>
+                        <button type="submit">Add</button>
+                    </form>
+                </div>
+
+                <h3 class="tableHeadin">Stock Outwards</h3>
+                <table class="wptable">
+                    <tr>
+                      <th>S.No</th>
+                      <th>Product name</th>
+                      <th>Number of Products</th>
+                      <th>Client Name</th>
+                      <th>Client Number</th>
+                    </tr>
+                    <% if(outwards.length > 0) { %>
+                      <% outwards.forEach((outward, index) => { %>
+                        <tr>
+                          <td><%= index + 1 %></td>
+                          <td class="stockOutWardPName"><%= outward.productName.toUpperCase() %></td>
+                          <td class="stockOutwardNoOfProd"><%= outward.numberOfProducts %></td>
+                          <td><%= outward.clientName %></td>
+                          <td><%= outward.clientNumber %></td>
+                        </tr>
+                      <% }) %>
+                    <% } %>
+                  </table>
+
+    </div>
+</div>
+<%- include('../partials/footer') -%>

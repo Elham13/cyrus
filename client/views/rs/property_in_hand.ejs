@@ -1,0 +1,109 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+<div class="wp-wrapper"> 
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="/re">Real Estate</a></li>
+        <li>Properties in Hand</li>
+      </ul>
+    <h1 class="main-page-heading">Properties In hand</h1> 
+    <div class="wp-inner">
+        <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
+        <div class="modal" id="modal">
+          <div class="modal-head">
+            <h3>Properties in Hand form</h3>
+            <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+          </div>               
+            <form action="/rsPropertiesInHand" method="POST">
+                <div>
+                    <label for="custName">Customer Name:</label>
+                    <input type="text" name="custName" required >
+                </div>
+                <div>
+                    <label for="phNumber">Customer Phone No:</label>
+                    <input type="number" name="phNumber" required>
+                </div>
+                <div>
+                    <label for="propType">Property Type</label>
+                    <select name="propType" id="propType">
+                        <option value="Flat">Flat</option>
+                        <option value="Plot">Plot</option>
+                        <option value="Independent House">Independent House</option>
+                        <option value="Venture">Venture</option>
+                    </select>
+                </div>
+                <div id="ventureName">
+                    <label for="ventureName">Venture Name:</label>
+                    <input type="text" name="ventureName">
+                </div>
+                <div>
+                    <label for="surveyNo">Survey Number:</label>
+                    <input type="number" name="surveyNo" required>
+                </div>
+                <div>
+                    <label for="unit">Unit</label>
+                    <select name="unit" >
+                        <option value="SFT">SFT</option>
+                        <option value="sq yd">Square Yard</option>
+                        <option value="acre">Acre</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="sqYds">Area:</label>
+                    <input type="number" name="sqYds" required>
+                </div>
+                <div>
+                    <label for="sLocation">Site Location:</label>
+                    <input type="text" name="sLocation" required>
+                </div>
+                <div>
+                    <label for="plNo">Plot Number:</label>
+                    <input type="number" name="plNo" required>
+                </div>
+                <div>
+                    <label for="pps">Price Per Unit:</label>
+                    <input type="number" name="pps" required>
+                </div>
+                <button type="submit">Add</button>
+            </form>
+        </div>
+
+        <table class="wptable">
+            <tr>
+                <th>S.No</th>
+                <th>Customer Name</th>
+                <th>Phone Number</th>
+                <th>Property Type</th>
+                <th>Venture Name</th>
+                <th>Survey Number</th>
+                <th>Area</th>
+                <th>Site Location</th>
+                <th>Plot Number</th>
+                <th>Price per Unit</th>
+            </tr>
+            <% if(properties.length > 0) {%>
+                <% properties.forEach((property, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= property.CustomerName %></td>
+                        <td><%= property.MobileNumber %></td>
+                        <td><%= property.PropertyType %></td>
+                        <% if(property.VentureName == ''){ %>
+                            <td style="background-color: #ccc;"></td>
+                        <% } else { %>
+                            <td><%= property.VentureName %></td>
+                        <% }  %>
+                        <td><%= property.SurveyNumber %></td>
+                        <td><%= property.SquareYards %> <%= property.Unit %> </td>
+                        <td><%= property.SiteLocation %></td>
+                        <td><%= property.PlotNumber %></td>
+                        <td>&#8377; <%= property.PricePerSquare %></td>
+                    </tr>
+                <% })%>
+            <% }%>
+           
+          </table>
+    </div>
+</div>
+
+<%- include('../partials/footer') -%>

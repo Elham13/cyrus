@@ -1,0 +1,19 @@
+<div class="topnav" id="myTopnav">
+    <a href="/" class="logo"><img src="images/logo.png" alt=""></a>
+    <a href="/wp">Water Purifier</a>
+    <a href="/solar">Solar</a>
+    <a href="/re">Real Estate</a>
+    <% if(user){ %>
+        <% if(user.role == "CEO"){ %>
+            <a href="/admin">Admin</a> 
+        <% } %>
+    <% } %>
+    <% if(user){ %>
+        <form action="/logout?_method=DELETE" method="POST" id="logoutForm">
+            <button type="submit" class="logout" id="logoutBtn">Logout</button>
+        </form>
+    <% }%>
+    <a href="javascript:void(0);" class="icon" onclick="toggleNavigation()">
+    <i class="fa fa-bars"></i>
+    </a>
+</div>

@@ -1,0 +1,34 @@
+<% if(locals.errors){ %>
+    <% errors.forEach(function(error) { %>
+      <div class="messages" >
+        <%= error.msg %>
+          <button type="button" class="close closeError" >
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+    <% }); %>
+  <% } %>
+  <% if(success_msg !='' ){ %>
+    <div class="messages">
+      <%= success_msg %>
+        <button type="button" class="close closeError" >
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+  <% } %>
+  <% if(error_msg !='' ){ %>
+    <div class="messages">
+      <%= error_msg %>
+        <button type="button" class="close closeError">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+  <% } %>
+  <% if(error !='' ){ %>
+    <div class="messages">
+      <%= error %>
+        <button type="button" class="close closeError">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+  <% } %>
