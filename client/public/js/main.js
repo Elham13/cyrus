@@ -216,9 +216,9 @@ const init = () => {
     hideAndShowModals();
   }
 
-  if(path == '/admin'){
-    addminSidebarToggle();
-  }
+  // if(path == '/admin'){
+  //   addminSidebarToggle();
+  // }
 
   if(
     path == '/register' || 

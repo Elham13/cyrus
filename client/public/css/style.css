@@ -627,7 +627,7 @@ ul.breadcrumb li a:hover {
 /* Admin body */
 .addmin-body{
     background-color: #fff;
-    width: 80vw;
+    width: 100vw;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -676,6 +676,12 @@ ul.breadcrumb li a:hover {
   border: 1px solid #ddd;
   box-shadow: 2px 2px 80px -40px #000;
   background-color: #fff;
+}
+
+@media only screen and (max-width: 600px){
+  .register-form{
+    width: 80vw;
+  }
 }
 
 .register-form .input-wrapper{
