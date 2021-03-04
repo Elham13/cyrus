@@ -625,7 +625,7 @@ ul.breadcrumb li a:hover {
 }
 
 /* Admin body */
-.addmin-body{
+.addmin-body{ 
     background-color: #fff;
     width: 100vw;
     min-height: 100vh;
