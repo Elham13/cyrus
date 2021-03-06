@@ -32,30 +32,19 @@ const getTotalSales = async (req, res) => {
     const Clients = await Client.find({});
     res.render('wp/total_sales', {clients: Clients, user: req.user});
 }
+
 const getTelecaling = async (req, res) => {
     const Prospects = await ProspectsModal.find({});
     res.render('wp/telecaling_data', {prospects: Prospects, user: req.user});
 }
+
 const getStockReport = async (req, res) => {
     const StockInwardsFound = await StockInwards.find({});
     const Outwards = await StockOutwardsModal.find({});
 
-    // let cardLowStock, paperLowStock;
-    // if(StockInwards.length > 0 && Outwards.length > 0){
-    //     const inCard = await StockInwards.find({productName: 'Card'});
-    //     const outCard = await StockOutwardsModal.find({productName: 'Card'});
-    //     cardLowStock = getLowStockReport(inCard, outCard);
-
-    //     const inPaper = await StockInwards.find({productName: 'Paper'});
-    //     const outPaper = await StockOutwardsModal.find({productName: 'Paper'});
-    //     paperLowStock = getLowStockReport(inPaper, outPaper);
-    // }    
-
     res.render('wp/stock_reports', {
         stocks: StockInwardsFound, 
         outwards: Outwards,
-        // cardLowStock: cardLowStock,
-        // paperLowStock: paperLowStock,
         user: req.user,
     });
 }
@@ -68,17 +57,51 @@ const getExpenses = async (req, res) => {
     res.render('wp/expenses', {expenses: Expenses, user: req.user});
 }
 
+const getShowSingleCust = (req, res) => {
+    res.render('wp/single_customer', {singleClient: null, user: req.user})
+}
+
 const postWaterPurifier = async (req, res) => {
-    const { custName, phNumber, address, instDate, instExec, amount, emi, advAmount, duration } = req.body;
+    const { 
+        custId,
+        custName, 
+        prodName,
+        reference,
+        phNumber, 
+        address, 
+        instDate, 
+        instExec, 
+        amount,
+        paymentMode,
+        accNo,
+        branchName,
+        chequeNo,
+        chequeDate,
+        remarks,
+        emi, 
+        advAmount, 
+        duration 
+    } = req.body;
+
     let boolEmi = true;
     emi == 'on' ? boolEmi = true : boolEmi = false;
+
     const newClient = {
+        customerId: custId,
         customerName: custName,
+        productName: prodName,
+        reference: reference,
         phoneNumber: phNumber,
         address: address,
         installationDate: instDate,
         installationExecutive: instExec,
         amount: amount,
+        paymentMode: paymentMode,
+        accNo: accNo,
+        branchName: branchName,
+        chequeNo: chequeNo,
+        chequeDate: chequeDate,
+        remarks: remarks,
         emi: boolEmi,
         advancePayment: advAmount,
         duration: duration,
@@ -172,7 +195,42 @@ const postCheciEMI = async (req, res) => {
     const {id} = req.body;
 
     const client = await Client.findById(id);
-    res.render('emi', {person: client, user: req.user});
+    res.render('wp/emi', {person: client, user: req.user});
+}
+
+const postFirstPayment = async (req, res) => {
+    const {id, firstPayment, firstPaymentDate, paidDate} = req.body;
+    const client = await Client.findById(id);
+    client.firstPayment = firstPayment;
+    client.firstPaidDate = paidDate;
+    client.firstPaymentDate = firstPaymentDate;
+    await client.save();
+    res.redirect('/wpTotalSales');
+}
+
+const postSecondPayment = async (req, res) => {
+    const {id, paidDate, secondPayment, secondPaymentDate } = req.body;
+    const client = await Client.findById(id);
+    client.secondPayment = secondPayment;
+    client.secondPaidDate = paidDate;
+    client.secondPaymentDate = secondPaymentDate;
+    await client.save();
+    res.redirect('/wpTotalSales');
+}
+
+const postThirPayment = async (req, res) => {
+    const {id, paidDate, thirdPayment } = req.body;
+    const client = await Client.findById(id);
+    client.thirdPayment = thirdPayment;
+    client.thirdPaidDate = paidDate;
+    await client.save();
+    res.redirect('/wpTotalSales');
+}
+
+const postShowSingleCust = async (req, res) => {
+    const {id} = req.body;
+    const client = await Client.findById(id);
+    res.render('wp/single_customer', {singleClient: client, user: req.user});
 }
 
 
@@ -182,6 +240,7 @@ module.exports = {
     getStockReport,
     getServicesPending,
     getExpenses,
+    getShowSingleCust,
     postWaterPurifier,
     postProspects,
     postStockInwards,
@@ -189,4 +248,8 @@ module.exports = {
     postServicePending,
     postExpenses,
     postCheciEMI,
+    postFirstPayment,
+    postSecondPayment,
+    postThirPayment,
+    postShowSingleCust,
 };

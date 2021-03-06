@@ -76,6 +76,7 @@ const hideAndShowModals = () => {
 
   for(let btn of showModalBtns){
     btn.addEventListener('click', () => {
+      btn.nextElementSibling.style.top = '50%';
       btn.nextElementSibling.style.opacity = '1';
       btn.nextElementSibling.style.zIndex = '1';
     });
@@ -86,6 +87,7 @@ const hideAndShowModals = () => {
   for(let btn of hideModalBtns){
     const modal = btn.parentElement.parentElement;
     btn.addEventListener('click', () => {
+      modal.style.top = '-150%';
       modal.style.opacity = '0';
       modal.style.zIndex = '-10';
     })
@@ -107,60 +109,6 @@ const toggleEmi = () => {
       duration.style.display = 'none';
     }
   })
-}
-
-
-const emiCalculation = () => {
-  const mainBal = document.getElementById('mainBal').innerText;
-  const advPaid = document.getElementById('advPaid').innerText;
-  let amtPaid = document.getElementById('amtPaid');
-  let amtPaid1 = document.getElementById('amtPaid1');
-  let amtPaid2 = document.getElementById('amtPaid2');
-  let remainingBal = document.getElementById('remainingBal');
-  let remainingBal1 = document.getElementById('remainingBal1');
-  let remainingBal2 = document.getElementById('remainingBal2');
-  let nextDate = document.getElementById('nextDate');
-  let nextDate1 = document.getElementById('nextDate1'); 
-  let nextDate2 = document.getElementById('nextDate2'); 
-  const duration = document.getElementById('duration');
-
-  console.log(typeof(duration.value))
-
-  if(duration.value === '3 Months'){
-    amtPaid.innerHTML = (parseInt(mainBal) - parseInt(advPaid)) / 3;
-    const firstRemaining = parseInt(mainBal) - parseInt(advPaid) - parseInt(amtPaid.innerText); 
-    remainingBal.innerHTML = firstRemaining;
-
-    amtPaid1.innerHTML = firstRemaining / 2;
-    const secondRemaining = parseInt(mainBal) - parseInt(advPaid) - parseInt(amtPaid.innerText) - parseInt(amtPaid1.innerText);
-    remainingBal1.innerHTML = secondRemaining;
-
-    amtPaid2.innerHTML = secondRemaining;
-    const thirdRemaining = parseInt(mainBal) - parseInt(advPaid) - parseInt(amtPaid.innerText) - parseInt(amtPaid1.innerText) - parseInt(amtPaid2.innerText);
-    remainingBal2.innerHTML = thirdRemaining
-
-    let d = new Date(nextDate.innerText);
-    d.setMonth(d.getMonth() + 1)
-    nextDate.innerHTML = d.toDateString();
-    d.setMonth(d.getMonth() + 1);
-    nextDate1.innerHTML = d.toDateString();
-    d.setMonth(d.getMonth() + 1);
-    nextDate2.innerHTML = d.toDateString();
-  }else{
-    amtPaid.innerHTML = (parseInt(mainBal) - parseInt(advPaid)) / 2;
-    const firstRemaining = parseInt(mainBal) - parseInt(advPaid) - parseInt(amtPaid.innerText);  
-    remainingBal.innerHTML = firstRemaining;
-    amtPaid1.innerHTML = firstRemaining;
-  
-    const secondRemaining = parseInt(mainBal) - parseInt(advPaid) - parseInt(amtPaid.innerText) - parseInt(amtPaid1.innerText);
-    remainingBal1.innerHTML = secondRemaining;
-  
-    let d = new Date(nextDate.innerText);
-    d.setMonth(d.getMonth() + 1)
-    nextDate.innerHTML = d.toDateString();
-    d.setMonth(d.getMonth() + 1);
-    nextDate1.innerHTML = d.toDateString();
-  }
 }
 
 const closeErrorButtons = () => {
@@ -191,14 +139,138 @@ const verntureNameInput = () => {
   });
 }
 
+const hideAndShowBankDetais = () => {
+  const paymentMode = document.getElementById('paymentMode');
+  const bankInfo = document.getElementById('bankInfo');
+
+  paymentMode.onchange = () => {
+    if(paymentMode.value == 'Cheque'){
+      bankInfo.style.display = 'flex';
+    }else{
+      bankInfo.style.display = 'none';
+    }
+  }
+}
+
+const emiThings = () => {
+  const duration = document.getElementById('duration');
+  const firstPaymentModal = document.getElementById('firstPaymentModal');
+  const secondPaymentModal = document.getElementById('secondPaymentModal');
+  const thirdPaymentModal = document.getElementById('thirdPaymentModal');
+
+  const openFirstPaymentModal = document.getElementById('openFirstPaymentModal');
+  const openSecondPaymentModal = document.getElementById('openSecondPaymentModal');
+  const openThirdPaymentModal = document.getElementById('openThirdPaymentModal');
+
+  const hideModalBtns = document.querySelectorAll('.close');
+
+  openFirstPaymentModal.onclick = () => {
+    firstPaymentModal.style.top = '50%';
+    firstPaymentModal.style.opacity = '1';
+    firstPaymentModal.style.zIndex = '1';
+  }
+  openSecondPaymentModal.onclick = () => {
+    secondPaymentModal.style.top = '50%';
+    secondPaymentModal.style.opacity = '1';
+    secondPaymentModal.style.zIndex = '1';
+  }
+
+  if(duration.value == '3 Months'){
+    openThirdPaymentModal.onclick = () => {
+      thirdPaymentModal.style.top = '50%';
+      thirdPaymentModal.style.opacity = '1';
+      thirdPaymentModal.style.zIndex = '1';
+    }
+  }
+
+  for(let btn of hideModalBtns){
+    const modal = btn.parentElement.parentElement;
+    btn.addEventListener('click', () => {
+      modal.style.top = '-150%';
+      modal.style.opacity = '0';
+      modal.style.zIndex = '-10';
+    })
+  }
+}
+
+const toggleModal = () => {
+  const add = document.querySelector('.add');
+  const modal = document.getElementById('modal');
+  const hideModal = document.getElementById('hideModal');
+
+  add.onclick = () => {
+    modal.style.top = '50%';
+    modal.style.opacity = '1';
+    modal.style.zIndex = '1';
+  }
+  hideModal.onclick = () => {
+    modal.style.top = '-150%';
+    modal.style.opacity = '0';
+    modal.style.zIndex = '0';
+  }
+}
+
+const filterTable = () => {
+  // Declare variables
+  let input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("tableSearch");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("wpTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+const toggleUpdateModal = () => {
+  const adds = document.querySelectorAll('.eidtBtn');
+  const modal = document.getElementById('updateModal');
+  const hideUpdateModal = document.getElementById('hideUpdateModal');
+  const userId1 = document.getElementById('formUserId');
+
+  for(let add of adds){
+    add.onclick = () => {
+      userId1.value = add.nextElementSibling.children[0].value;
+      modal.style.top = '50%';
+      modal.style.opacity = '1';
+      modal.style.zIndex = '1';
+    }
+  }
+  
+  hideUpdateModal.addEventListener('click', () => {
+    modal.style.top = '-150%';
+    modal.style.opacity = '0';
+    modal.style.zIndex = '0';
+  }) 
+}
+
 const init = () => {
   const path = window.location.pathname;
-  if(path == '/checkEMI' || path == '/solarCheckEmi'){
-    emiCalculation();
+
+  if(path=='/checkEMI'){
+    emiThings();
+  }
+  if(path=='/showSingleCust'){
+    toggleModal();
+  }
+  if(path=='/admin'){
+    toggleModal();
+    toggleUpdateModal();
   }
 
   if(path == '/wpTotalSales' || path == '/solarTotalSales'){
     hideAndShowModals();
+    hideAndShowBankDetais();
     toggleEmi();
   }
 
@@ -215,10 +287,6 @@ const init = () => {
   if(path=='/wpServicesPending' || path=='/wpExpenses' || path=='/wpStockReport' || path=='/solarExpenses' || path=='/solarStockReports' || path=='/rsPropertiesSales'){
     hideAndShowModals();
   }
-
-  // if(path == '/admin'){
-  //   addminSidebarToggle();
-  // }
 
   if(
     path == '/register' || 

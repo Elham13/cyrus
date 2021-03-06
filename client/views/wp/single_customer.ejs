@@ -1,0 +1,162 @@
+<%- include('../partials/header') -%> 
+<%- include('../partials/navbar') -%>
+
+<div class="sc-wrapper">
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="/wp">Water Purifier</a></li>
+        <li><a href="/wpTotalSales">Total Sales</a></li>
+        <li>Customer Report</li>
+    </ul>
+    <% if(singleClient !== null){ %>
+        <h1><%= singleClient.customerName %>'s Report</h1>
+    <% } %>
+    <div class="sc-inner">
+        <table class="wptable" style="width: unset;">
+            <tr>
+                <th>Customer Id</th>
+                <td><%= singleClient.customerId %></td>
+            </tr>
+            <tr>
+                <th>Customer Name</th>
+                <td><%= singleClient.customerName %></td>
+            </tr>
+            <tr>
+                <th>Product Name</th>
+                <td><%= singleClient.productName %></td>
+            </tr>
+            <tr>
+                <th>Reference</th>
+                <td><%= singleClient.reference %></td>
+            </tr>
+            <tr>
+                <th>Phone Number</th>
+                <td><%= singleClient.phoneNumber %></td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td><%= singleClient.address %></td>
+            </tr>
+            <tr>
+                <th>Installation Date</th>
+                <td><%= singleClient.installationDate.toLocaleDateString() %></td>
+            </tr>
+            <tr>
+                <th>Installation Executive</th>
+                <td><%= singleClient.installationExecutive %></td>
+            </tr>
+            <tr>
+                <th>Amount</th>
+                <td><%= singleClient.amount %></td>
+            </tr>
+            <tr>
+                <th>Payment Mode</th>
+                <td><%= singleClient.paymentMode %></td>
+            </tr>
+
+            <% if(singleClient.paymentMode == 'Cheque') { %>
+                <tr>
+                    <th>Account Number</th>
+                    <td><%= singleClient.accNo %></td>
+                </tr>
+            <% } %>
+
+            <% if(singleClient.paymentMode == 'Cheque') { %>
+                <tr>
+                    <th>Branch Name</th>
+                    <td><%= singleClient.branchName %></td>
+                </tr>
+            <% } %>
+
+            <% if(singleClient.paymentMode == 'Cheque') { %>
+                <tr>
+                    <th>Cheque Number</th>
+                    <td><%= singleClient.chequeNo %></td>
+                </tr>
+            <% } %>
+
+            <% if(singleClient.paymentMode == 'Cheque') { %>
+                <tr>
+                    <th>Cheque Date</th>
+                    <td><%= singleClient.chequeDate.toLocaleDateString() %></td>
+                </tr>
+            <% } %>
+
+            <% if(singleClient.remarks !== '') { %>
+                <tr>
+                    <th>Remarks</th>
+                    <td><%= singleClient.remarks %></td>
+                </tr>
+            <% } %>
+
+            <% if(singleClient.emi) { %>
+                <tr>
+                    <th>Emi</th>
+                    <% if(singleClient.duration == '3 Months') { %>
+                        <td>3 Installments</td>
+                    <% } %>
+                    <% if(singleClient.duration == '2 Months') { %>
+                        <td>2 Installments</td>
+                    <% } %>
+                </tr>
+                <tr>
+                    <th>Advance paid amount</th>
+                    <td><%= singleClient.advancePayment %></td>
+                </tr>
+
+                <% if(singleClient.firstPayment !== null) { %>
+                    <tr>
+                        <th>First Installment</th>
+                        <td><%= singleClient.firstPayment %></td>
+                    </tr>
+                <% } %>
+
+                <% if(singleClient.secondPayment !== null) { %>
+                    <tr>
+                        <th>Second Installment</th>
+                        <td><%= singleClient.secondPayment %></td>
+                    </tr>
+                <% } %>
+
+                <% if(singleClient.thirdPayment !== null) { %>
+                    <tr>
+                        <th>Third Installment</th>
+                        <td><%= singleClient.thirdPayment %></td>
+                    </tr>
+                <% } %>
+
+            <% } %>
+        </table>
+
+        <div class="table-wrapper">
+            <h3 class="table-heading">Services for <%= singleClient.customerName %></h3>
+            <a href="javascript:void(0)" class="add">Add Service<span><i class="fas fa-plus"></i></span></a>
+            <div class="modal" id="modal">
+                <div class="modal-head">
+                <h3>Add a Service</h3>
+                <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+                </div>               
+                <form action="/wpAddClient" method="POST">
+                    <div>
+                        <label for="custName">Service Name:</label>
+                        <input type="text" name="custName" required >
+                    </div>
+                    <div>
+                        <label for="custName">Service Charges:</label>
+                        <input type="text" name="custName" required >
+                    </div>
+                    <button type="submit">Add</button>
+                </form>
+            </div>
+
+            <table class="wptable" style="width: unset;">
+                <tr>
+                <th>Service Name</th>
+                <th>Service Charges</th>
+                
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<%- include('../partials/footer') -%>

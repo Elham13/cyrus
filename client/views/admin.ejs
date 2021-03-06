@@ -1,54 +1,126 @@
 <%- include('./partials/header') -%>
 <div class="admin-wrapper">
-    <!-- <a href="javascript:void(0)" class="open"><i class="fas fa-bars"></i></a>
-    <aside class="sidebar">
-        <div class="admin-header">
-            <h4>Admin</h4>
-            <a href="javascript:void(0)" class="close"><i class="fas fa-times"></i></a>
+  <main class="addmin-body">
+    <%- include('./partials/messages') -%>
+    <div class="users">
+      <div style="display: flex; justify-content: space-between">
+        <h3>List of created users</h3>
+        <a href="javascript:void(0)" class="add"
+          >Add User<span><i class="fas fa-plus"></i></span
+        ></a>
+      </div>
+
+      <div class="modal" id="modal">
+        <div class="modal-head">
+          <h3>Add new user</h3>
+          <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span
+          ></a>
         </div>
-        
-        <ul class="admin-list">
-            <li><a href="">link 1</a></li>
-            <li><a href="">link 2</a></li>
-            <li><a href="">link 3</a></li>
-            <li><a href="">link 4</a></li>
-            <li><a href="">link 5</a></li>
-        </ul>
-    </aside> -->
-    <main class="addmin-body">
-      <h2>Add a User</h2>
-      <%- include('./partials/messages') -%>
-        <form action="/register" method="POST" class="form register-form">
-            <div class="input-wrapper">
-              <label for="name">Full Name <span>*</span></label>
-              <input type="text" name="name" />
-            </div>
-            <div class="input-wrapper">
-              <label for="email">Email <span>*</span></label>
-              <input type="email" name="email" /> 
-            </div>        
-            <div class="input-wrapper">
-              <label for="number">Mobile number <span>*</span></label>
-              <input type="number" name="number" />
-            </div>
-            <div class="input-wrapper">
-              <label for="password">Role <span>*</span></label>
-              <select name="role" id="">
-                <option value="CEO">Cheaf Executive</option>
-                <option value="manager">Manager</option>
-                <option value="emp">Employee</option>
-              </select>
-            </div>
-            <div class="input-wrapper">
-              <label for="password">Password <span>*</span></label>
-              <input type="password" name="password" />
-            </div>
-            <div class="input-wrapper">
-              <label for="password2">Confirm Password <span>*</span></label>
-              <input type="password" name="password2" />
-            </div>
-            <button type="submit" class="submit-btn">Signup</button>
-          </form>
-    </main>
+        <form action="/register" method="POST">
+          <div>
+            <label for="name">Full Name <span>*</span></label>
+            <input type="text" name="name" />
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input type="email" name="email" />
+          </div>
+          <div>
+            <label for="number">Mobile number <span>*</span></label>
+            <input type="number" name="number" />
+          </div>
+          <div>
+            <label for="password">Role <span>*</span></label>
+            <select name="role">
+              <option selected disabled>Select a role</option>
+              <option value="CEO">Cheaf Executive</option>
+              <option value="manager">Manager</option>
+              <option value="emp">Employee</option>
+            </select>
+          </div>
+          <div>
+            <label for="password">Password <span>*</span></label>
+            <input type="password" name="password" />
+          </div>
+          <div>
+            <label for="password2">Confirm Password <span>*</span></label>
+            <input type="password" name="password2" />
+          </div>
+          <button type="submit">Create</button>
+        </form>
+      </div>
+
+      <div class="modal" id="updateModal">
+        <div class="modal-head">
+          <h3>Update user</h3>
+          <a href="javascript:void(0)" class="close" id="hideUpdateModal"><span><i class="fas fa-times"></i></span></a>
+        </div>
+        <form action="/updateUser" method="POST">
+          <input type="hidden" name="id" id="formUserId">
+          <div>
+            <label for="name">Full Name <span>*</span></label>
+            <input type="text" name="name" />
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input type="email" name="email" />
+          </div>
+          <div>
+            <label for="number">Mobile number <span>*</span></label>
+            <input type="number" name="number" />
+          </div>
+          <div>
+            <label for="password">Role <span>*</span></label>
+            <select name="role" >
+              <option selected disabled>Select a role</option>
+              <option value="CEO">Cheaf Executive</option>
+              <option value="manager">Manager</option>
+              <option value="emp">Employee</option>
+            </select>
+          </div>
+          <div>
+            <label for="password">Password <span>*</span></label>
+            <input type="password" name="password" />
+          </div>
+          <div>
+            <label for="password2">Confirm Password <span>*</span></label>
+            <input type="password" name="password2" />
+          </div>
+          <button type="submit">Update</button>
+        </form>
+      </div>
+
+      <table class="wptable" style="white-space: nowrap;">
+        <tr>
+          <th>S.No</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Mobile Number</th>
+          <th>Role</th>
+          <th>Actions</th>
+        </tr>
+        <% if(users){ %> <% users.forEach((user1, index) => { %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= user1.name %></td>
+          <% if(user1.email){ %>
+            <td><%= user1.email %></td>
+          <% }else{ %>
+            <td style="background-color: #888"></td>
+          <% } %>
+          <td><%= user1.mobileNumber %></td>
+          <td><%= user1.role %></td>
+          <td>
+            <a href="javascript:void(0)" class="eidtBtn"><i class="fas fa-edit"></i></a>
+            <form action="/romoveUser" method="POST" style="display: inline;">
+              <input type="hidden" name="id" class="userIds" value="<%= user1._id %>">
+              <button class="deleteBtn"><i class="fas fa-trash"></i></button>
+            </form>
+          </td>
+        </tr>
+        <% }) %> <% } %>
+      </table>
+    </div>
+  </main>
 </div>
 <%- include('./partials/footer') -%>

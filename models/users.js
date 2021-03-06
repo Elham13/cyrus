@@ -6,7 +6,7 @@ const UsreSchema = mongoose.Schema({
     mobileNumber: Number,
     role: String,
     password: String,
-    createdAt: {
+    createdAt: { 
         type: Date,
         default: Date.now()
     }

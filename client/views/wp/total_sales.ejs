@@ -7,7 +7,11 @@
     <li>Total Sales</li>
 </ul>
     <div class="wp-inner">
-      <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
+      <div style="margin-top: 10px;">
+        <input type="text" id="tableSearch" onkeyup="filterTable()" placeholder="Search a Customer Name">
+        <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
+      </div>
+      
             <div class="modal" id="modal">
               <div class="modal-head">
                 <h3>Add a client</h3>
@@ -17,6 +21,15 @@
                     <div>
                         <label for="custName">Customer Name:</label>
                         <input type="text" name="custName" required >
+                    </div>
+                    <input type="hidden" name="custId" value="<%= 'cyrus'+parseInt(clients.length+1) %>" >
+                    <div>
+                        <label for="prodName">Product Name:</label>
+                        <input type="text" name="prodName" required >
+                    </div>
+                    <div>
+                        <label for="reference">Reference:</label>
+                        <input type="text" name="reference" required >
                     </div>
                     <div>
                         <label for="phNumber">Phone Number:</label>
@@ -37,6 +50,27 @@
                     <div>
                         <label for="amount">Amount:</label>
                         <input type="number" name="amount" required>
+                    </div>
+                    <div>
+                        <label for="paymentMode">Payment Mode:</label>
+                        <select name="paymentMode" id="paymentMode" required>
+                          <option selected disabled>Select a mode</option>
+                          <option value="Cash">Cash</option>
+                          <option value="Cheque">Cheque</option>
+                        </select>
+                    </div>
+                    <div id="bankInfo">
+                      <label for="amount">Back Info:</label>
+                      <input type="number" name="accNo" placeholder="Account Number" >
+                      <input type="text" name="branchName" placeholder="Branch Name" >
+                      <input type="number" name="chequeNo" placeholder="Cheque Number" >
+                      <label for="chequeDate">Cheque Date:</label>
+                      <input type="date" name="chequeDate"  >
+                    </div>
+                    
+                    <div>
+                      <label for="remarks">Remarks:</label>
+                      <input type="text" name="remarks" >
                     </div>
                     <div class="emi-checkbox">
                         <input type="checkbox" name="emi" > EMI
@@ -60,27 +94,74 @@
                     <button type="submit">Add</button>
                 </form>
             </div>
-        <table class="wptable">
+        <table class="wptable" id="wpTable">
             <tr>
-              <th>S.No</th>
+              <th>Customer Id</th>
               <th>Customer name</th>
+              <th>Product name</th>
+              <th>Reference</th>
               <th>Ph Number</th>
               <th>Address</th>
               <th>Installation Date</th>
               <th>Installation Executive</th>
               <th>Amount</th>
+              <th>Payment Mode</th>
+              <th>Account No</th>
+              <th>Branch Name</th>
+              <th>Cheque No</th>
+              <th>Cheque Date</th>
+              <th>Remarks</th>
               <th>EMI</th>
             </tr>
             <% if(clients.length > 0){ %> 
               <% clients.forEach((client, index) => { %>
                 <tr>
-                  <td><%= index + 1 %></td>
+                  <td class="editable_cell" style="padding-right: 20px"><%= client.customerId %>
+                    <form action="/showSingleCust" method="POST">
+                      <input type="hidden" name="id" value="<%= client._id %>">
+                      <button type="submit" class="edit"><i class="fas fa-eye"></i></button>
+                    </form>
+                  </td>
                   <td><%= client.customerName %></td>
+                  <td><%= client.productName %></td>
+                  <td><%= client.reference %></td>
                   <td><%= client.phoneNumber %></td>
                   <td><%= client.address %></td>
                   <td><%= client.installationDate.toDateString() %></td>
                   <td><%= client.installationExecutive %></td>
                   <td>&#8377; <%= client.amount %></td>
+                  <td><%= client.paymentMode %></td>
+
+                  <% if(client.accNo !== null){ %>
+                    <td><%= client.accNo %></td>
+                  <% }else{ %>
+                    <td style="background-color: #ccc;"></td>
+                  <% } %>
+
+                  <% if(client.branchName !== ""){ %>
+                    <td><%= client.branchName %></td>
+                  <% }else{ %>
+                    <td style="background-color: #ccc;"></td>
+                  <% } %>
+
+                  <% if(client.chequeNo !== ""){ %>
+                    <td><%= client.chequeNo %></td>
+                  <% }else{ %>
+                    <td style="background-color: #ccc;"></td>
+                  <% } %>
+
+                  <% if(client.chequeDate !== null){ %>
+                    <td><%= client.chequeDate.toDateString() %></td>
+                  <% }else{ %>
+                    <td style="background-color: #ccc;"></td>
+                  <% } %>
+                  
+                  <% if(client.remarks !== "") { %>
+                    <td><%= client.remarks %></td>
+                  <% }else{ %>
+                    <td style="background-color: #ccc;"></td>
+                  <% } %>
+                  
                   <td>
                     <% if(client.emi){ %>
                       <form action="/checkEMI" method="POST">

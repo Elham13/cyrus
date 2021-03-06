@@ -3,10 +3,10 @@ const bcrypt = require('bcrypt');
 
 const UsersModal = require('../models/users');
 const initPassport = async (passport) => {
-    const authenticateUser = async (email, password, done) => {
-        const user = await UsersModal.findOne({email: email}, (err, result) => {
+    const authenticateUser = async (number, password, done) => {
+        const user = await UsersModal.findOne({mobileNumber: number}, (err, result) => {
             if(err) return done(err);
-            if(!result) return done(null, false, {message: 'No user with that email'});
+            if(!result) return done(null, false, {message: 'No user with that number'});
         });
 
         try {
@@ -19,7 +19,7 @@ const initPassport = async (passport) => {
             return done(error)
         }
     }
-    passport.use(new LocalStrategy({usernameField: 'email'}, authenticateUser));
+    passport.use(new LocalStrategy({usernameField: 'number'}, authenticateUser));
 
     passport.serializeUser((user, done) => { return done(null, user.id)});
     passport.deserializeUser((id, done) => {
