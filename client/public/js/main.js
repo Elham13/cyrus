@@ -303,7 +303,6 @@ const init = () => {
   if(path=='/showSingleCust'){
     // toggleModal();
     downloadPageAsPdf();
-    downloadPageAsExcel();
   }
   if(path=='/admin'){
     toggleModal();
