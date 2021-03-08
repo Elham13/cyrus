@@ -75,6 +75,7 @@ const hideAndShowModals = () => {
   const showModalBtns = document.querySelectorAll('.add');
 
   for(let btn of showModalBtns){
+    
     btn.addEventListener('click', () => {
       btn.nextElementSibling.style.top = '50%';
       btn.nextElementSibling.style.opacity = '1';
@@ -254,6 +255,45 @@ const toggleUpdateModal = () => {
   }) 
 }
 
+const downloadPageAsPdf = () => {
+  const downloadBtn = document.getElementById('downloadAsPdf');
+  const scInner = document.getElementById('scInner');
+  downloadBtn.addEventListener('click', () => {
+    html2pdf().from(scInner).save();
+  });
+}
+
+const downloadPageAsExcel = (tableID, filename = '') => {
+  var downloadurl;
+    var dataFileType = 'application/vnd.ms-excel';
+    var tableSelect = document.getElementById(tableID);
+    console.log(tableSelect)
+    var tableHTMLData = tableSelect.outerHTML.replace(/ /g, '%20');
+    
+    filename = filename?filename+'.xls':'completDetails.xls';
+    
+    downloadurl = document.createElement("a");
+    
+    document.body.appendChild(downloadurl);
+    
+    if(navigator.msSaveOrOpenBlob){
+        var blob = new Blob(['\ufeff', tableHTMLData], {
+            type: dataFileType
+        });
+        navigator.msSaveOrOpenBlob( blob, filename);
+    }else{
+        // Create a link to the file
+        downloadurl.href = 'data:' + dataFileType + ', ' + tableHTMLData;
+    
+        // Setting the file name
+        downloadurl.download = filename;
+        
+        //triggering the function
+        downloadurl.click();
+    }
+
+}
+
 const init = () => {
   const path = window.location.pathname;
 
@@ -261,7 +301,9 @@ const init = () => {
     emiThings();
   }
   if(path=='/showSingleCust'){
-    toggleModal();
+    // toggleModal();
+    downloadPageAsPdf();
+    downloadPageAsExcel();
   }
   if(path=='/admin'){
     toggleModal();
@@ -283,8 +325,11 @@ const init = () => {
     hideAndShowModals();
     verntureNameInput();
   }
+  if(path=='/wpServicesPending'){
+    hideAndShowModals();
+  }
 
-  if(path=='/wpServicesPending' || path=='/wpExpenses' || path=='/wpStockReport' || path=='/solarExpenses' || path=='/solarStockReports' || path=='/rsPropertiesSales'){
+  if(path=='/wpExpenses' || path=='/wpStockReport' || path=='/solarExpenses' || path=='/solarStockReports' || path=='/rsPropertiesSales'){
     hideAndShowModals();
   }
 

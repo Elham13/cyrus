@@ -4,7 +4,7 @@ const ServicesPending = new mongoose.Schema({
     customerName: String,
     phoneNumber: Number,
     city: String,
-    address: String,
+    address: String, 
     installationDate: {
         type: Date,
         default: Date.now

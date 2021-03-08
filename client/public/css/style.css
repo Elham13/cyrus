@@ -853,6 +853,21 @@ ul.breadcrumb li a:hover {
 
 
 /*------------------------------------------------------------ Show Single Customer -----------------------------------------------------------------------  */
+.downloadAsPdf{
+  background-color: #000066;
+  color: #f2f2f2;
+  border: none;
+  outline: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 5px;
+  float: right;
+  margin: 0 5px;
+}
+.downloadAsPdf:active{
+  transform: scale(0.9);
+}
 .sc-wrapper{
   background-color: #ccc;
   min-height: 100vh;
@@ -865,7 +880,8 @@ ul.breadcrumb li a:hover {
 .sc-inner{
   margin: 0 30px;
   display: flex;
-  justify-content: space-between;
+  padding: 50px;
+  justify-content: center;
 }
 .list{
   padding: 30px;

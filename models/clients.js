@@ -22,8 +22,14 @@ const ClientsSchema = new mongoose.Schema({
     emi: Boolean,
     advancePayment: Number,
     duration: String,
+    pendingServices: {
+        type: Array,
+    },
+    completedServices: {
+        type: Array,
+    },
     firstPayment: {
-        type: String,
+        type: Number,
         default: null,
     },
     firstPaymentDate: {

@@ -8,11 +8,17 @@
         <li><a href="/wpTotalSales">Total Sales</a></li>
         <li>Customer Report</li>
     </ul>
-    <% if(singleClient !== null){ %>
-        <h1><%= singleClient.customerName %>'s Report</h1>
-    <% } %>
-    <div class="sc-inner">
-        <table class="wptable" style="width: unset;">
+    
+    <button class="downloadAsPdf" id="downloadAsPdf">Download page as pdf <i class="far fa-file-pdf"></i></button>
+    <div class="sc-inner" id="scInner">
+        <div>
+            <div>
+                <% if(singleClient !== null){ %>
+                    <h3><%= singleClient.customerName %>'s complete report</h3>
+                <% } %>
+                <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('tableOne')">Download table as excel <i class="far fa-file-excel"></i></button>
+            </div>
+        <table class="wptable" id="tableOne" style="width: unset;">
             <tr>
                 <th>Customer Id</th>
                 <td><%= singleClient.customerId %></td>
@@ -126,37 +132,51 @@
                 <% } %>
 
             <% } %>
-        </table>
-
-        <div class="table-wrapper">
-            <h3 class="table-heading">Services for <%= singleClient.customerName %></h3>
-            <a href="javascript:void(0)" class="add">Add Service<span><i class="fas fa-plus"></i></span></a>
-            <div class="modal" id="modal">
-                <div class="modal-head">
-                <h3>Add a Service</h3>
-                <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
-                </div>               
-                <form action="/wpAddClient" method="POST">
-                    <div>
-                        <label for="custName">Service Name:</label>
-                        <input type="text" name="custName" required >
-                    </div>
-                    <div>
-                        <label for="custName">Service Charges:</label>
-                        <input type="text" name="custName" required >
-                    </div>
-                    <button type="submit">Add</button>
-                </form>
-            </div>
-
-            <table class="wptable" style="width: unset;">
+            <% if(singleClient.pendingServices.length > 0){ %>
                 <tr>
-                <th>Service Name</th>
-                <th>Service Charges</th>
-                
+                    <th>Number of Pending Services</th>
+                    <td><%= singleClient.pendingServices.length %></td>
                 </tr>
-            </table>
+            <% } %>
+            <% if(singleClient.completedServices.length > 0){ %>
+                <tr>
+                    <th>Number of Completed Services</th>
+                    <td><%= singleClient.completedServices.length %></td>
+                </tr>
+            <% } %>
+        </table>
         </div>
+
+        <div style="margin-left: 20px;">
+            <div>
+                <h3>List of pending Services</h3>
+                <button class="downloadAsPdf"  onclick="downloadPageAsExcel('tableTwo', 'services')">Download table as excel <i class="far fa-file-excel"></i></button>
+            </div>
+        <table class="wptable" id="tableTwo" style="width: unset;">
+            <tr>
+                <th>S.No</th>
+                <th>Service Status</th>
+                <th>Complaint Details</th>
+                <th>Complete this Service</th>
+            </tr>
+            
+            <% singleClient.pendingServices.forEach((pending, index) => { %>
+                <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= pending.status %></td>
+                    <td><%= pending.complainDetail %></td>
+                    <td class="editable_cell">
+                        <form action="/updateServices" method="POST">
+                            <input type="hidden" name="id" value="<%= singleClient._id %>">
+                            <input type="hidden" name="index" value="<%= index %>">
+                            <input type="hidden" name="complain" value="<%= pending.complainDetail %>">
+                            <button type="submit" class="edit" style="font-size: 18px;"><i class="fas fa-check"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </table>
+    </div>
     </div>
 </div>
 <%- include('../partials/footer') -%>

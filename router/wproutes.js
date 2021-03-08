@@ -49,7 +49,7 @@ const getStockReport = async (req, res) => {
     });
 }
 const getServicesPending = async (req, res) => {
-    const ServicesPending = await ServicesPendingModal.find({});
+    const ServicesPending = await Client.find({$or:[{"pendingServices.0": {"$exists": true}}, {"completedServices.0": {"$exists": true}}]});
     res.render('wp/no_of_services_pending', {services: ServicesPending, user: req.user});
 }
 const getExpenses = async (req, res) => {
@@ -158,21 +158,28 @@ const postStockOutwards = async (req, res) => {
 
 
 const postServicePending = async (req, res) => {
-    const { custName, phNumber, city,  address, instDate, instExec, complainDetail, status } = req.body;
-    const newServicePending = {
-        customerName: custName,
-        phoneNumber: phNumber,
-        city: city,
-        address: address,
-        installationDate: instDate,
-        installationExecutive: instExec,
-        complainDetail: complainDetail,
-        status: status
+    const { custId, complainDetail, status } = req.body;
+    if(status == "Pending"){
+        const services = {
+            complainDetail: complainDetail,
+            status: status,
+        };
+        const customerFound = await Client.findOne({customerId: custId});
+        let custServices = customerFound.pendingServices;
+        custServices = [...custServices, services];
+        await Client.findOneAndUpdate({customerId: custId}, {$set: {pendingServices: custServices}});
+        res.redirect('/wpServicesPending');
+    }else{
+        const services = {
+            complainDetail: complainDetail,
+            status: status,
+        };
+        const customerFound = await Client.findOne({customerId: custId});
+        let custServices = customerFound.completedServices;
+        custServices = [...custServices, services];
+        await Client.findOneAndUpdate({customerId: custId}, {$set: {completedServices: custServices}});
+        res.redirect('/wpServicesPending');
     }
-
-    const addServicesPending = new ServicesPendingModal(newServicePending);
-    await addServicesPending.save();
-    res.redirect('/wpServicesPending');
 }
 
 
@@ -233,6 +240,25 @@ const postShowSingleCust = async (req, res) => {
     res.render('wp/single_customer', {singleClient: client, user: req.user});
 }
 
+const postUpdateServices = async (req, res) => {
+    const {id, index, complain} = req.body;
+
+    // Add it to completed services
+    const services = {
+        complainDetail: complain,
+        status: "Complete",
+    };
+    const customerFound = await Client.findOne({_id: id});
+    let custServices = customerFound.completedServices;
+    custServices = [...custServices, services];
+    await Client.findOneAndUpdate({_id: id}, {$set: {completedServices: custServices}});
+
+    // Remove it from pending services
+    Client.updateOne({ _id: id }, { "$pull": { "pendingServices": { "complainDetail": complain } }}, { safe: true, multi:true }, function(err, obj) {
+        res.redirect('/wpTotalSales');
+    });
+}
+
 
 module.exports = {
     getTotalSales,
@@ -252,4 +278,5 @@ module.exports = {
     postSecondPayment,
     postThirPayment,
     postShowSingleCust,
+    postUpdateServices,
 };
