@@ -82,7 +82,7 @@
                   <% if(prospect.followUpDate == null && prospect.amount == null){ %>
                     <td style="background-color: #ccc;"></td>
                   <% } else if(prospect.followUpDate !== null ) { %>
-                    <td><%= prospect.followUpDate.toDateString() %></td>
+                    <td><%= prospect.followUpDate.toLocaleDateString() %></td>
                   <% }  %>
                 </tr>
               <% }) %>

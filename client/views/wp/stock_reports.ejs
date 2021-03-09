@@ -14,12 +14,15 @@
                 <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
                 </div>               
                 <form action="/wpAddStockInwards" method="POST">
+                    <% if(user !== null){ %>
+                      <input type="hidden" name="creatorName" value="<%= user.name %>">
+                    <% } %>
                     <div>
-                        <label for="prodName">Product Name:</label>
-                        <input type="text" name="prodName">
+                        <label for="prodName">Product Name: <span>*</span></label>
+                        <input type="text" name="prodName" required>
                     </div>
                     <div>
-                        <label for="noOfProd">Number of Products:</label>
+                        <label for="noOfProd">Number of Products: <span>*</span></label>
                         <input type="number" name="noOfProd" required>
                     </div>
                     <button type="submit">Add</button>
@@ -30,6 +33,7 @@
             <table class="wptable">
                 <tr>
                     <th>S.No</th>
+                    <th>Creator Name</th>
                     <th>Product name</th>
                     <th>Number of Products</th>
                 </tr>
@@ -37,6 +41,7 @@
                     <% stocks.forEach((stock, index) => { %>
                     <tr>
                         <td><%= index + 1 %></td>
+                        <td ><%= stock.creatorName %></td>
                         <td class="stockInwardPName"><%= stock.productName.toUpperCase() %></td>
                         <td class="stockInwardNoOfProd"><%= stock.numberOfProducts %></td>
                     </tr>
@@ -51,20 +56,23 @@
                     <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
                   </div>               
                     <form action="/wpAddStockOwtwards" method="POST">
+                        <% if(user !== null){ %>
+                          <input type="hidden" name="creatorName" value="<%= user.name %>">
+                        <% } %>
                         <div>
-                            <label for="prodName">Product Name:</label>
-                            <input type="text" name="prodName">
+                            <label for="prodName">Product Name: <span>*</span></label>
+                            <input type="text" name="prodName" required>
                         </div>
                         <div>
-                            <label for="noOfProd">Number of Products:</label>
+                            <label for="noOfProd">Number of Products: <span>*</span></label>
                             <input type="number" name="noOfProd" required>
                         </div>
                         <div>
-                            <label for="clientName">Client Name:</label>
+                            <label for="clientName">Client Name: <span>*</span></label>
                             <input type="text" name="clientName" required>
                         </div>
                         <div>
-                            <label for="clientPhNo">Client Phone number:</label>
+                            <label for="clientPhNo">Client Phone number: <span>*</span></label>
                             <input type="number" name="clientPhNo" required>
                         </div>
                         <button type="submit">Add</button>
@@ -75,6 +83,7 @@
                 <table class="wptable">
                     <tr>
                       <th>S.No</th>
+                      <th>Creator name</th>
                       <th>Product name</th>
                       <th>Number of Products</th>
                       <th>Client Name</th>
@@ -84,6 +93,7 @@
                       <% outwards.forEach((outward, index) => { %>
                         <tr>
                           <td><%= index + 1 %></td>
+                          <td ><%= outward.creatorName %></td>
                           <td class="stockOutWardPName"><%= outward.productName.toUpperCase() %></td>
                           <td class="stockOutwardNoOfProd"><%= outward.numberOfProducts %></td>
                           <td><%= outward.clientName %></td>

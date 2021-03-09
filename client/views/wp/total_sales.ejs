@@ -18,40 +18,47 @@
               </div>               
                 <form action="/wpAddClient" method="POST">
                     <div>
-                        <label for="custName">Customer Name:</label>
+                        <label for="custName">Customer Name: <span>*</span></label>
                         <input type="text" name="custName" required >
                     </div>
+                    <% if(user !== null){ %>
+                        <input type="hidden" name="creatorName" value="<%= user.name %>">
+                    <% } %>
                     <input type="hidden" name="custId" value="<%= 'cyrus'+parseInt(clients.length+1) %>" >
                     <div>
-                        <label for="prodName">Product Name:</label>
+                        <label for="prodName">Product Name: <span>*</span></label>
                         <input type="text" name="prodName" required >
                     </div>
                     <div>
-                        <label for="reference">Reference:</label>
+                        <label for="reference">Reference: <span>*</span></label>
                         <input type="text" name="reference" required >
                     </div>
                     <div>
-                        <label for="phNumber">Phone Number:</label>
+                        <label for="phNumber">Phone Number: <span>*</span></label>
                         <input type="text" name="phNumber" required>
                     </div>
                     <div>
-                        <label for="address">Address:</label>
+                        <label for="phNumber1">Alternate Phone Number:</label>
+                        <input type="text" name="phNumber1" >
+                    </div>
+                    <div>
+                        <label for="address">Address: <span>*</span></label>
                         <input type="text" name="address" required>
                     </div>
                     <div>
-                        <label for="instDate">Installation Date:</label>
+                        <label for="instDate">Installation Date: <span>*</span></label>
                         <input type="date" name="instDate" required>
                     </div>
                     <div>
-                        <label for="instExec">Installation Executive:</label>
+                        <label for="instExec">Installation Executive: <span>*</span></label>
                         <input type="text" name="instExec" required>
                     </div>
                     <div>
-                        <label for="amount">Amount:</label>
+                        <label for="amount">Amount: <span>*</span></label>
                         <input type="number" name="amount" required>
                     </div>
                     <div>
-                        <label for="paymentMode">Payment Mode:</label>
+                        <label for="paymentMode">Payment Mode: <span>*</span></label>
                         <select name="paymentMode" id="paymentMode" required>
                           <option selected disabled>Select a mode</option>
                           <option value="Cash">Cash</option>
@@ -59,7 +66,7 @@
                         </select>
                     </div>
                     <div id="bankInfo">
-                      <label for="amount">Back Info:</label>
+                      <label for="amount">Bank Info:</label>
                       <input type="number" name="accNo" placeholder="Account Number" >
                       <input type="text" name="branchName" placeholder="Branch Name" >
                       <input type="number" name="chequeNo" placeholder="Cheque Number" >
@@ -99,17 +106,12 @@
               <th>Customer Id</th>
               <th>Customer name</th>
               <th>Product name</th>
-              <th>Reference</th>
               <th>Ph Number</th>
               <th>Address</th>
               <th>Installation Date</th>
               <th>Installation Executive</th>
               <th>Amount</th>
               <th>Payment Mode</th>
-              <th>Account No</th>
-              <th>Branch Name</th>
-              <th>Cheque No</th>
-              <th>Cheque Date</th>
               <th>Remarks</th>
               <th>EMI</th>
             </tr>
@@ -124,37 +126,12 @@
                   </td>
                   <td><%= client.customerName %></td>
                   <td><%= client.productName %></td>
-                  <td><%= client.reference %></td>
                   <td><%= client.phoneNumber %></td>
                   <td><%= client.address %></td>
-                  <td><%= client.installationDate.toDateString() %></td>
+                  <td><%= client.installationDate.toLocaleDateString() %></td>
                   <td><%= client.installationExecutive %></td>
                   <td>&#8377; <%= client.amount %></td>
                   <td><%= client.paymentMode %></td>
-
-                  <% if(client.accNo !== null){ %>
-                    <td><%= client.accNo %></td>
-                  <% }else{ %>
-                    <td style="background-color: #ccc;"></td>
-                  <% } %>
-
-                  <% if(client.branchName !== ""){ %>
-                    <td><%= client.branchName %></td>
-                  <% }else{ %>
-                    <td style="background-color: #ccc;"></td>
-                  <% } %>
-
-                  <% if(client.chequeNo !== ""){ %>
-                    <td><%= client.chequeNo %></td>
-                  <% }else{ %>
-                    <td style="background-color: #ccc;"></td>
-                  <% } %>
-
-                  <% if(client.chequeDate !== null){ %>
-                    <td><%= client.chequeDate.toDateString() %></td>
-                  <% }else{ %>
-                    <td style="background-color: #ccc;"></td>
-                  <% } %>
                   
                   <% if(client.remarks !== "") { %>
                     <td><%= client.remarks %></td>

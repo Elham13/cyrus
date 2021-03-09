@@ -24,6 +24,10 @@
                 <td><%= singleClient.customerId %></td>
             </tr>
             <tr>
+                <th>Creator Name</th>
+                <td><%= singleClient.creatorName %></td>
+            </tr>
+            <tr>
                 <th>Customer Name</th>
                 <td><%= singleClient.customerName %></td>
             </tr>
@@ -39,6 +43,12 @@
                 <th>Phone Number</th>
                 <td><%= singleClient.phoneNumber %></td>
             </tr>
+            <% if(singleClient.alternatePhoneNumber){ %>
+                <tr>
+                    <th>Alternate Phone Number</th>
+                    <td><%= singleClient.alternatePhoneNumber %></td>
+                </tr>
+            <% } %>
             <tr>
                 <th>Address</th>
                 <td><%= singleClient.address %></td>

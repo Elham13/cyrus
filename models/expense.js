@@ -5,6 +5,7 @@ const Expenses = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    creatorName: String,
     executiveName: String,
     amount: Number,
     purpose: String,

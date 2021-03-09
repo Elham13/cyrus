@@ -1,4 +1,9 @@
 <%- include('./partials/header') -%>
+<%- include('./partials/navbar') -%>
+<ul class="breadcrumb">
+  <li><a href="/">Home</a></li>
+  <li>Admin</li>
+</ul>
 <div class="admin-wrapper">
   <main class="addmin-body">
     <%- include('./partials/messages') -%>
@@ -99,7 +104,8 @@
           <th>Role</th>
           <th>Actions</th>
         </tr>
-        <% if(users){ %> <% users.forEach((user1, index) => { %>
+        <% if(users){ %> 
+          <% users.forEach((user1, index) => { %>
         <tr>
           <td><%= index + 1 %></td>
           <td><%= user1.name %></td>

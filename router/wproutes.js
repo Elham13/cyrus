@@ -30,44 +30,70 @@ const getLowStockReport = (inStock, outStock) => {
 
 const getTotalSales = async (req, res) => {
     const Clients = await Client.find({});
-    res.render('wp/total_sales', {clients: Clients, user: req.user});
+    let user = null;
+    if(req.user){
+        user = req.user;
+    }
+    res.render('wp/total_sales', {clients: Clients, user: user});
 }
 
 const getTelecaling = async (req, res) => {
     const Prospects = await ProspectsModal.find({});
-    res.render('wp/telecaling_data', {prospects: Prospects, user: req.user});
+    let user = null;
+    if(req.user){
+        user = req.user;
+    }
+    res.render('wp/telecaling_data', {prospects: Prospects, user: user});
 }
 
 const getStockReport = async (req, res) => {
     const StockInwardsFound = await StockInwards.find({});
     const Outwards = await StockOutwardsModal.find({});
 
+    let user = null;
+    if(req.user){
+        user = req.user;
+    }
     res.render('wp/stock_reports', {
         stocks: StockInwardsFound, 
         outwards: Outwards,
-        user: req.user,
+        user: user,
     });
 }
 const getServicesPending = async (req, res) => {
     const ServicesPending = await Client.find({$or:[{"pendingServices.0": {"$exists": true}}, {"completedServices.0": {"$exists": true}}]});
-    res.render('wp/no_of_services_pending', {services: ServicesPending, user: req.user});
+    let user = null;
+    if(req.user){
+        user = req.user;
+    }
+    res.render('wp/no_of_services_pending', {services: ServicesPending, user: user});
 }
 const getExpenses = async (req, res) => {
     const Expenses = await ExpensesModal.find({});
-    res.render('wp/expenses', {expenses: Expenses, user: req.user});
+    let user = null;
+    if(req.user){
+        user = req.user;
+    }
+    res.render('wp/expenses', {expenses: Expenses, user: user});
 }
 
 const getShowSingleCust = (req, res) => {
-    res.render('wp/single_customer', {singleClient: null, user: req.user})
+    let user = null;
+    if(req.user){
+        user = req.user;
+    }
+    res.render('wp/single_customer', {singleClient: null, user: user})
 }
 
 const postWaterPurifier = async (req, res) => {
     const { 
         custId,
+        creatorName,
         custName, 
         prodName,
         reference,
-        phNumber, 
+        phNumber,
+        phNumber1,
         address, 
         instDate, 
         instExec, 
@@ -88,10 +114,12 @@ const postWaterPurifier = async (req, res) => {
 
     const newClient = {
         customerId: custId,
+        creatorName: creatorName,
         customerName: custName,
         productName: prodName,
         reference: reference,
         phoneNumber: phNumber,
+        alternatePhoneNumber: phNumber1,
         address: address,
         installationDate: instDate,
         installationExecutive: instExec,
@@ -113,9 +141,10 @@ const postWaterPurifier = async (req, res) => {
 }
 
 const postProspects = async (req, res) => {
-    const { custName, phNumber, city, address, execName, remarks, radioBtn, followDate } = req.body;
+    const { creatorName, custName, phNumber, city, address, execName, remarks, radioBtn, followDate } = req.body;
     const newProspect = {
         customerName: custName,
+        creatorName: creatorName,
         phoneNumber: phNumber,
         city: city,
         address: address,
@@ -131,8 +160,9 @@ const postProspects = async (req, res) => {
 }
 
 const postStockInwards = async (req, res) => {
-    const { prodName, noOfProd } = req.body;
+    const { creatorName, prodName, noOfProd } = req.body;
     const newStockInward = {
+        creatorName: creatorName,
         productName: prodName,
         numberOfProducts: noOfProd,
     }
@@ -143,8 +173,9 @@ const postStockInwards = async (req, res) => {
 }
 
 const postStockOutwards = async (req, res) => {
-    const { prodName, noOfProd, clientName, clientPhNo } = req.body;
+    const { creatorName, prodName, noOfProd, clientName, clientPhNo } = req.body;
     const newStockOutward = {
+        creatorName: creatorName, 
         productName: prodName,
         numberOfProducts: noOfProd,
         clientName: clientName,
@@ -184,9 +215,10 @@ const postServicePending = async (req, res) => {
 
 
 const postExpenses = async (req, res) => {
-    const { date, execName, amount, purpose, paymentMode } = req.body;
+    const { date, creatorName, execName, amount, purpose, paymentMode } = req.body;
     const newExpense = {
         expenseDate: date,
+        creatorName: creatorName,
         executiveName: execName,
         amount: amount,
         purpose: purpose,

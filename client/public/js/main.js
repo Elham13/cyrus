@@ -214,7 +214,7 @@ const toggleModal = () => {
 const filterTable = () => {
   // Declare variables
   let input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("tableSearch");
+  input = document.getElementById("tableSearch"); 
   filter = input.value.toUpperCase();
   table = document.getElementById("wpTable");
   tr = table.getElementsByTagName("tr");

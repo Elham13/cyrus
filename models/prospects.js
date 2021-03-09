@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const Prospects = new mongoose.Schema({ 
+    creatorName: String,
     customerName: String,
     phoneNumber: Number,
     city: String,

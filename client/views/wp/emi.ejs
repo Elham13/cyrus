@@ -28,11 +28,11 @@
           value="<%= new Date().toLocaleDateString()  %>"
         />
         <div>
-          <label for="firstPayment">First Payment:</label>
+          <label for="firstPayment">First Payment: <span>*</span></label>
           <input type="number" name="firstPayment" required />
         </div>
         <div>
-          <label for="firstPaymentDate">Next Payment Date:</label>
+          <label for="firstPaymentDate">Next Payment Date: <span>*</span></label>
           <input type="date" name="firstPaymentDate" required />
         </div>
         <button type="submit">Add</button>
@@ -54,11 +54,11 @@
           value="<%= new Date().toLocaleDateString()  %>"
         />
         <div>
-          <label for="secondPayment">Second Payment:</label>
+          <label for="secondPayment">Second Payment: <span>*</span></label>
           <input type="number" name="secondPayment" required />
         </div>
         <div>
-          <label for="secondPaymentDate">Next Payment Date:</label>
+          <label for="secondPaymentDate">Next Payment Date: <span>*</span></label>
           <input type="date" name="secondPaymentDate" required />
         </div>
         <button type="submit">Add</button>
@@ -76,7 +76,7 @@
         <input type="hidden" name="id" value="<%= person._id %>" />
         <input type="hidden" name="paidDate" value="<%= new Date().toLocaleDateString()  %>"/>
         <div>
-          <label for="thirdPayment">Third Payment:</label>
+          <label for="thirdPayment">Third Payment: <span>*</span></label>
           <input type="number" name="thirdPayment" required />
         </div>
         <button type="submit">Add</button>

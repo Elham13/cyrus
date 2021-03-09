@@ -15,15 +15,15 @@
               </div>               
                 <form action="/wpServicesPending" method="POST">
                     <div>
-                        <label for="custId">Customer Id:</label>
+                        <label for="custId">Customer Id: <span>*</span></label>
                         <input type="text" name="custId" required >
                     </div>
                     <div>
-                        <label for="complainDetail">Complaint Details:</label>
+                        <label for="complainDetail">Complaint Details: <span>*</span></label>
                         <input type="text" name="complainDetail" required>
                     </div>
                     <div>
-                        <label for="status">Status:</label>
+                        <label for="status">Status: <span>*</span></label>
                         <div class="radio-btn-wrapper"><label for="status">Completed</label> <input type="radio" name="status" value="Complete" > </div>
                         <div class="radio-btn-wrapper"><label for="status">Pending</label> <input type="radio" name="status" value="Pending" required> </div>
                     </div>

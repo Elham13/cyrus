@@ -2,10 +2,12 @@ const mongoose = require('mongoose');
 
 const ClientsSchema = new mongoose.Schema({
     customerId: String,
+    creatorName: String,
     customerName: String,
     productName: String,
     reference: String,
     phoneNumber: Number,
+    alternatePhoneNumber: Number,
     address: String,
     installationDate: {
         type: Date,

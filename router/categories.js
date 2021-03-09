@@ -27,16 +27,20 @@ router.get('/',  getHome);
 router.delete('/logout',  logout);
 
 // Water purifier
-router.get('/wp', ensureAuthenticated, getWaterPurifier); 
+// router.get('/wp', ensureAuthenticated, getWaterPurifier); 
+router.get('/wp', getWaterPurifier); 
 
 // Water purifier
-router.get('/solar', ensureAuthenticated, getSolar);
+// router.get('/solar', ensureAuthenticated, getSolar);
+router.get('/solar', getSolar);
 
 // Real estate
-router.get('/re', ensureAuthenticated, getRealEstate);
+// router.get('/re', ensureAuthenticated, getRealEstate);
+router.get('/re', getRealEstate);
 
 // Admin
-router.get('/admin', ensureAuthenticated, getAdmin);
+// router.get('/admin', ensureAuthenticated, getAdmin);
+router.get('/admin', getAdmin);
 router.post('/romoveUser', postRemoveUser);
 router.post('/updateUser', postUpdateUser);
 
