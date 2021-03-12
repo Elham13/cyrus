@@ -54,7 +54,6 @@ const getStockReport = async (req, res) => {
     }
     res.render('wp/stock_reports', {
         stocks: stockInward, 
-        outwards: stockOutard,
         user: user,
     });
 }
