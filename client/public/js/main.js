@@ -7,29 +7,6 @@ const toggleNavigation = () => {
     }
 }
 
-const accordianOpen = () => {
-  const acc = document.getElementsByClassName("accordion");
-
-  for (let i = 0; i < acc.length; i++) {
-    acc[i].addEventListener("click", function() {
-      this.classList.toggle("active");
-
-      let panel = this.nextElementSibling;
-      let icon = this.lastElementChild.children[0];
-      
-      if (panel.style.display === "block" ) {
-        panel.style.display = "none";
-        icon.classList.remove('fa-angle-up')
-        icon.classList.add('fa-angle-down')      
-      } else {
-        panel.style.display = "block";
-        icon.classList.remove('fa-angle-down')
-        icon.classList.add('fa-angle-up')
-      }
-    });
-  }
-}
-
 const controlRadioBtns = () => {
   const followUpRadios = document.querySelectorAll('.radio-btn-wrapper1 input[type=radio]');
   const followUpDate = document.getElementById('followUpDate');
@@ -233,6 +210,26 @@ const filterTable = () => {
   }
 }
 
+const filterTableWithNumber = () => {
+  let input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById('tableSearch1');
+  filter = input.value;
+  table = document.getElementById("wpTable");
+  tr = table.getElementsByTagName("tr");
+
+  for(i=0; i<tr.length; i++){
+    td=tr[i].getElementsByTagName("td")[3];
+    if(td){
+      txtValue = td.textContent || td.innerText;
+      if(txtValue.indexOf(filter) > -1){
+        tr[i].style.display = "";
+      }else{
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
 const toggleUpdateModal = () => {
   const adds = document.querySelectorAll('.eidtBtn');
   const modal = document.getElementById('updateModal');
@@ -291,7 +288,30 @@ const downloadPageAsExcel = (tableID, filename = '') => {
         //triggering the function
         downloadurl.click();
     }
+}
 
+const hideAndShowCustomModal = (opentBtns, modalToOpen) => {
+  for(let btn of opentBtns){
+    btn.onclick = () => {
+      modalToOpen.lastElementChild.children[1].value = btn.firstElementChild.value;
+      modalToOpen.style.opacity = '1';
+      modalToOpen.style.top = '50%';
+      modalToOpen.style.zIndex = '1';
+    }
+  }
+}
+
+const controlDropDown = () => {
+  const statusDropDown = document.getElementById('statusDropDown');
+  const followUpDate1 = document.getElementById('followUpDate1');
+
+  statusDropDown.addEventListener('change', () => {
+    if(statusDropDown.value == 'FollowUp'){
+      followUpDate1.style.display = 'flex';
+    }else{
+      followUpDate1.style.display = 'none';
+    }
+  })
 }
 
 const init = () => {
@@ -315,7 +335,15 @@ const init = () => {
     toggleEmi();
   }
 
-  if(path == '/wpTelecaling' || path == '/solarTelecaling'){
+  if(path == '/wpTelecaling'){
+    hideAndShowModals();
+    controlRadioBtns();
+    controlDropDown();
+    hideAndShowCustomModal(document.querySelectorAll('.editRemarksBtn'), document.getElementById('remarksModal'));
+    hideAndShowCustomModal(document.querySelectorAll('.editStatusBtn'), document.getElementById('statusModal'));
+  }
+
+  if(path == '/solarTelecaling'){
     hideAndShowModals();
     controlRadioBtns();
   }

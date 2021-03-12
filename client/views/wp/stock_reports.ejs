@@ -7,6 +7,7 @@
     <li>Stock Reports</li>
 </ul>
     <div class="wp-inner">
+
       <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
             <div class="modal" id="modal">
                 <div class="modal-head">
@@ -36,13 +37,14 @@
                     <th>Creator Name</th>
                     <th>Product name</th>
                     <th>Number of Products</th>
+                    <th>Stock Available</th>
                 </tr>
                 <% if(stocks.length > 0) { %>
                     <% stocks.forEach((stock, index) => { %>
                     <tr>
                         <td><%= index + 1 %></td>
                         <td ><%= stock.creatorName %></td>
-                        <td class="stockInwardPName"><%= stock.productName.toUpperCase() %></td>
+                        <td class="stockInwardPName"><%= stock.productName %></td>
                         <td class="stockInwardNoOfProd"><%= stock.numberOfProducts %></td>
                     </tr>
                     <% }) %>
@@ -75,6 +77,10 @@
                             <label for="clientPhNo">Client Phone number: <span>*</span></label>
                             <input type="number" name="clientPhNo" required>
                         </div>
+                        <div>
+                            <label for="technicianName">Technician Name: <span>*</span></label>
+                            <input type="text" name="technicianName" required>
+                        </div>
                         <button type="submit">Add</button>
                     </form>
                 </div>
@@ -88,21 +94,22 @@
                       <th>Number of Products</th>
                       <th>Client Name</th>
                       <th>Client Number</th>
+                      <th>Technician Name</th>
                     </tr>
                     <% if(outwards.length > 0) { %>
                       <% outwards.forEach((outward, index) => { %>
                         <tr>
                           <td><%= index + 1 %></td>
                           <td ><%= outward.creatorName %></td>
-                          <td class="stockOutWardPName"><%= outward.productName.toUpperCase() %></td>
+                          <td class="stockOutWardPName"><%= outward.productName %></td>
                           <td class="stockOutwardNoOfProd"><%= outward.numberOfProducts %></td>
                           <td><%= outward.clientName %></td>
                           <td><%= outward.clientNumber %></td>
+                          <td><%= outward.technicianName %></td>
                         </tr>
                       <% }) %>
                     <% } %>
                   </table>
-
     </div>
 </div>
 <%- include('../partials/footer') -%>

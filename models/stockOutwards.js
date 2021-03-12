@@ -6,6 +6,7 @@ const StockInwards = new mongoose.Schema({
     numberOfProducts: Number,
     clientName: String,
     clientNumber: Number,
+    technicianName: String,
 });
 
 module.exports = mongoose.model("StockOutwardsModal", StockInwards);

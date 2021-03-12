@@ -9,6 +9,7 @@ const Expenses = new mongoose.Schema({
     executiveName: String,
     amount: Number,
     purpose: String,
+    remark: String,
     paymentMode: String,
 });
 

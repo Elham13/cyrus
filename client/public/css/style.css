@@ -408,7 +408,8 @@ ul.breadcrumb li a:hover {
   width: 150px;
 }
 .modal form #followUpDate,
-.modal form #prospectAmount {
+.modal form #prospectAmount,
+.modal form #followUpDate1 {
   display: none;
 }
 .modal form .emi-checkbox {
@@ -548,7 +549,8 @@ ul.breadcrumb li a:hover {
   transform: scale(1.1);
 }
 
-#tableSearch {
+#tableSearch,
+#tableSearch1 {
   border: none;
   outline: none;
   box-shadow: inset 0 0 10px #000066;

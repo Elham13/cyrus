@@ -18,13 +18,15 @@ const {
     postSecondPayment,
     postThirPayment,
     postShowSingleCust,
+    postUpdateServices,
+    posteditRemark,
+    posteditStatus,
     getTotalSales,
     getTelecaling,
     getStockReport,
     getServicesPending,
     getExpenses,
     getShowSingleCust,
-    postUpdateServices,
 } = require('./wproutes');
 
 const {
@@ -75,6 +77,8 @@ router.post('/secondPayment', postSecondPayment);
 router.post('/thirdPyament', postThirPayment);
 router.post('/showSingleCust', postShowSingleCust);
 router.post('/updateServices', postUpdateServices);
+router.post('/editRemark', posteditRemark);
+router.post('/editStatus', posteditStatus);
 
 router.get('/solarTotalSales', ensureAuthenticated, checkRole('CEO', 'manager'), getSolarTotalSales);
 router.get('/solarTelecaling', ensureAuthenticated, checkRole('CEO', 'manager'), getSolarTelecaling);

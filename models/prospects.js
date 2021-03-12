@@ -11,7 +11,7 @@ const Prospects = new mongoose.Schema({
     status: String, 
     followUpDate: {
         type: Date,
-        default: Date.now
+        default: null
     }
 });
 

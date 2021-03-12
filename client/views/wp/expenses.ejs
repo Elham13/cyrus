@@ -34,6 +34,10 @@
                     <input type="text" name="purpose" required>
                 </div>
                 <div>
+                    <label for="remark">Remarks: <span>*</span></label>
+                    <input type="text" name="remark" required>
+                </div>
+                <div>
                     <label for="paymentMode">Payment Mode: <span>*</span></label>
                     <div class="radio-btn-wrapper"><label for="paymentMode">Cash</label> <input type="radio" name="paymentMode" value="Cash" > </div>
                     <div class="radio-btn-wrapper"><label for="paymentMode">Online</label> <input type="radio" name="paymentMode" value="Online" required> </div>
@@ -50,6 +54,7 @@
               <th>Executive name</th>
               <th>Amount</th>
               <th>Purpose</th>
+              <th>Remarks</th>
               <th>Payment mode</th>
             </tr>
             <% if(expenses.length > 0) { %>
@@ -61,6 +66,7 @@
                   <td><%= expense.executiveName %></td>
                   <td>&#8377; <%= expense.amount %></td>
                   <td><%= expense.purpose %></td>
+                  <td><%= expense.remark %></td>
                   <td><%= expense.paymentMode %></td>
                 </tr>
               <% }) %>

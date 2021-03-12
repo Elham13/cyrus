@@ -4,6 +4,7 @@ const StockInwards = require('../models/stockInwards');
 const StockOutwardsModal = require('../models/stockOutwards');
 const ServicesPendingModal = require('../models/servicesPending');
 const ExpensesModal = require('../models/expense');
+const stockInwards = require('../models/stockInwards');
 
 
 // ----------------------------Helper function----------------------------------------
@@ -47,16 +48,38 @@ const getTelecaling = async (req, res) => {
 }
 
 const getStockReport = async (req, res) => {
-    const StockInwardsFound = await StockInwards.find({});
-    const Outwards = await StockOutwardsModal.find({});
+    const stockInward = await StockInwards.find({});
+    const stockOutard = await StockOutwardsModal.find({});
+    var availableStocks = [];
+
+    console.log('in: ', stockInward)
+    console.log('out: ', stockOutard)
+    // Stock Availble Calculation
+    // if(stockInward.length && stockOutard.length){
+    //     for(let i=0; i<stockInward.length; i++){
+    //         for(let j=0; j<stockOutard.length; j++){
+    //             // console.log( stockOutard[j].productName);
+    //             if(stockOutard[j].productName == stockInward[j].productName){
+    //                 availableStocks.push(stockInward[j]);
+    //             }
+    //         }
+    //         break;
+    //     }
+    // }
+    // console.log(availableStocks.map(inward => {
+    //     stockOutard.map(outward => {
+    //         return inward.numberOfProducts - outward.numberOfProducts;
+    //     })
+    // }));
+    // Stock Availble Calculation
 
     let user = null;
     if(req.user){
         user = req.user;
     }
     res.render('wp/stock_reports', {
-        stocks: StockInwardsFound, 
-        outwards: Outwards,
+        stocks: stockInward, 
+        outwards: stockOutard,
         user: user,
     });
 }
@@ -161,9 +184,10 @@ const postProspects = async (req, res) => {
 
 const postStockInwards = async (req, res) => {
     const { creatorName, prodName, noOfProd } = req.body;
+
     const newStockInward = {
         creatorName: creatorName,
-        productName: prodName,
+        productName: prodName.toUpperCase(),
         numberOfProducts: noOfProd,
     }
 
@@ -173,13 +197,14 @@ const postStockInwards = async (req, res) => {
 }
 
 const postStockOutwards = async (req, res) => {
-    const { creatorName, prodName, noOfProd, clientName, clientPhNo } = req.body;
+    const { creatorName, prodName, noOfProd, clientName, clientPhNo, technicianName } = req.body;
     const newStockOutward = {
         creatorName: creatorName, 
-        productName: prodName,
+        productName: prodName.toUpperCase(),
         numberOfProducts: noOfProd,
         clientName: clientName,
-        clientNumber: clientPhNo
+        clientNumber: clientPhNo,
+        technicianName: technicianName,
     }
 
     const addStockOutward = new StockOutwardsModal(newStockOutward);
@@ -190,6 +215,8 @@ const postStockOutwards = async (req, res) => {
 
 const postServicePending = async (req, res) => {
     const { custId, complainDetail, status } = req.body;
+    // const customer = await Client.findOne({customerId: custId});
+
     if(status == "Pending"){
         const services = {
             complainDetail: complainDetail,
@@ -215,13 +242,14 @@ const postServicePending = async (req, res) => {
 
 
 const postExpenses = async (req, res) => {
-    const { date, creatorName, execName, amount, purpose, paymentMode } = req.body;
+    const { date, creatorName, execName, amount, purpose, remark, paymentMode } = req.body;
     const newExpense = {
         expenseDate: date,
         creatorName: creatorName,
         executiveName: execName,
         amount: amount,
         purpose: purpose,
+        remark: remark,
         paymentMode: paymentMode,
     }
 
@@ -291,6 +319,34 @@ const postUpdateServices = async (req, res) => {
     });
 }
 
+const posteditRemark = async (req, res) => {
+    const {id, remark} = req.body;
+    const telecalingDate = await ProspectsModal.findById(id);
+
+    const now = new Date().toLocaleDateString();
+    if(telecalingDate.remarks == ''){
+        telecalingDate.remarks = '('+now+')'+remark;
+    }else{
+        telecalingDate.remarks = '('+now+')'+remark+'. '+telecalingDate.remarks;
+    }
+    await telecalingDate.save();
+    res.redirect('/wpTelecaling');
+}
+
+const posteditStatus = async (req, res) => {
+    const {id, status, followDate} = req.body;
+    const telecalingDate = await ProspectsModal.findById(id);
+    if(status == 'FollowUp'){
+        telecalingDate.status = 'follow-up';
+        telecalingDate.followUpDate = followDate;
+    }else{
+        telecalingDate.status = 'not-interrested';
+        telecalingDate.followUpDate = null;
+    }
+    await telecalingDate.save();
+    res.redirect('wpTelecaling');
+}
+
 
 module.exports = {
     getTotalSales,
@@ -311,4 +367,6 @@ module.exports = {
     postThirPayment,
     postShowSingleCust,
     postUpdateServices,
+    posteditRemark,
+    posteditStatus,
 };

@@ -59,6 +59,45 @@
                 <button type="submit">Add</button>
             </form>
         </div>
+
+        <div class="modal" id="remarksModal">
+          <div class="modal-head">
+            <h3>Edit This Remark</h3>
+            <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+          </div>         
+            <form action="/editRemark" method="POST">
+              <div>
+                <label for="remark">Add a remark: <span>*</span></label>
+                <input type="text" name="remark" required>
+              </div>
+              <input type="hidden" name="id">
+              <button type="submit">Update</button>
+            </form>
+        </div>
+
+        <div class="modal" id="statusModal">
+          <div class="modal-head">
+            <h3>Edit This Status</h3>
+            <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+          </div>         
+            <form action="/editStatus" method="POST">
+              <div>
+                <label for="remark">Status: <span>*</span></label>
+                <select name="status" id="statusDropDown">
+                  <option selected disabled>Select a status</option>
+                  <option value="FollowUp">Follow Up</option>
+                  <option value="NotInterrested">Not Interested</option>
+                </select>
+              </div>
+              <input type="hidden" name="id">
+              <div id="followUpDate1">
+                <label for="followDate">Follow up Date: </label>
+                <input type="date" name="followDate">
+              </div>
+              <button type="submit">Update</button>
+            </form>
+        </div>
+
         <table class="wptable">
             <tr>
               <th>S.No</th>
@@ -82,8 +121,18 @@
                   <td><%= prospect.city %></td>
                   <td><%= prospect.address %></td>
                   <td><%= prospect.executiveName %></td>
-                  <td><%= prospect.remarks %></td>
-                  <td><%= prospect.status %></td>
+                  <td class="editable_cell"><%= prospect.remarks %>
+                    <a href="javascript:void(0)" class="editRemarksBtn edit">
+                      <input type="hidden" name="id" value="<%= prospect._id %>">
+                      <i class="fas fa-edit"></i>
+                    </a>
+                  </td>
+                  <td class="editable_cell"><%= prospect.status %>
+                    <a href="javascript:void(0)" class="editStatusBtn edit">
+                      <input type="hidden" name="id" value="<%= prospect._id %>">
+                      <i class="fas fa-edit"></i>
+                    </a>
+                  </td>
                   <% if(prospect.followUpDate == null && prospect.amount == null){ %>
                     <td style="background-color: #ccc;"></td>
                   <% } else if(prospect.followUpDate !== null ) { %>
