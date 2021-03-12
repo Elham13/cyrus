@@ -47,7 +47,6 @@ const getTelecaling = async (req, res) => {
 
 const getStockReport = async (req, res) => {
     const stockInward = await StockInwards.find({});
-    
     let user = null;
     if(req.user){
         user = req.user;
@@ -185,7 +184,6 @@ const postStockInwards = async (req, res) => {
 const postStockOutwards = async (req, res) => {
     const { creatorName, prodName, noOfProd, clientName, clientPhNo, technicianName } = req.body;
     const stocks = await StockInwards.findOne({productName: prodName.toUpperCase()});
-    console.log(stocks);
     if(stocks !== null){
         const newStockOutward = {
             creatorName: creatorName, 
@@ -198,7 +196,17 @@ const postStockOutwards = async (req, res) => {
         let outward = stocks.stockOutward;
         outward = [...outward, newStockOutward];
         await StockInwards.findOneAndUpdate({productName: prodName.toUpperCase()}, {$set: {stockOutward: outward}})
+
+        if(stocks.stockOutward.length > 0){
+            var sum = 0;
+            stocks.stockOutward.forEach(out => {
+                sum += parseInt(out.numberOfProducts);
+            });
+            stocks.numberOfProductsDifference = sum + parseInt(noOfProd);
+            await stocks.save();
+        }
     }
+    
     
     res.redirect('/wpStockReport');
 }

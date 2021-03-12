@@ -7,6 +7,10 @@ const StockInwards = new mongoose.Schema({
     },
     productName: String,
     numberOfProducts: Number,
+    numberOfProductsDifference: {
+        type: Number,
+        default: 0,
+    },
     stockOutward: {
         type: Array,
         default: [],

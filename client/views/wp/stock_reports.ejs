@@ -46,7 +46,11 @@
                         <td ><%= stock.creatorName %></td>
                         <td class="stockInwardPName"><%= stock.productName %></td>
                         <td class="stockInwardNoOfProd"><%= stock.numberOfProducts %></td>
-                        <td></td>
+                        <% if((stock.numberOfProducts - stock.numberOfProductsDifference) <= 50){ %>
+                          <td style="background-color: red; color: #fff;"><%= stock.numberOfProducts - stock.numberOfProductsDifference %></td>
+                        <% }else{ %>
+                          <td><%= stock.numberOfProducts - stock.numberOfProductsDifference %></td>
+                        <% } %>
                     </tr>
                     <% }) %>
                 <% } %>
