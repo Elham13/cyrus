@@ -409,6 +409,7 @@ ul.breadcrumb li a:hover {
 }
 .modal form #followUpDate,
 .modal form #prospectAmount,
+.modal form #nextPaymentDate,
 .modal form #followUpDate1 {
   display: none;
 }

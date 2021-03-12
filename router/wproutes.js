@@ -2,9 +2,7 @@ const Client = require('../models/clients');
 const ProspectsModal = require('../models/prospects');
 const StockInwards = require('../models/stockInwards');
 const StockOutwardsModal = require('../models/stockOutwards');
-const ServicesPendingModal = require('../models/servicesPending');
 const ExpensesModal = require('../models/expense');
-const stockInwards = require('../models/stockInwards');
 
 
 // ----------------------------Helper function----------------------------------------
@@ -49,30 +47,7 @@ const getTelecaling = async (req, res) => {
 
 const getStockReport = async (req, res) => {
     const stockInward = await StockInwards.find({});
-    const stockOutard = await StockOutwardsModal.find({});
-    var availableStocks = [];
-
-    console.log('in: ', stockInward)
-    console.log('out: ', stockOutard)
-    // Stock Availble Calculation
-    // if(stockInward.length && stockOutard.length){
-    //     for(let i=0; i<stockInward.length; i++){
-    //         for(let j=0; j<stockOutard.length; j++){
-    //             // console.log( stockOutard[j].productName);
-    //             if(stockOutard[j].productName == stockInward[j].productName){
-    //                 availableStocks.push(stockInward[j]);
-    //             }
-    //         }
-    //         break;
-    //     }
-    // }
-    // console.log(availableStocks.map(inward => {
-    //     stockOutard.map(outward => {
-    //         return inward.numberOfProducts - outward.numberOfProducts;
-    //     })
-    // }));
-    // Stock Availble Calculation
-
+    
     let user = null;
     if(req.user){
         user = req.user;
@@ -84,12 +59,24 @@ const getStockReport = async (req, res) => {
     });
 }
 const getServicesPending = async (req, res) => {
-    const ServicesPending = await Client.find({$or:[{"pendingServices.0": {"$exists": true}}, {"completedServices.0": {"$exists": true}}]});
+    const client = await Client.find({});
+
+    client.forEach(customer => {
+        const next = new Date(customer.nextDates[customer.nextDates.length - 1]).toLocaleDateString();
+        const now = new Date().toLocaleDateString();
+        if(next == now){
+            const fun = async () => {
+                await Client.findOneAndUpdate({_id: customer._id}, {serviceStatus: "Pending"})
+            }
+            fun();
+        }
+    });
+
     let user = null;
     if(req.user){
         user = req.user;
     }
-    res.render('wp/no_of_services_pending', {services: ServicesPending, user: user});
+    res.render('wp/no_of_services_pending', {user: user, clients: client});
 }
 const getExpenses = async (req, res) => {
     const Expenses = await ExpensesModal.find({});
@@ -198,46 +185,40 @@ const postStockInwards = async (req, res) => {
 
 const postStockOutwards = async (req, res) => {
     const { creatorName, prodName, noOfProd, clientName, clientPhNo, technicianName } = req.body;
-    const newStockOutward = {
-        creatorName: creatorName, 
-        productName: prodName.toUpperCase(),
-        numberOfProducts: noOfProd,
-        clientName: clientName,
-        clientNumber: clientPhNo,
-        technicianName: technicianName,
+    const stocks = await StockInwards.findOne({productName: prodName.toUpperCase()});
+    console.log(stocks);
+    if(stocks !== null){
+        const newStockOutward = {
+            creatorName: creatorName, 
+            productName: prodName.toUpperCase(),
+            numberOfProducts: noOfProd,
+            clientName: clientName,
+            clientNumber: clientPhNo,
+            technicianName: technicianName,
+        }
+        let outward = stocks.stockOutward;
+        outward = [...outward, newStockOutward];
+        await StockInwards.findOneAndUpdate({productName: prodName.toUpperCase()}, {$set: {stockOutward: outward}})
     }
-
-    const addStockOutward = new StockOutwardsModal(newStockOutward);
-    await addStockOutward.save();
+    
     res.redirect('/wpStockReport');
 }
 
 
 const postServicePending = async (req, res) => {
-    const { custId, complainDetail, status } = req.body;
-    // const customer = await Client.findOne({customerId: custId});
-
-    if(status == "Pending"){
-        const services = {
-            complainDetail: complainDetail,
-            status: status,
-        };
-        const customerFound = await Client.findOne({customerId: custId});
-        let custServices = customerFound.pendingServices;
-        custServices = [...custServices, services];
-        await Client.findOneAndUpdate({customerId: custId}, {$set: {pendingServices: custServices}});
-        res.redirect('/wpServicesPending');
-    }else{
-        const services = {
-            complainDetail: complainDetail,
-            status: status,
-        };
-        const customerFound = await Client.findOne({customerId: custId});
-        let custServices = customerFound.completedServices;
-        custServices = [...custServices, services];
-        await Client.findOneAndUpdate({customerId: custId}, {$set: {completedServices: custServices}});
-        res.redirect('/wpServicesPending');
+    const {id, status, nextServiceDate} = req.body;
+    const customer = await Client.findById(id);
+    customer.serviceStatus = status;
+    if(status == "Completed"){
+        customer.nextDates = [...customer.nextDates, nextServiceDate];
     }
+    const next = new Date(customer.nextDates[customer.nextDates.length - 1]).toLocaleDateString();
+    const now = new Date().toLocaleDateString();
+    if(next == now){
+        customer.serviceStatus = "Pending";
+    }
+    await customer.save();
+    res.redirect('/wpServicesPending');
 }
 
 

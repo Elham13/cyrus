@@ -7,31 +7,30 @@
     <li>Number of services pending</li>
 </ul>
     <div class="wp-inner">
-      <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
-            <div class="modal" id="modal">
+            <div class="modal" id="serviceStatusModal">
               <div class="modal-head">
                 <h3>No of pending services form</h3>
                 <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
               </div>               
                 <form action="/wpServicesPending" method="POST">
                     <div>
-                        <label for="custId">Customer Id: <span>*</span></label>
-                        <input type="text" name="custId" required >
+                        <label for="custId">Status: <span>*</span></label>
+                        <select name="status" required id="serviceStatusDropDown">
+                          <option selected disabled>Select a status</option>
+                          <option value="Pending">Pending</option>
+                          <option value="Completed">Completed</option>
+                        </select>
                     </div>
-                    <div>
-                        <label for="complainDetail">Complaint Details: <span>*</span></label>
-                        <input type="text" name="complainDetail" required>
+                    <input type="hidden" name="id">
+                    <div id="nextPaymentDate">
+                        <label for="nextServiceDate" >Next Service Date: <span>*</span></label>
+                        <input type="date" name="nextServiceDate">
                     </div>
-                    <div>
-                        <label for="status">Status: <span>*</span></label>
-                        <div class="radio-btn-wrapper"><label for="status">Completed</label> <input type="radio" name="status" value="Complete" > </div>
-                        <div class="radio-btn-wrapper"><label for="status">Pending</label> <input type="radio" name="status" value="Pending" required> </div>
-                    </div>
-                    <button type="submit">Add</button>
+                    <button type="submit">Update</button>
                 </form>
             </div>
 
-            <table class="wptable">
+            <table class="wptable" style="">
                 <tr>
                   <th>Customer Id</th>
                   <th>Customer name</th>
@@ -39,11 +38,12 @@
                   <th>Address</th>
                   <th>Installation Date</th>
                   <th>Installation Executive</th>
-                  <th>Number of Pending Service</th>
-                  <th>Number of Completed Service</th>
-                </tr>
-                <% if(services.length > 0) { %>
-                  <% services.forEach((service, index) => { %>
+                  <th>Remarks</th>
+                  <th>Next Servicing Date</th>
+                  <th>Status</th> 
+                </tr> 
+                <% if(clients.length > 0) { %>
+                  <% clients.forEach((service, index) => { %>
                     <tr>
                       <td><%= service.customerId %></td>
                       <td><%= service.customerName %></td>
@@ -51,8 +51,14 @@
                       <td><%= service.address %></td>
                       <td><%= service.installationDate.toLocaleDateString() %></td>
                       <td><%= service.installationExecutive %></td>
-                      <td><%= service.pendingServices.length %></td>
-                      <td><%= service.completedServices.length %></td>
+                      <td><%= service.remarks %></td>
+                      <td><%= service.nextDates[service.nextDates.length - 1] %></td>
+                      <td class="editable_cell"><%= service.serviceStatus %>
+                        <a href="javascript:void(0)" class="editServiceBtn edit">
+                          <input type="hidden" name="id" value="<%= service._id %>">
+                          <i class="fas fa-edit"></i>
+                        </a>
+                      </td>
                     </tr>
                   <% }) %>
                 <% } %>

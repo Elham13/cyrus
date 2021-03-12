@@ -61,8 +61,10 @@ router.post('/contactUs', postContactUs);
 
 router.get('/wpTotalSales', ensureAuthenticated, checkRole('CEO', 'manager'), getTotalSales);
 router.get('/wpTelecaling', ensureAuthenticated, getTelecaling);
-router.get('/wpStockReport', ensureAuthenticated, checkRole('CEO', 'manager'), getStockReport);
-router.get('/wpServicesPending', ensureAuthenticated, checkRole('CEO', 'manager'), getServicesPending);
+// router.get('/wpStockReport', ensureAuthenticated, checkRole('CEO', 'manager'), getStockReport);
+router.get('/wpStockReport', getStockReport);
+// router.get('/wpServicesPending', ensureAuthenticated, checkRole('CEO', 'manager'), getServicesPending);
+router.get('/wpServicesPending', getServicesPending);
 router.get('/wpExpenses', ensureAuthenticated, checkRole('CEO', 'manager'), getExpenses);
 router.get('/showSingleCust', getShowSingleCust);
 router.post('/wpAddClient', postWaterPurifier);

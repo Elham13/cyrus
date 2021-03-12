@@ -142,51 +142,10 @@
                 <% } %>
 
             <% } %>
-            <% if(singleClient.pendingServices.length > 0){ %>
-                <tr>
-                    <th>Number of Pending Services</th>
-                    <td><%= singleClient.pendingServices.length %></td>
-                </tr>
-            <% } %>
-            <% if(singleClient.completedServices.length > 0){ %>
-                <tr>
-                    <th>Number of Completed Services</th>
-                    <td><%= singleClient.completedServices.length %></td>
-                </tr>
-            <% } %>
         </table>
         </div>
 
-        <div style="margin-left: 20px;">
-            <div>
-                <h3>List of pending Services</h3>
-                <button class="downloadAsPdf"  onclick="downloadPageAsExcel('tableTwo', 'services')">Download table as excel <i class="far fa-file-excel"></i></button>
-            </div>
-        <table class="wptable" id="tableTwo" style="width: unset;">
-            <tr>
-                <th>S.No</th>
-                <th>Service Status</th>
-                <th>Complaint Details</th>
-                <th>Complete this Service</th>
-            </tr>
-            
-            <% singleClient.pendingServices.forEach((pending, index) => { %>
-                <tr>
-                    <td><%= index + 1 %></td>
-                    <td><%= pending.status %></td>
-                    <td><%= pending.complainDetail %></td>
-                    <td class="editable_cell">
-                        <form action="/updateServices" method="POST">
-                            <input type="hidden" name="id" value="<%= singleClient._id %>">
-                            <input type="hidden" name="index" value="<%= index %>">
-                            <input type="hidden" name="complain" value="<%= pending.complainDetail %>">
-                            <button type="submit" class="edit" style="font-size: 18px;"><i class="fas fa-check"></i></button>
-                        </form>
-                    </td>
-                </tr>
-            <% }) %>
-        </table>
-    </div>
+        
     </div>
 </div>
 <%- include('../partials/footer') -%>

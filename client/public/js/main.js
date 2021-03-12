@@ -314,6 +314,19 @@ const controlDropDown = () => {
   })
 }
 
+const controlServicePendingDropDown = () => {
+  const statusDropDown = document.getElementById('serviceStatusDropDown');
+  const followUpDate1 = document.getElementById('nextPaymentDate');
+
+  statusDropDown.addEventListener('change', () => {
+    if(statusDropDown.value == 'Completed'){
+      followUpDate1.style.display = 'flex';
+    }else{
+      followUpDate1.style.display = 'none';
+    }
+  })
+}
+
 const init = () => {
   const path = window.location.pathname;
 
@@ -354,6 +367,8 @@ const init = () => {
   }
   if(path=='/wpServicesPending'){
     hideAndShowModals();
+    controlServicePendingDropDown();
+    hideAndShowCustomModal(document.querySelectorAll('.editServiceBtn'), document.getElementById('serviceStatusModal'));
   }
 
   if(path=='/wpExpenses' || path=='/wpStockReport' || path=='/solarExpenses' || path=='/solarStockReports' || path=='/rsPropertiesSales'){

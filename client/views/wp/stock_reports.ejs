@@ -46,6 +46,7 @@
                         <td ><%= stock.creatorName %></td>
                         <td class="stockInwardPName"><%= stock.productName %></td>
                         <td class="stockInwardNoOfProd"><%= stock.numberOfProducts %></td>
+                        <td></td>
                     </tr>
                     <% }) %>
                 <% } %>
@@ -96,17 +97,21 @@
                       <th>Client Number</th>
                       <th>Technician Name</th>
                     </tr>
-                    <% if(outwards.length > 0) { %>
-                      <% outwards.forEach((outward, index) => { %>
-                        <tr>
-                          <td><%= index + 1 %></td>
-                          <td ><%= outward.creatorName %></td>
-                          <td class="stockOutWardPName"><%= outward.productName %></td>
-                          <td class="stockOutwardNoOfProd"><%= outward.numberOfProducts %></td>
-                          <td><%= outward.clientName %></td>
-                          <td><%= outward.clientNumber %></td>
-                          <td><%= outward.technicianName %></td>
-                        </tr>
+                    <% if(stocks.length > 0) { %>
+                      <% stocks.forEach((outward) => { %>
+                        <% if(outward.stockOutward.length > 0) { %>
+                          <% outward.stockOutward.forEach((out, index) => { %>
+                            <tr>
+                              <td><%= index + 1 %></td>
+                              <td ><%= out.creatorName %></td>
+                              <td class="stockOutWardPName"><%= out.productName %></td>
+                              <td class="stockOutwardNoOfProd"><%= out.numberOfProducts %></td>
+                              <td><%= out.clientName %></td>
+                              <td><%= out.clientNumber %></td>
+                              <td><%= out.technicianName %></td>
+                            </tr>
+                          <% }) %>
+                        <% } %>
                       <% }) %>
                     <% } %>
                   </table>

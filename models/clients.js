@@ -24,12 +24,6 @@ const ClientsSchema = new mongoose.Schema({
     emi: Boolean,
     advancePayment: Number,
     duration: String,
-    pendingServices: {
-        type: Array,
-    },
-    completedServices: {
-        type: Array,
-    },
     firstPayment: {
         type: Number,
         default: null,
@@ -61,6 +55,13 @@ const ClientsSchema = new mongoose.Schema({
     thirdPaidDate: {
         type: Date,
         default: null,
+    },
+    serviceStatus: {
+        type: String,
+        default: 'Pending'
+    },
+    nextDates: {
+        type: Array,
     },
     dateCreated: {
         type: Date,
