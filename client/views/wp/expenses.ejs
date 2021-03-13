@@ -7,6 +7,9 @@
     <li>Expenses</li>
   </ul>
     <div class="wp-inner">
+      <div style="margin-top: 10px;">
+        <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 5)" placeholder="Search by Purpose">
+      </div>
       <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
         <div class="modal" id="modal">
           <div class="modal-head"> 
@@ -46,7 +49,7 @@
             </form>
         </div>
 
-        <table class="wptable">
+        <table class="wptable" id="wpTable">
             <tr>
               <th>S.No</th>
               <th>Date</th>

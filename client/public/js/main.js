@@ -50,7 +50,7 @@ const addminSidebarToggle = () => {
 
 const hideAndShowModals = () => {
   const showModalBtns = document.querySelectorAll('.add');
-
+console.log(showModalBtns)
   for(let btn of showModalBtns){
     
     btn.addEventListener('click', () => {
@@ -188,17 +188,15 @@ const toggleModal = () => {
   }
 }
 
-const filterTable = () => {
-  // Declare variables
+const filterTextTable = (inputName, tableName, columnNumber) => {
   let input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("tableSearch"); 
+  input = inputName;
   filter = input.value.toUpperCase();
-  table = document.getElementById("wpTable");
+  table = document.getElementById(tableName);
   tr = table.getElementsByTagName("tr");
 
-  // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[1];
+    td = tr[i].getElementsByTagName("td")[columnNumber];
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -210,15 +208,15 @@ const filterTable = () => {
   }
 }
 
-const filterTableWithNumber = () => {
+const filterNumberTable = (inputName, tableName, columnNumber) => {
   let input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById('tableSearch1');
+  input = inputName;
   filter = input.value;
-  table = document.getElementById("wpTable");
+  table = document.getElementById(tableName);
   tr = table.getElementsByTagName("tr");
 
   for(i=0; i<tr.length; i++){
-    td=tr[i].getElementsByTagName("td")[3];
+    td=tr[i].getElementsByTagName("td")[columnNumber];
     if(td){
       txtValue = td.textContent || td.innerText;
       if(txtValue.indexOf(filter) > -1){
@@ -348,17 +346,12 @@ const init = () => {
     toggleEmi();
   }
 
-  if(path == '/wpTelecaling'){
+  if(path == '/wpTelecaling' || path == '/solarTelecaling'){
     hideAndShowModals();
     controlRadioBtns();
     controlDropDown();
     hideAndShowCustomModal(document.querySelectorAll('.editRemarksBtn'), document.getElementById('remarksModal'));
     hideAndShowCustomModal(document.querySelectorAll('.editStatusBtn'), document.getElementById('statusModal'));
-  }
-
-  if(path == '/solarTelecaling'){
-    hideAndShowModals();
-    controlRadioBtns();
   }
 
   if(path=='/rsPropertiesInHand'){
@@ -371,7 +364,12 @@ const init = () => {
     hideAndShowCustomModal(document.querySelectorAll('.editServiceBtn'), document.getElementById('serviceStatusModal'));
   }
 
-  if(path=='/wpExpenses' || path=='/wpStockReport' || path=='/solarExpenses' || path=='/solarStockReports' || path=='/rsPropertiesSales'){
+  if(path=='/wpStockReport' || path=='/solarStockReports'){
+    hideAndShowModals();
+    hideAndShowCustomModal(document.querySelectorAll('.editNoOfProductsBtn'), document.getElementById('noOfProductsModale'));
+  }
+
+  if(path=='/wpExpenses'  || path=='/solarExpenses' ||  path=='/rsPropertiesSales'){
     hideAndShowModals();
   }
 

@@ -7,6 +7,9 @@
     <li>Number of services pending</li>
 </ul>
     <div class="wp-inner">
+      <div style="margin-top: 10px;">
+        <input type="text" id="tableSearch" onkeyup="filterTextTable(this, 'wpTable', 1)" placeholder="Search With Name">
+      </div>
             <div class="modal" id="serviceStatusModal">
               <div class="modal-head">
                 <h3>No of pending services form</h3>
@@ -30,7 +33,7 @@
                 </form>
             </div>
 
-            <table class="wptable" style="">
+            <table class="wptable" id="wpTable">
                 <tr>
                   <th>Customer Id</th>
                   <th>Customer name</th>
@@ -39,8 +42,8 @@
                   <th>Installation Date</th>
                   <th>Installation Executive</th>
                   <th>Remarks</th>
-                  <th>Next Servicing Date</th>
                   <th>Status</th> 
+                  <th>Next Servicing Date</th>
                 </tr> 
                 <% if(clients.length > 0) { %>
                   <% clients.forEach((service, index) => { %>
@@ -52,13 +55,13 @@
                       <td><%= service.installationDate.toLocaleDateString() %></td>
                       <td><%= service.installationExecutive %></td>
                       <td><%= service.remarks %></td>
-                      <td><%= service.nextDates[service.nextDates.length - 1] %></td>
                       <td class="editable_cell"><%= service.serviceStatus %>
                         <a href="javascript:void(0)" class="editServiceBtn edit">
                           <input type="hidden" name="id" value="<%= service._id %>">
                           <i class="fas fa-edit"></i>
                         </a>
                       </td>
+                      <td><%= service.nextDates[service.nextDates.length - 1] %></td>
                     </tr>
                   <% }) %>
                 <% } %>

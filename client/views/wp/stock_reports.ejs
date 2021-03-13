@@ -30,6 +30,21 @@
                 </form>
             </div>
 
+            <div class="modal" id="noOfProductsModale">
+              <div class="modal-head">
+                <h3>Add more products</h3>
+                <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+              </div>         
+                <form action="/addMoreProduct" method="POST">
+                  <div>
+                    <label for="addMoreProduct">Number of products: <span>*</span></label>
+                    <input type="number" name="addMoreProduct" required>
+                  </div>
+                  <input type="hidden" name="id">
+                  <button type="submit">Add</button>
+                </form>
+            </div>
+
             <h3 class="tableHeadin">Stock Inwards</h3>
             <table class="wptable">
                 <tr>
@@ -38,14 +53,19 @@
                     <th>Product name</th>
                     <th>Number of Products</th>
                     <th>Stock Available</th>
-                </tr>
+                </tr> 
                 <% if(stocks.length > 0) { %>
                     <% stocks.forEach((stock, index) => { %>
                     <tr>
                         <td><%= index + 1 %></td>
                         <td ><%= stock.creatorName %></td>
-                        <td class="stockInwardPName"><%= stock.productName %></td>
-                        <td class="stockInwardNoOfProd"><%= stock.numberOfProducts %></td>
+                        <td ><%= stock.productName %></td>
+                        <td class="editable_cell" ><%= stock.numberOfProducts %>
+                          <a href="javascript:void(0)" class="editNoOfProductsBtn edit">
+                            <input type="hidden" name="id" value="<%= stock._id %>">
+                            <i class="fas fa-edit"></i>
+                          </a>
+                        </td>
                         <% if((stock.numberOfProducts - stock.numberOfProductsDifference) <= 50){ %>
                           <td style="background-color: red; color: #fff;"><%= stock.numberOfProducts - stock.numberOfProductsDifference %></td>
                         <% }else{ %>

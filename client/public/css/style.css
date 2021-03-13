@@ -551,7 +551,8 @@ ul.breadcrumb li a:hover {
 }
 
 #tableSearch,
-#tableSearch1 {
+#tableSearch1,
+.filterTable {
   border: none;
   outline: none;
   box-shadow: inset 0 0 10px #000066;

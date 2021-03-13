@@ -7,31 +7,41 @@
     <li>Expenses</li>
   </ul>
     <div class="wp-inner">
+      <div style="margin-top: 10px;">
+        <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 5)" placeholder="Search by Purpose">
+      </div>
       <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
         <div class="modal" id="modal">
-          <div class="modal-head">
+          <div class="modal-head"> 
             <h3>Expenses form</h3>
             <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
           </div>               
             <form action="/solarExpenses" method="POST">
+                <% if(user !== null){ %>
+                  <input type="hidden" name="creatorName" value="<%= user.name %>">
+                <% } %>
                 <div>
-                    <label for="date">Expense Date:</label>
+                    <label for="date">Expense Date: <span>*</span></label>
                     <input type="date" name="date" required >
                 </div>
                 <div>
-                    <label for="execName">Executive Name:</label>
+                    <label for="execName">Executive Name: <span>*</span></label>
                     <input type="text" name="execName" required>
                 </div>
                 <div>
-                    <label for="amount">Amount:</label>
+                    <label for="amount">Amount: <span>*</span></label>
                     <input type="number" name="amount" required>
                 </div>
                 <div>
-                    <label for="purpose">Purpose:</label>
+                    <label for="purpose">Purpose: <span>*</span></label>
                     <input type="text" name="purpose" required>
                 </div>
                 <div>
-                    <label for="paymentMode">Payment Mode:</label>
+                    <label for="remark">Remarks: <span>*</span></label>
+                    <input type="text" name="remark" required>
+                </div>
+                <div>
+                    <label for="paymentMode">Payment Mode: <span>*</span></label>
                     <div class="radio-btn-wrapper"><label for="paymentMode">Cash</label> <input type="radio" name="paymentMode" value="Cash" > </div>
                     <div class="radio-btn-wrapper"><label for="paymentMode">Online</label> <input type="radio" name="paymentMode" value="Online" required> </div>
                 </div>
@@ -39,13 +49,15 @@
             </form>
         </div>
 
-        <table class="wptable">
+        <table class="wptable" id="wpTable">
             <tr>
               <th>S.No</th>
               <th>Date</th>
+              <th>Creator name</th>
               <th>Executive name</th>
               <th>Amount</th>
               <th>Purpose</th>
+              <th>Remarks</th>
               <th>Payment mode</th>
             </tr>
             <% if(expenses.length > 0) { %>
@@ -53,9 +65,11 @@
                 <tr>
                   <td><%= index + 1 %></td>
                   <td><%= expense.expenseDate.toLocaleDateString() %></td>
+                  <td><%= expense.creatorName %></td>
                   <td><%= expense.executiveName %></td>
                   <td>&#8377; <%= expense.amount %></td>
                   <td><%= expense.purpose %></td>
+                  <td><%= expense.remark %></td>
                   <td><%= expense.paymentMode %></td>
                 </tr>
               <% }) %>

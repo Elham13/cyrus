@@ -1,7 +1,6 @@
 const Client = require('../models/clients');
 const ProspectsModal = require('../models/prospects');
 const StockInwards = require('../models/stockInwards');
-const StockOutwardsModal = require('../models/stockOutwards');
 const ExpensesModal = require('../models/expense');
 
 
@@ -56,6 +55,7 @@ const getStockReport = async (req, res) => {
         user: user,
     });
 }
+
 const getServicesPending = async (req, res) => {
     const client = await Client.find({});
 
@@ -206,8 +206,6 @@ const postStockOutwards = async (req, res) => {
             await stocks.save();
         }
     }
-    
-    
     res.redirect('/wpStockReport');
 }
 
@@ -247,10 +245,14 @@ const postExpenses = async (req, res) => {
 }
 
 const postCheciEMI = async (req, res) => {
-    const {id} = req.body;
+    const {id} = req.body; 
+    let user = null;
+    if(req.user){
+        user = req.user
+    }
 
     const client = await Client.findById(id);
-    res.render('wp/emi', {person: client, user: req.user});
+    res.render('wp/emi', {person: client, user: user});
 }
 
 const postFirstPayment = async (req, res) => {
@@ -335,6 +337,15 @@ const posteditStatus = async (req, res) => {
     res.redirect('wpTelecaling');
 }
 
+const postAddMoreProduct = async (req, res) => {
+    const {addMoreProduct, id} = req.body;
+    const stock = await StockInwards.findById(id);
+    var prevNoOfProd = parseInt(stock.numberOfProducts);
+    stock.numberOfProducts = prevNoOfProd + parseInt(addMoreProduct);
+    await stock.save();
+    res.redirect('/wpStockReport');
+}
+
 
 module.exports = {
     getTotalSales,
@@ -357,4 +368,5 @@ module.exports = {
     postUpdateServices,
     posteditRemark,
     posteditStatus,
+    postAddMoreProduct,
 };

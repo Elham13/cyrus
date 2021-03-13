@@ -1,0 +1,151 @@
+<%- include('../partials/header') -%> 
+<%- include('../partials/navbar') -%>
+
+<div class="sc-wrapper">
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="/solar">Solar</a></li>
+        <li><a href="/solarTotalSales">Total Sales</a></li>
+        <li>Customer Report</li>
+    </ul>
+    
+    <button class="downloadAsPdf" id="downloadAsPdf">Download page as pdf <i class="far fa-file-pdf"></i></button>
+    <div class="sc-inner" id="scInner">
+        <div>
+            <div>
+                <% if(singleClient !== null){ %>
+                    <h3><%= singleClient.customerName %>'s complete report</h3>
+                <% } %>
+                <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('tableOne')">Download table as excel <i class="far fa-file-excel"></i></button>
+            </div>
+        <table class="wptable" id="tableOne" style="width: unset;">
+            <tr>
+                <th>Customer Id</th>
+                <td><%= singleClient.customerId %></td>
+            </tr>
+            <tr>
+                <th>Creator Name</th>
+                <td><%= singleClient.creatorName %></td>
+            </tr>
+            <tr>
+                <th>Customer Name</th>
+                <td><%= singleClient.customerName %></td>
+            </tr>
+            <tr>
+                <th>Product Name</th>
+                <td><%= singleClient.productName %></td>
+            </tr>
+            <tr>
+                <th>Reference</th>
+                <td><%= singleClient.reference %></td>
+            </tr>
+            <tr>
+                <th>Phone Number</th>
+                <td><%= singleClient.phoneNumber %></td>
+            </tr>
+            <% if(singleClient.alternatePhoneNumber){ %>
+                <tr>
+                    <th>Alternate Phone Number</th>
+                    <td><%= singleClient.alternatePhoneNumber %></td>
+                </tr>
+            <% } %>
+            <tr>
+                <th>Address</th>
+                <td><%= singleClient.address %></td>
+            </tr>
+            <tr>
+                <th>Installation Date</th>
+                <td><%= singleClient.installationDate.toLocaleDateString() %></td>
+            </tr>
+            <tr>
+                <th>Installation Executive</th>
+                <td><%= singleClient.installationExecutive %></td>
+            </tr>
+            <tr>
+                <th>Amount</th>
+                <td><%= singleClient.amount %></td>
+            </tr>
+            <tr>
+                <th>Payment Mode</th>
+                <td><%= singleClient.paymentMode %></td>
+            </tr>
+
+            <% if(singleClient.paymentMode == 'Cheque') { %>
+                <tr>
+                    <th>Account Number</th>
+                    <td><%= singleClient.accNo %></td>
+                </tr>
+            <% } %>
+
+            <% if(singleClient.paymentMode == 'Cheque') { %>
+                <tr>
+                    <th>Branch Name</th>
+                    <td><%= singleClient.branchName %></td>
+                </tr>
+            <% } %>
+
+            <% if(singleClient.paymentMode == 'Cheque') { %>
+                <tr>
+                    <th>Cheque Number</th>
+                    <td><%= singleClient.chequeNo %></td>
+                </tr>
+            <% } %>
+
+            <% if(singleClient.paymentMode == 'Cheque') { %>
+                <tr>
+                    <th>Cheque Date</th>
+                    <td><%= singleClient.chequeDate.toLocaleDateString() %></td>
+                </tr>
+            <% } %>
+
+            <% if(singleClient.remarks !== '') { %>
+                <tr>
+                    <th>Remarks</th>
+                    <td><%= singleClient.remarks %></td>
+                </tr>
+            <% } %>
+
+            <% if(singleClient.emi) { %>
+                <tr>
+                    <th>Emi</th>
+                    <% if(singleClient.duration == '3 Months') { %>
+                        <td>3 Installments</td>
+                    <% } %>
+                    <% if(singleClient.duration == '2 Months') { %>
+                        <td>2 Installments</td>
+                    <% } %>
+                </tr>
+                <tr>
+                    <th>Advance paid amount</th>
+                    <td><%= singleClient.advancePayment %></td>
+                </tr>
+
+                <% if(singleClient.firstPayment !== null) { %>
+                    <tr>
+                        <th>First Installment</th>
+                        <td><%= singleClient.firstPayment %></td>
+                    </tr>
+                <% } %>
+
+                <% if(singleClient.secondPayment !== null) { %>
+                    <tr>
+                        <th>Second Installment</th>
+                        <td><%= singleClient.secondPayment %></td>
+                    </tr>
+                <% } %>
+
+                <% if(singleClient.thirdPayment !== null) { %>
+                    <tr>
+                        <th>Third Installment</th>
+                        <td><%= singleClient.thirdPayment %></td>
+                    </tr>
+                <% } %>
+
+            <% } %>
+        </table>
+        </div>
+
+        
+    </div>
+</div>
+<%- include('../partials/footer') -%>

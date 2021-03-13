@@ -8,8 +8,8 @@
 </ul>
     <div class="wp-inner"> 
       <div style="margin-top: 10px;">
-        <input type="text" id="tableSearch" onkeyup="filterTable()" placeholder="Search With Name">
-        <input type="number" id="tableSearch1" onkeyup="filterTableWithNumber()" placeholder="Search With Number">
+        <input type="text" id="tableSearch" onkeyup="filterTextTable(this, 'wpTable', 1)" placeholder="Search With Name">
+        <input type="number" id="tableSearch1" onkeyup="filterNumberTable(this, 'wpTable', 3)" placeholder="Search With Phone No">
       </div>
       <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
             <div class="modal" id="modal">
