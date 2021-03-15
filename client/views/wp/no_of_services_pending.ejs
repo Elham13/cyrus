@@ -8,7 +8,12 @@
 </ul>
     <div class="wp-inner">
       <div style="margin-top: 10px;">
-        <input type="text" id="tableSearch" onkeyup="filterTextTable(this, 'wpTable', 1)" placeholder="Search With Name">
+        <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 1)" placeholder="Search With Name">
+        <select class="filterTable" onchange="filterTextTable(this, 'wpTable', 7)" >
+          <option selected disabled>Search with status</option>
+          <option value="Completed">Completed</option>
+          <option value="Pending">Pending</option>
+        </select>
       </div>
             <div class="modal" id="serviceStatusModal">
               <div class="modal-head">
@@ -25,10 +30,6 @@
                         </select>
                     </div>
                     <input type="hidden" name="id">
-                    <div id="nextPaymentDate">
-                        <label for="nextServiceDate" >Next Service Date: <span>*</span></label>
-                        <input type="date" name="nextServiceDate">
-                    </div>
                     <button type="submit">Update</button>
                 </form>
             </div>
@@ -41,9 +42,9 @@
                   <th>Address</th>
                   <th>Installation Date</th>
                   <th>Installation Executive</th>
-                  <th>Remarks</th>
                   <th>Status</th> 
                   <th>Next Servicing Date</th>
+                  <th>Latest Servicing Date</th> 
                 </tr> 
                 <% if(clients.length > 0) { %>
                   <% clients.forEach((service, index) => { %>
@@ -54,14 +55,18 @@
                       <td><%= service.address %></td>
                       <td><%= service.installationDate.toLocaleDateString() %></td>
                       <td><%= service.installationExecutive %></td>
-                      <td><%= service.remarks %></td>
                       <td class="editable_cell"><%= service.serviceStatus %>
                         <a href="javascript:void(0)" class="editServiceBtn edit">
                           <input type="hidden" name="id" value="<%= service._id %>">
                           <i class="fas fa-edit"></i>
                         </a>
                       </td>
-                      <td><%= service.nextDates[service.nextDates.length - 1] %></td>
+                      <td><%= new Date(service.nextDates[service.nextDates.length - 1]).toLocaleDateString() %></td>
+                      <% if(service.nextDates[service.nextDates.length - 2] !== undefined){  %>
+                        <td><%= new Date(service.nextDates[service.nextDates.length - 2]).toLocaleDateString() %></td>
+                      <% }else{ %>
+                        <td style="background-color: #ccc;"></td>
+                      <% } %>
                     </tr>
                   <% }) %>
                 <% } %>

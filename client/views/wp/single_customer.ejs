@@ -15,10 +15,10 @@
             <div>
                 <% if(singleClient !== null){ %>
                     <h3><%= singleClient.customerName %>'s complete report</h3>
-                <% } %>
+                <% } %> 
                 <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('tableOne')">Download table as excel <i class="far fa-file-excel"></i></button>
             </div>
-        <table class="wptable" id="tableOne" style="width: unset;">
+        <table class="wptable" id="tableOne">
             <tr>
                 <th>Customer Id</th>
                 <td><%= singleClient.customerId %></td>
@@ -105,6 +105,21 @@
                 </tr>
             <% } %>
 
+            <% if(singleClient.nextDates.length > 0){ %>
+                <tr>
+                    <th>No of total Services</th>
+                    <td><%= singleClient.nextDates.length %></td>
+                </tr>
+                <tr>
+                    <th>Service Status</th>
+                    <td><%= singleClient.serviceStatus %></td>
+                </tr>
+                <tr>
+                    <th>Next Servicing Date</th>
+                    <td><%= new Date(singleClient.nextDates[singleClient.nextDates.length - 1]).toLocaleDateString() %></td>
+                </tr>
+            <% } %>
+
             <% if(singleClient.emi) { %>
                 <tr>
                     <th>Emi</th>
@@ -120,24 +135,24 @@
                     <td><%= singleClient.advancePayment %></td>
                 </tr>
 
-                <% if(singleClient.firstPayment !== null) { %>
+                <% if(singleClient.firstPaidAmount!== null) { %>
                     <tr>
                         <th>First Installment</th>
-                        <td><%= singleClient.firstPayment %></td>
+                        <td><%= singleClient.firstPaidAmount %></td>
                     </tr>
                 <% } %>
 
-                <% if(singleClient.secondPayment !== null) { %>
+                <% if(singleClient.secondPaidAmount !== null) { %>
                     <tr>
                         <th>Second Installment</th>
-                        <td><%= singleClient.secondPayment %></td>
+                        <td><%= singleClient.secondPaidAmount %></td>
                     </tr>
                 <% } %>
 
-                <% if(singleClient.thirdPayment !== null) { %>
+                <% if(singleClient.thirdPaidAmount !== null) { %>
                     <tr>
                         <th>Third Installment</th>
-                        <td><%= singleClient.thirdPayment %></td>
+                        <td><%= singleClient.thirdPaidAmount %></td>
                     </tr>
                 <% } %>
 

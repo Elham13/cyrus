@@ -1,29 +1,8 @@
+const moment = require('moment');
 const Client = require('../models/clients');
 const ProspectsModal = require('../models/prospects');
 const StockInwards = require('../models/stockInwards');
 const ExpensesModal = require('../models/expense');
-
-
-// ----------------------------Helper function----------------------------------------
-const getLowStockReport = (inStock, outStock) => {
-    
-    const inCardNoOfProd = inStock[0].numberOfProducts;
-    const outCardNoOfProd = outStock.map(out => {return out.numberOfProducts})
-    var outCardNoOfProdSum = 0
-    outCardNoOfProd.forEach(number => {
-        outCardNoOfProdSum += number
-    })
-
-    var lowStock;
-    if((inCardNoOfProd - outCardNoOfProdSum) <= 10){
-        lowStock = {
-            productName: inStock[0].productName,
-            numberOfProducts: inCardNoOfProd - outCardNoOfProdSum
-        }
-    }   
-    return lowStock
-}
-// ----------------------------Helper function----------------------------------------
 
 
 const getTotalSales = async (req, res) => {
@@ -120,13 +99,16 @@ const postWaterPurifier = async (req, res) => {
     let boolEmi = true;
     emi == 'on' ? boolEmi = true : boolEmi = false;
 
+// ----------------------------------Next date Calculations---------------------------------------------------
+console.log(moment(instDate).add(3, 'months'))
+// ----------------------------------Next date Calculations---------------------------------------------------
     const newClient = {
         customerId: custId,
         creatorName: creatorName,
         customerName: custName,
         productName: prodName,
         reference: reference,
-        phoneNumber: phNumber,
+        phoneNumber: phNumber, 
         alternatePhoneNumber: phNumber1,
         address: address,
         installationDate: instDate,
@@ -141,6 +123,7 @@ const postWaterPurifier = async (req, res) => {
         emi: boolEmi,
         advancePayment: advAmount,
         duration: duration,
+        nextDates: [moment(instDate).add(3, 'months').format()],
     }
 
     const addClient = new Client(newClient);
@@ -211,16 +194,13 @@ const postStockOutwards = async (req, res) => {
 
 
 const postServicePending = async (req, res) => {
-    const {id, status, nextServiceDate} = req.body;
+    const {id, status} = req.body;
     const customer = await Client.findById(id);
     customer.serviceStatus = status;
+    const latestDate = new Date(customer.nextDates[customer.nextDates.length - 1])
+    const threeMonthsLater = moment(latestDate).add(3, 'months').format();
     if(status == "Completed"){
-        customer.nextDates = [...customer.nextDates, nextServiceDate];
-    }
-    const next = new Date(customer.nextDates[customer.nextDates.length - 1]).toLocaleDateString();
-    const now = new Date().toLocaleDateString();
-    if(next == now){
-        customer.serviceStatus = "Pending";
+        customer.nextDates = [...customer.nextDates, threeMonthsLater];
     }
     await customer.save();
     res.redirect('/wpServicesPending');
@@ -346,6 +326,57 @@ const postAddMoreProduct = async (req, res) => {
     res.redirect('/wpStockReport');
 }
 
+const postEmiPaymentStatus = async (req, res) => {
+    let {id, 
+        firstPaidAmount, 
+        firstPaidDate, 
+        firstPaymentStatus,
+        secondPaidAmount,
+        secondPaidDate,
+        secondPaymentStatus,
+        thirdPaidAmount,
+        thirdPaidDate,
+        thirdPaymentStatus,
+    } = req.body;
+
+    firstPaidDate = new Date(firstPaidDate);
+    secondPaidDate = new Date(secondPaidDate);
+    thirdPaidDate = new Date(thirdPaidDate);
+
+
+    const customer = await Client.findById(id);
+    if(firstPaymentStatus){
+        if(firstPaymentStatus == 'Paid'){
+            customer.firstPaymentStatus = firstPaymentStatus;
+            customer.firstPaidAmount = firstPaidAmount;
+            customer.firstPaidDate = firstPaidDate;
+            customer.firstNextPaymentDate = moment(firstPaidDate).add(1, 'months').format();
+            await customer.save();
+            res.redirect('/solarTotalSales')
+        }
+    }
+    if(secondPaymentStatus){
+        if(secondPaymentStatus == 'Paid'){
+            customer.secondPaymentStatus = secondPaymentStatus;
+            customer.secondPaidAmount = secondPaidAmount;
+            customer.secondPaidDate = secondPaidDate;
+            customer.secondNextPaymentDate = moment(secondPaidDate).add(1, 'months').format();
+            await customer.save();
+            res.redirect('/solarTotalSales')
+        }
+    }
+    if(thirdPaymentStatus){
+        if(thirdPaymentStatus == 'Paid'){
+            customer.thirdPaymentStatus = thirdPaymentStatus;
+            customer.thirdPaidAmount = thirdPaidAmount;
+            customer.thirdPaidDate = thirdPaidDate;
+            await customer.save();
+            res.redirect('/solarTotalSales')
+        }
+    }
+    
+} 
+
 
 module.exports = {
     getTotalSales,
@@ -369,4 +400,5 @@ module.exports = {
     posteditRemark,
     posteditStatus,
     postAddMoreProduct,
+    postEmiPaymentStatus,
 };

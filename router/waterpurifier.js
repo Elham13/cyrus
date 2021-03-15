@@ -21,13 +21,14 @@ const {
     postUpdateServices,
     posteditRemark,
     posteditStatus,
+    postAddMoreProduct,
+    postEmiPaymentStatus,
     getTotalSales,
     getTelecaling,
     getStockReport,
     getServicesPending,
     getExpenses,
     getShowSingleCust,
-    postAddMoreProduct,
 } = require('./wproutes');
 
 const {
@@ -45,6 +46,7 @@ const {
     postSolarEditRemark,
     postSolarEditStatus,
     postSolarAddMoreProduct,
+    postSolarEmiPaymentStatus,
 } = require('./solarroutes');
 
 const {
@@ -85,6 +87,7 @@ router.post('/updateServices', postUpdateServices);
 router.post('/editRemark', posteditRemark);
 router.post('/editStatus', posteditStatus);
 router.post('/addMoreProduct', postAddMoreProduct);
+router.post('/emiPaymentStatus', postEmiPaymentStatus);
 
 router.get('/solarTotalSales', ensureAuthenticated, checkRole('CEO', 'manager'), getSolarTotalSales);
 router.get('/solarTelecaling', ensureAuthenticated, checkRole('CEO', 'manager'), getSolarTelecaling);
@@ -100,6 +103,7 @@ router.post('/showSolarSingleCust', postShowSolarSingleCust);
 router.post('/solarEditRemark', postSolarEditRemark);
 router.post('/solarEditStatus', postSolarEditStatus);
 router.post('/solarAddMoreProduct', postSolarAddMoreProduct);
+router.post('/solarEmiPaymentStatus', postSolarEmiPaymentStatus)
 
 router.get('/rsPropertiesInHand', ensureAuthenticated, checkRole('CEO', 'manager'), getRSPropertiesInHand)
 router.get('/rsPropertiesSales', ensureAuthenticated, checkRole('CEO', 'manager') ,getRSPropertiesSales)

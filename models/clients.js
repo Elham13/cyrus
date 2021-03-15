@@ -24,11 +24,15 @@ const ClientsSchema = new mongoose.Schema({
     emi: Boolean,
     advancePayment: Number,
     duration: String,
-    firstPayment: {
+    firstPaymentStatus: {
+        type: String,
+        default: 'Pending',
+    },
+    firstPaidAmount: {
         type: Number,
         default: null,
     },
-    firstPaymentDate: {
+    firstNextPaymentDate: {
         type: Date,
         default: null,
     },
@@ -36,11 +40,15 @@ const ClientsSchema = new mongoose.Schema({
         type: Date,
         default: null,
     },
-    secondPayment: {
+    secondPaymentStatus: {
+        type: String,
+        default: 'Pending',
+    },
+    secondPaidAmount: {
         type: Number,
         default: null,
     },
-    secondPaymentDate: {
+    secondNextPaymentDate: {
         type: Date,
         default: null,
     },
@@ -48,7 +56,11 @@ const ClientsSchema = new mongoose.Schema({
         type: Date,
         default: null,
     },
-    thirdPayment: {
+    thirdPaymentStatus: {
+        type: String,
+        default: 'Pending',
+    },
+    thirdPaidAmount: {
         type: Number,
         default: null,
     },

@@ -1,29 +1,10 @@
+const moment = require('moment');
 const SolarExpenses = require('../models/solarExpense');
 const SolarStockInwards = require('../models/solarStockInwards');
 const solarStockInwards = require('../models/solarStockInwards');
 const SolarTotalSales = require('../models/solarTotalSales');
-const SolarTelecalingData = require('../models/solarTelecalingData')
+const SolarTelecalingData = require('../models/solarTelecalingData');
 
-// ----------------------------Helper function----------------------------------------
-const getLowStockReport = (inStock, outStock) => {
-    
-    const inCardNoOfProd = inStock[0].numberOfProducts;
-    const outCardNoOfProd = outStock.map(out => {return out.numberOfProducts})
-    var outCardNoOfProdSum = 0
-    outCardNoOfProd.forEach(number => {
-        outCardNoOfProdSum += number
-    })
-
-    var lowStock;
-    if((inCardNoOfProd - outCardNoOfProdSum) <= 10){
-        lowStock = {
-            productName: inStock[0].productName,
-            numberOfProducts: inCardNoOfProd - outCardNoOfProdSum
-        }
-    }
-    return lowStock
-}
-// ----------------------------Helper function----------------------------------------
 
 const getSolarTotalSales = async(req, res) => {
     const totalSales = await SolarTotalSales.find({});
@@ -65,7 +46,7 @@ const getSolarTelecaling = async(req, res) => {
 }
 
 const postSolarExpense = async (req, res) => {
-    const { date, creatorName, execName, amount, purpose, remark, paymentMode } = req.body;
+    const { date, creatorName, execName, amount, purpose, remark, paymentMode } = req.body; 
     const newExpense = {
         expenseDate: date,
         creatorName: creatorName,
@@ -249,6 +230,57 @@ const postSolarAddMoreProduct = async (req, res) => {
     res.redirect('/solarStockReports');
 }
 
+const postSolarEmiPaymentStatus = async (req, res) => {
+    let {id, 
+        firstPaidAmount, 
+        firstPaidDate, 
+        firstPaymentStatus,
+        secondPaidAmount,
+        secondPaidDate,
+        secondPaymentStatus,
+        thirdPaidAmount,
+        thirdPaidDate,
+        thirdPaymentStatus,
+    } = req.body;
+
+    firstPaidDate = new Date(firstPaidDate);
+    secondPaidDate = new Date(secondPaidDate);
+    thirdPaidDate = new Date(thirdPaidDate);
+
+
+    const customer = await SolarTotalSales.findById(id);
+    if(firstPaymentStatus){
+        if(firstPaymentStatus == 'Paid'){
+            customer.firstPaymentStatus = firstPaymentStatus;
+            customer.firstPaidAmount = firstPaidAmount;
+            customer.firstPaidDate = firstPaidDate;
+            customer.firstNextPaymentDate = moment(firstPaidDate).add(1, 'months').format();
+            await customer.save();
+            res.redirect('/wpTotalSales')
+        }
+    }
+    if(secondPaymentStatus){
+        if(secondPaymentStatus == 'Paid'){
+            customer.secondPaymentStatus = secondPaymentStatus;
+            customer.secondPaidAmount = secondPaidAmount;
+            customer.secondPaidDate = secondPaidDate;
+            customer.secondNextPaymentDate = moment(secondPaidDate).add(1, 'months').format();
+            await customer.save();
+            res.redirect('/wpTotalSales')
+        }
+    }
+    if(thirdPaymentStatus){
+        if(thirdPaymentStatus == 'Paid'){
+            customer.thirdPaymentStatus = thirdPaymentStatus;
+            customer.thirdPaidAmount = thirdPaidAmount;
+            customer.thirdPaidDate = thirdPaidDate;
+            await customer.save();
+            res.redirect('/wpTotalSales')
+        }
+    }
+        
+}
+
 module.exports = {
     getSolarTotalSales,
     getSolarTelecaling,
@@ -264,4 +296,5 @@ module.exports = {
     postSolarEditRemark,
     postSolarEditStatus,
     postSolarAddMoreProduct,
+    postSolarEmiPaymentStatus,
 }

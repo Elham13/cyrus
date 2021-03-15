@@ -11,84 +11,89 @@
     <h2><%= person.customerName %>'s EMI representation</h2>
 
     <input type="hidden" id="duration" value="<%= person.duration %>" />
-    <input type="hidden" value="<%= person.duration %>" id="duration" />
-
-    <div class="modal" id="firstPaymentModal">
+    
+    <!-- First Payment Status Modal -->
+    <div class="modal" id="paymentStatusModal1">
       <div class="modal-head">
-        <h3>First Payment</h3>
-        <a href="javascript:void(0)" class="close" id="hideModal"
-          ><span><i class="fas fa-times"></i></span
-        ></a>
+        <h3>Change payment status</h3>
+        <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
       </div>
-      <form action="/firstPyament" method="POST">
+      <form action="/emiPaymentStatus" method="POST">
         <input type="hidden" name="id" value="<%= person._id %>" />
-        <input
-          type="hidden"
-          name="paidDate"
-          value="<%= new Date().toLocaleDateString()  %>"
-        />
+        <% if(person.duration === '3 Months'){ %>
+          <input type="hidden" name="firstPaidAmount" value="<%= ((person.amount - person.advancePayment) / 3).toFixed(2) %>" />
+        <% }else{ %>
+          <input type="hidden" name="firstPaidAmount" value="<%= ((person.amount - person.advancePayment) / 2).toFixed(2) %>" />
+        <% } %>
+        <input type="hidden" name="firstPaidDate" value="<%= new Date()  %>"/>
         <div>
-          <label for="firstPayment">First Payment: <span>*</span></label>
-          <input type="number" name="firstPayment" required />
+          <label for="firstPaymentStatus">Status: <span>*</span></label>
+          <select name="firstPaymentStatus" id="" required>
+            <option disabled selected>Select a status</option>
+            <option value="Paid">Paid</option>
+          </select>
         </div>
-        <div>
-          <label for="firstPaymentDate">Next Payment Date: <span>*</span></label>
-          <input type="date" name="firstPaymentDate" required />
-        </div>
-        <button type="submit">Add</button>
+        <button type="submit">Change</button>
       </form>
     </div>
+    <!-- First Payment Status Modal -->
 
-    <div class="modal" id="secondPaymentModal">
+    <!-- Second Payment Status Modal -->
+    <div class="modal" id="paymentStatusModal2">
       <div class="modal-head">
-        <h3>Second Payment</h3>
-        <a href="javascript:void(0)" class="close" id="hideModal"
-          ><span><i class="fas fa-times"></i></span
-        ></a>
+        <h3>Change payment status</h3>
+        <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
       </div>
-      <form action="/secondPayment" method="POST">
+      <form action="/emiPaymentStatus" method="POST">
         <input type="hidden" name="id" value="<%= person._id %>" />
-        <input
-          type="hidden"
-          name="paidDate"
-          value="<%= new Date().toLocaleDateString()  %>"
-        />
+        <% if(person.duration === '3 Months'){ %>
+          <input type="hidden" name="firstPaidAmount" value="<%= ((person.amount - person.advancePayment) / 3).toFixed(2) %>" />
+        <% }else{ %>
+          <input type="hidden" name="firstPaidAmount" value="<%= ((person.amount - person.advancePayment) / 2).toFixed(2) %>" />
+        <% } %>
+        <input type="hidden" name="secondPaidDate" value="<%= new Date()  %>"/>
         <div>
-          <label for="secondPayment">Second Payment: <span>*</span></label>
-          <input type="number" name="secondPayment" required />
+          <label for="secondPaymentStatus">Status: <span>*</span></label>
+          <select name="secondPaymentStatus"  required>
+            <option disabled selected>Select a status</option>
+            <option value="Paid">Paid</option>
+          </select>
         </div>
-        <div>
-          <label for="secondPaymentDate">Next Payment Date: <span>*</span></label>
-          <input type="date" name="secondPaymentDate" required />
-        </div>
-        <button type="submit">Add</button>
+        <button type="submit">Change</button>
       </form>
     </div>
+    <!-- Second Payment Status Modal -->
 
-    <div class="modal" id="thirdPaymentModal">
+    <!-- Third Payment Status Modal -->
+    <div class="modal" id="paymentStatusModal3">
       <div class="modal-head">
-        <h3>Third Payment</h3>
-        <a href="javascript:void(0)" class="close" id="hideModal"
-          ><span><i class="fas fa-times"></i></span
-        ></a>
+        <h3>Change payment status</h3>
+        <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
       </div>
-      <form action="/thirdPyament" method="POST">
+      <form action="/emiPaymentStatus" method="POST">
         <input type="hidden" name="id" value="<%= person._id %>" />
-        <input type="hidden" name="paidDate" value="<%= new Date().toLocaleDateString()  %>"/>
+        <input type="hidden" name="thirdPaidAmount" value="<%= ((person.amount - person.advancePayment) / 3).toFixed(2) %>" />
+        <input type="hidden" name="thirdPaidDate" value="<%= new Date()  %>"/>
         <div>
-          <label for="thirdPayment">Third Payment: <span>*</span></label>
-          <input type="number" name="thirdPayment" required />
+          <label for="thirdPaymentStatus">Status: <span>*</span></label>
+          <select name="thirdPaymentStatus" id="" required>
+            <option disabled selected>Select a status</option>
+            <option value="Paid">Paid</option>
+          </select>
         </div>
-        <button type="submit">Add</button>
+        <button type="submit">Change</button>
       </form>
     </div>
+    <!-- Third Payment Status Modal -->
+
 
     <table class="emi-table">
       <tr>
         <th>Main Balance</th>
         <th>Advance</th>
         <th>Installment</th>
-        <th>Paid</th>
+        <th>Amount Paid</th>
+        <th>Payment Status</th>
         <th>Balance Remaining</th>
         <th>Paid date</th>
         <th>Next Payment date</th>
@@ -98,93 +103,110 @@
         <td rowspan="3" id="advPaid"><%= person.advancePayment %></td>
         <td>1</td>
 
-        <% if(person.firstPayment) { %>
-        <td class="editable_cell">
-          <%= person.firstPayment %>
-          <a href="javascript:void(0)" id="openFirstPaymentModal" class="edit"><i class="fas fa-edit"></i></a>
+        <!-- First paid ammount -->
+        <td class="editable_cell1">
         </td>
-        <% }else{ %>
-        <td class="editable_cell">
-          <a href="javascript:void(0)" id="openFirstPaymentModal" class="edit"><i class="fas fa-edit"></i></a>
+        <!-- First paid ammount -->
+
+
+        <td class="editable_cell"><%= person.firstPaymentStatus %>
+          <a href="javascript:void(0)" id="openThirdPaymentModal" class="edit"><i class="fas fa-edit"></i></a>
         </td>
-        <% } %> 
 
-        <% if(person.firstPayment) { %>
-          <td><%= person.amount - person.advancePayment - person.firstPayment %></td>
+        <!-- First Remaining Bal -->
+        <% if(person.firstPaymentStatus == "Paid") { %>
+          <td><%= person.amount - person.advancePayment - person.firstPaidAmount %></td>
         <% }else{ %>
-          <td><%= person.amount - person.advancePayment %></td>
+          <td style="background-color: #ccc;"></td>
         <% } %> 
+        <!-- First Remaining Bal -->
 
+        <!-- First paid date -->
         <% if(person.firstPaidDate) { %>
           <td><%= person.firstPaidDate.toLocaleDateString() %></td>
         <% }else{ %>
-          <td></td>
+          <td style="background-color: #ccc;"></td>
         <% } %> 
+        <!-- First paid date -->
 
-        <% if(person.firstPaymentDate) { %>
-          <td><%= person.firstPaymentDate.toLocaleDateString() %></td>
+        <!-- First next payment date -->
+        <% if(person.firstNextPaymentDate) { %>
+          <td><%= person.firstNextPaymentDate.toLocaleDateString() %></td>
         <% }else{ %>
-          <td></td>
+          <td style="background-color: #ccc;"></td>
         <% } %>
+        <!-- First next payment date -->
       </tr>
 
       <tr>
         <td>2</td>
-        <% if(person.secondPayment) { %>
-          <td class="editable_cell" style="padding-right: 20px"><%= person.secondPayment %>
-            <a href="javascript:void(0)" id="openSecondPaymentModal" class="edit"><i class="fas fa-edit"></i></a>
+        <!-- Second amount paid -->
+          <td class="editable_cell1" >
           </td>
-        <% }else{ %>
-          <td class="editable_cell" style="padding-right: 20px">
-            <a href="javascript:void(0)" id="openSecondPaymentModal" class="edit"><i class="fas fa-edit"></i></a>
-          </td>
-        <% } %> 
+        <!-- Second amount paid -->
 
-        <% if(person.secondPayment) { %>
-          <td><%= person.amount - person.advancePayment - person.firstPayment - person.secondPayment %></td>
-        <% }else{ %>
-          <td></td>
-        <% } %> 
+        <td class="editable_cell"><%= person.secondPaymentStatus %>
+          <a href="javascript:void(0)" id="openThirdPaymentModal" class="edit"><i class="fas fa-edit"></i></a>
+        </td>
 
+        <!-- Second remaining bal -->
+        <% if(person.secondPaymentStatus == "Paid") { %>
+          <td><%= person.amount - person.advancePayment - person.firstPaidAmount - person.secondPaidAmount %></td>
+        <% }else{ %>
+          <td style="background-color: #ccc;"></td>
+        <% } %> 
+        <!-- Second remaining bal -->
+
+        <!-- Second Paid Date -->
         <% if(person.secondPaidDate) { %>
           <td><%= person.secondPaidDate.toLocaleDateString() %></td>
         <% }else{ %>
-          <td></td>
+          <td style="background-color: #ccc;"></td>
         <% } %> 
+        <!-- Second Paid Date -->
 
-        <% if(person.secondPaymentDate) { %>
-          <td><%= person.secondPaymentDate.toLocaleDateString() %></td>
-        <% }else{ %>
-          <td></td>
+        <!-- Second next payment date -->
+
+        <% if(person.duration === "3 Months") { %>
+          <% if(person.secondNextPaymentDate) { %>
+            <td><%= person.secondNextPaymentDate.toLocaleDateString() %></td>
+          <% }else{ %>
+            <td style="background-color: #ccc;"></td>
+          <% } %>
         <% } %>
       </tr>
+        <!-- Second next payment date -->
 
 
+        
       <% if(person.duration === '3 Months'){ %>
       <tr>
         <td>3</td>
 
-        <% if(person.thirdPayment) { %>
-          <td class="editable_cell"><%= person.thirdPayment %>
-            <a href="javascript:void(0)" id="openThirdPaymentModal" class="edit"><i class="fas fa-edit"></i></a>
+        <!-- Third paid amount -->
+          <td class="editable_cell1">
           </td>
-        <% }else{ %>
-          <td class="editable_cell">
-            <a href="javascript:void(0)" id="openThirdPaymentModal" class="edit"><i class="fas fa-edit"></i></a>
-          </td>
-        <% } %> 
+        <!-- Third paid amount -->
 
-        <% if(person.thirdPayment) { %>
-          <td><%= person.amount - person.advancePayment - person.firstPayment - person.secondPayment - person.thirdPayment %></td>
-        <% }else{ %>
-          <td></td>
-        <% } %> 
+        <td class="editable_cell"><%= person.thirdPaymentStatus %>
+          <a href="javascript:void(0)" id="openThirdPaymentModal" class="edit"><i class="fas fa-edit"></i></a>
+        </td>
 
+        <!-- Third remaining bal -->
+        <% if(person.thirdPaymentStatus == "Paid") { %>
+          <td><%= person.amount - person.advancePayment - person.firstPaidAmount - person.secondPaidAmount - person.thirdPaidAmount %></td>
+        <% }else{ %>
+          <td style="background-color: #ccc;"></td>
+        <% } %> 
+        <!-- Third remaining bal -->
+
+        <!-- Third paid date -->
         <% if(person.thirdPaidDate) { %>
           <td><%= person.thirdPaidDate.toLocaleDateString() %></td>
         <% }else{ %>
-          <td></td>
+          <td style="background-color: #ccc;"></td>
         <% } %> 
+        <!-- Third paid date -->
       </tr>
       <% } %>
 

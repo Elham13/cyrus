@@ -131,43 +131,50 @@ const hideAndShowBankDetais = () => {
 }
 
 const emiThings = () => {
-  const duration = document.getElementById('duration');
-  const firstPaymentModal = document.getElementById('firstPaymentModal');
-  const secondPaymentModal = document.getElementById('secondPaymentModal');
-  const thirdPaymentModal = document.getElementById('thirdPaymentModal');
+  const modalBtns = document.querySelectorAll('.edit');
+  const paymentStatusModal1 = document.getElementById('paymentStatusModal1');
+  const paymentStatusModal2 = document.getElementById('paymentStatusModal2');
+  const paymentStatusModal3 = document.getElementById('paymentStatusModal3');
+  const closeBtn = document.querySelectorAll('.close');
+  const paymentCells = document.querySelectorAll('.editable_cell1');
+  const mainBal = document.getElementById('mainBal');
+  const advPaid = document.getElementById('advPaid');
+  const emiDuration = document.getElementById('duration');
+  const mainMinusAdv = parseInt(mainBal.innerText) - parseInt(advPaid.innerText);
 
-  const openFirstPaymentModal = document.getElementById('openFirstPaymentModal');
-  const openSecondPaymentModal = document.getElementById('openSecondPaymentModal');
-  const openThirdPaymentModal = document.getElementById('openThirdPaymentModal');
+    modalBtns[0].addEventListener('click', () => {
+      paymentStatusModal1.style.top = '50%';
+      paymentStatusModal1.style.opacity = '1';
+      paymentStatusModal1.style.zIndex = '1';
+    });
+    modalBtns[1].addEventListener('click', () => {
+      paymentStatusModal2.style.top = '50%';
+      paymentStatusModal2.style.opacity = '1';
+      paymentStatusModal2.style.zIndex = '1';
+    });
+    
 
-  const hideModalBtns = document.querySelectorAll('.close');
-
-  openFirstPaymentModal.onclick = () => {
-    firstPaymentModal.style.top = '50%';
-    firstPaymentModal.style.opacity = '1';
-    firstPaymentModal.style.zIndex = '1';
-  }
-  openSecondPaymentModal.onclick = () => {
-    secondPaymentModal.style.top = '50%';
-    secondPaymentModal.style.opacity = '1';
-    secondPaymentModal.style.zIndex = '1';
-  }
-
-  if(duration.value == '3 Months'){
-    openThirdPaymentModal.onclick = () => {
-      thirdPaymentModal.style.top = '50%';
-      thirdPaymentModal.style.opacity = '1';
-      thirdPaymentModal.style.zIndex = '1';
-    }
-  }
-
-  for(let btn of hideModalBtns){
-    const modal = btn.parentElement.parentElement;
-    btn.addEventListener('click', () => {
-      modal.style.top = '-150%';
-      modal.style.opacity = '0';
-      modal.style.zIndex = '-10';
+  for(let close of closeBtn){
+    close.addEventListener('click', () => {
+        close.parentElement.parentElement.style.top = '-150%';
+        close.parentElement.parentElement.opacity = '0';
+        close.parentElement.parentElement.zIndex = '0';
     })
+  }
+
+  if(emiDuration.value == "3 Months"){
+    modalBtns[2].addEventListener('click', () => {
+      paymentStatusModal3.style.top = '50%';
+      paymentStatusModal3.style.opacity = '1';
+      paymentStatusModal3.style.zIndex = '1';
+    });
+    
+    paymentCells[0].innerText = (mainMinusAdv / 3).toFixed(2);
+    paymentCells[1].innerText = (mainMinusAdv / 3).toFixed(2);
+    paymentCells[2].innerText = (mainMinusAdv / 3).toFixed(2);
+  }else{
+    paymentCells[0].innerText = (mainMinusAdv / 2).toFixed(2);
+    paymentCells[1].innerText = (mainMinusAdv / 2).toFixed(2);
   }
 }
 
@@ -312,27 +319,13 @@ const controlDropDown = () => {
   })
 }
 
-const controlServicePendingDropDown = () => {
-  const statusDropDown = document.getElementById('serviceStatusDropDown');
-  const followUpDate1 = document.getElementById('nextPaymentDate');
-
-  statusDropDown.addEventListener('change', () => {
-    if(statusDropDown.value == 'Completed'){
-      followUpDate1.style.display = 'flex';
-    }else{
-      followUpDate1.style.display = 'none';
-    }
-  })
-}
-
 const init = () => {
   const path = window.location.pathname;
 
-  if(path=='/checkEMI'){
+  if(path=='/checkEMI' || path=="/solarCheckEMI"){
     emiThings();
   }
-  if(path=='/showSingleCust'){
-    // toggleModal();
+  if(path=='/showSingleCust' || path=="/showSolarSingleCust"){
     downloadPageAsPdf();
   }
   if(path=='/admin'){
@@ -360,7 +353,6 @@ const init = () => {
   }
   if(path=='/wpServicesPending'){
     hideAndShowModals();
-    controlServicePendingDropDown();
     hideAndShowCustomModal(document.querySelectorAll('.editServiceBtn'), document.getElementById('serviceStatusModal'));
   }
 
