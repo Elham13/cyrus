@@ -35,12 +35,22 @@
             <input type="number" name="number" />
           </div>
           <div>
-            <label for="password">Role <span>*</span></label>
-            <select name="role">
+            <label for="role">Role <span>*</span></label>
+            <select name="role" id="selectRole">
               <option selected disabled>Select a role</option>
-              <option value="CEO">Cheaf Executive</option>
-              <option value="manager">Manager</option>
-              <option value="emp">Employee</option>
+              <option value="Admin">Admin</option>
+              <option value="Sales Department">Sales Dept</option>
+              <option value="Telecalings Department">Telecaling Dept</option>
+              <option value="Stocks Department">Stock Dept</option>
+              <option value="Services Department">Service Dept</option>
+            </select>
+          </div>
+          <div class="hidden-input" id="company">
+            <label for="companyName">Which Company <span>*</span></label>
+            <select name="companyName">
+              <option selected disabled>Select a company</option>
+              <option value="wp">Water Purifier</option>
+              <option value="solar">Solar</option>
             </select>
           </div>
           <div>
@@ -63,7 +73,7 @@
         <form action="/updateUser" method="POST">
           <input type="hidden" name="id" id="formUserId">
           <div>
-            <label for="name">Full Name <span>*</span></label>
+            <label for="name">Full Name </label>
             <input type="text" name="name" />
           </div>
           <div>
@@ -71,25 +81,23 @@
             <input type="email" name="email" />
           </div>
           <div>
-            <label for="number">Mobile number <span>*</span></label>
+            <label for="number">Mobile number </label>
             <input type="number" name="number" />
           </div>
           <div>
-            <label for="password">Role <span>*</span></label>
+            <label for="password">Role </label>
             <select name="role" >
               <option selected disabled>Select a role</option>
-              <option value="CEO">Cheaf Executive</option>
-              <option value="manager">Manager</option>
-              <option value="emp">Employee</option>
+              <option value="admin">Admin</option>
+              <option value="telecaling">Telecaling Dept</option>
+              <option value="sales">Sales Dept</option>
+              <option value="stock">Stock Dept</option>
+              <option value="service">Service Dept</option>
             </select>
           </div>
           <div>
-            <label for="password">Password <span>*</span></label>
+            <label for="password">Password </label>
             <input type="password" name="password" />
-          </div>
-          <div>
-            <label for="password2">Confirm Password <span>*</span></label>
-            <input type="password" name="password2" />
           </div>
           <button type="submit">Update</button>
         </form>

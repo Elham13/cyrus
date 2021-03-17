@@ -277,12 +277,9 @@ const toggleUpdateModal = () => {
   }) 
 }
 
-const downloadPageAsPdf = () => {
-  const downloadBtn = document.getElementById('downloadAsPdf');
-  const scInner = document.getElementById('scInner');
-  downloadBtn.addEventListener('click', () => {
-    html2pdf().from(scInner).save();
-  });
+const downloadPageAsPdf = (pageSection) => {
+  const page = document.getElementById(pageSection);
+  html2pdf().from(page).save();
 }
 
 const downloadPageAsExcel = (tableID, filename = '') => {
@@ -362,6 +359,25 @@ const customEditModal = (rows, modal) => {
   }
 }
 
+const printPageArea = (areaID) => {
+  var printContents = document.getElementById(areaID).innerHTML;
+  var originalContents = document.body.innerHTML;
+  document.body.innerHTML = printContents;
+  window.print();
+  document.body.innerHTML = originalContents;
+}
+
+const showOnRoleSelection = () => {
+  const selectRole = document.getElementById('selectRole');
+  const company = document.getElementById('company');
+  selectRole.addEventListener('change', () => {
+    if(selectRole.value !== "Admin"){
+      company.style.display = 'flex';
+    }
+  });
+}
+
+
 const init = () => {
   const path = window.location.pathname;
 
@@ -376,6 +392,7 @@ const init = () => {
   if(path=='/admin'){
     toggleModal();
     toggleUpdateModal();
+    showOnRoleSelection();
   }
 
   if(path == '/wpTotalSales' || path == '/solarTotalSales'){

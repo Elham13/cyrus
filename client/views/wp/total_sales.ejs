@@ -6,8 +6,8 @@
     <li><a href="/wp">Water Purifier</a></li>
     <li>Total Sales</li>
 </ul>
-    <div class="wp-inner"> 
-      <div style="margin-top: 10px;">
+    <div class="wp-inner" id="printable">
+      <div style="margin-top: 10px;" >
         <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 1)" placeholder="Search With Name">
         <select class="filterTable" onchange="filterTextTable(this, 'wpTable', 10)">
           <option selected disabled>Select a Status</option>
@@ -108,6 +108,9 @@
                 </form>
             </div>
             <button class="downloadAsPdf"  onclick="downloadPageAsExcel('wpTable', 'totalSales')">Download table as excel <i class="far fa-file-excel"></i></button>
+            <button class="downloadAsPdf" onclick="downloadPageAsPdf('wpTable')">Download page as pdf <i class="far fa-file-pdf"></i></button>
+            <button onclick="printPageArea('printable')" class="downloadAsPdf">Print this page</button>
+
         <table class="wptable" id="wpTable">
             <tr>
               <th>Customer Id</th>

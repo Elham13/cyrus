@@ -70,15 +70,24 @@ const {
     postRSPropertiesInHand
 } = require('./realEstateRoutes');
 
+//Admin
+//Sales Department
+//Telecalings Department
+//Stocks Department
+//Services Department
+//Sales Departments
+//Telecalings Departments
+//Stocks Departments
+//Services Departments
 router.get('/contactUs', getContactUs);
 router.get('/aboutUs', getAboutUs);
 router.post('/contactUs', postContactUs);
 
-router.get('/wpTotalSales', ensureAuthenticated, checkRole('CEO', 'manager'), getTotalSales);
-router.get('/wpTelecaling', ensureAuthenticated, getTelecaling);
-router.get('/wpStockReport', ensureAuthenticated, checkRole('CEO', 'manager'), getStockReport);
-router.get('/wpServicesPending', ensureAuthenticated, checkRole('CEO', 'manager'), getServicesPending);
-router.get('/wpExpenses', ensureAuthenticated, checkRole('CEO', 'manager'), getExpenses);
+router.get('/wpTotalSales', ensureAuthenticated, checkRole('Admin','Sales Department'), getTotalSales);
+router.get('/wpTelecaling', ensureAuthenticated, checkRole('Admin','Telecalings Department'), getTelecaling);
+router.get('/wpStockReport', ensureAuthenticated, checkRole('Admin','Stocks Department'), getStockReport);
+router.get('/wpServicesPending', ensureAuthenticated, checkRole('Admin','Services Department'), getServicesPending);
+router.get('/wpExpenses', ensureAuthenticated, checkRole('Admin', ""), getExpenses);
 router.get('/showSingleCust', getShowSingleCust);
 router.post('/wpAddClient', postWaterPurifier);
 router.post('/wpAddProspect', postProspects); 
@@ -106,11 +115,10 @@ router.post('/deleteStockOutward', postDeleteStockOutward);
 router.post('/deleteStockInward', postDeleteStockInward);
 router.post('/deleteExpense', postDeleteExpense);
 
-
-router.get('/solarTotalSales', ensureAuthenticated, checkRole('CEO', 'manager'), getSolarTotalSales);
-router.get('/solarTelecaling', ensureAuthenticated, checkRole('CEO', 'manager'), getSolarTelecaling);
-router.get('/solarExpenses', ensureAuthenticated, checkRole('CEO', 'manager'), getSolarExpenses);
-router.get('/solarStockReports', ensureAuthenticated, checkRole('CEO', 'manager'), getSolarStockReports);
+router.get('/solarTotalSales', ensureAuthenticated, checkRole('Admin','Sales Departments'), getSolarTotalSales);
+router.get('/solarTelecaling', ensureAuthenticated, checkRole('Admin','Telecalings Departments'), getSolarTelecaling);
+router.get('/solarExpenses', ensureAuthenticated, checkRole('Admin',''), getSolarExpenses);
+router.get('/solarStockReports', ensureAuthenticated, checkRole('Admin','Stocks Departments'),  getSolarStockReports);
 router.post('/totalSales', postTotalSales);
 router.post('/solarCheckEmi', postSolarCehckEmi);
 router.post('/solarTelecaling', postSolarTelecaling);
@@ -123,8 +131,8 @@ router.post('/solarEditStatus', postSolarEditStatus);
 router.post('/solarAddMoreProduct', postSolarAddMoreProduct);
 router.post('/solarEmiPaymentStatus', postSolarEmiPaymentStatus)
 
-router.get('/rsPropertiesInHand', ensureAuthenticated, checkRole('CEO', 'manager'), getRSPropertiesInHand)
-router.get('/rsPropertiesSales', ensureAuthenticated, checkRole('CEO', 'manager') ,getRSPropertiesSales)
+router.get('/rsPropertiesInHand', ensureAuthenticated, checkRole('Admin',''), getRSPropertiesInHand)
+router.get('/rsPropertiesSales', ensureAuthenticated, checkRole('Admin',''), getRSPropertiesSales)
 router.post('/rsPropertiesSales', postRSPropertiesSales)
 router.post('/rsPropertiesInHand', postRSPropertiesInHand)
 

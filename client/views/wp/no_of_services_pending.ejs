@@ -6,10 +6,12 @@
     <li><a href="/wp">Water Purifier</a></li>
     <li>Number of services pending</li>
 </ul>
-    <div class="wp-inner">
+    <div class="wp-inner" id="printable">
       <div style="margin-top: 10px;">
         <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 1)" placeholder="Search With Name">
         <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('wpTable')">Download table as excel <i class="far fa-file-excel"></i></button>
+        <button class="downloadAsPdf" onclick="downloadPageAsPdf('printable')">Download page as pdf <i class="far fa-file-pdf"></i></button>
+        <button onclick="printPageArea('printable')" class="downloadAsPdf">Print this page</button>
       </div>
             <div class="modal" id="serviceStatusModal">
               <div class="modal-head">
@@ -102,16 +104,16 @@
                         <td ><%= ser.ServicingExecutive %></td>
                         <td ><%= ser.ServicingRemark %></td>
 
-                        <% if(service.services.length == 1 || (ind + 1) == service.services.length){ %>
-                          <td></td>
-                        <% }else{ %>
-                          <td class="action-cell">
+                        <% if(service.services.length !== 1 && ind+1 !== service.services.length){ %>
+                          <td class="action-cell" rowspan="3">
                             <form action="/deleteService" method="POST">
                                 <input type="hidden" name="id" value="<%= service._id%>">
                                 <input type="hidden" name="index" value="<%= ind %>">
                                 <button title="Delete" class="delete-row"><i class="fas fa-trash"></i></button>
                             </form>
                           </td>
+                        <% }else{ %>
+                          <td></td>
                         <% } %>
                       </tr>
                     <% }) %>

@@ -36,7 +36,7 @@ router.get('/solar', ensureAuthenticated, getSolar);
 router.get('/re', ensureAuthenticated, getRealEstate);
 
 // Admin
-router.get('/admin', getAdmin);
+router.get('/admin', ensureAuthenticated, checkRole('Admin', ''), getAdmin);
 router.post('/romoveUser', postRemoveUser);
 router.post('/updateUser', postUpdateUser);
 

@@ -10,8 +10,8 @@
     </ul>
     
     <div class="donwload-page-btn-wrapper">
-      <button class="downloadAsPdf" id="downloadAsPdf">Download page as pdf <i class="far fa-file-pdf"></i></button>
-      <button onclick="window.print()" class="downloadAsPdf">Print this page</button>
+      <button class="downloadAsPdf" onclick="downloadPageAsPdf('scInner')">Download page as pdf <i class="far fa-file-pdf"></i></button>
+      <button onclick="printPageArea('scInner')" class="downloadAsPdf">Print this page</button>
     </div>
     
 
@@ -25,7 +25,7 @@
                     <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('tableOne')">Download table as excel <i class="far fa-file-excel"></i></button>
                 </div>
             </div>
-            <table class="wptable" id="tableOne">
+            <table class="wptable" id="tableOne" style="background-color: #f1f1f1;">
                 <tr>
                     <th>Creator Name</th>
                     <td><%= singleClient.creatorName %></td>
@@ -308,7 +308,7 @@
                     </tr>
 
 
-                    <tr style="background-color: orchid;">
+                    <tr style="background-color: #f1f1f1;">
                       <td rowspan="3" id="mainBal"><%= singleClient.amount %></td>
                       <td rowspan="3" id="advPaid"><%= singleClient.advancePayment %></td>
                       <td>1</td>
@@ -382,7 +382,7 @@
                       <!-- First next payment date -->
                     </tr>
               
-                    <tr style="background-color: orchid;">
+                    <tr style="background-color: #f1f1f1;">
                       <td>2</td>
                       <!-- Second emi paid -->
                         <td class="editable_cell1" >
@@ -481,7 +481,7 @@
                     
 
                     <% if(singleClient.duration === '3 Months'){ %>
-                    <tr style="background-color: orchid;">
+                    <tr style="background-color: #f1f1f1;">
                       <td>3</td>
               
                       <!-- Third emi amount -->

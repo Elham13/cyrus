@@ -1,12 +1,13 @@
 const UsersModal = require('../models/users');
 
-const checkRole = (role1="CEO", role2="manager", role3="emp") => {
+const checkRole = (role1, role2) => {
     return (req, res, next) => {
-        if(req.user.role !== role1 && req.user.role !== role2){
+        if(req.user.role == role1 || req.user.role == role2){
+            next();
+        }else{
             req.flash("error_msg", "Sorry You are not authorized to view that page");
             res.redirect('/');
         }
-        next();
     }
 }
 

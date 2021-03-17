@@ -6,8 +6,10 @@
     <li><a href="/wp">Water Purifier</a></li>
     <li>Stock Reports</li>
 </ul>
-    <div class="wp-inner">
-
+    <div class="wp-inner" id="printable">
+      <button onclick="printPageArea('printable')" class="downloadAsPdf">Print this page</button>
+      <button class="downloadAsPdf" onclick="downloadPageAsPdf('printable')">Download page as pdf <i class="far fa-file-pdf"></i></button>
+      <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('wpTable')">Download table as excel <i class="far fa-file-excel"></i></button>
       <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
             <div class="modal" id="modal">
                 <div class="modal-head">
@@ -46,7 +48,7 @@
             </div>
 
             <h3 class="tableHeadin">Stock Inwards</h3>
-            <table class="wptable">
+            <table class="wptable" id="wpTable">
                 <tr>
                     <th>S.No</th>
                     <th>Creator Name</th>
@@ -84,6 +86,7 @@
                 <% } %>
             </table>
 
+            <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('wpTableOut')">Download table as excel <i class="far fa-file-excel"></i></button>
             <a href="javascript:void(0)" class="add" style="margin-bottom: -20px;">Add<span><i class="fas fa-plus"></i></span></a>
                 <div class="modal" id="modal">
                   <div class="modal-head">
@@ -119,7 +122,7 @@
                 </div>
 
                 <h3 class="tableHeadin">Stock Outwards</h3>
-                <table class="wptable">
+                <table class="wptable" id="wpTableOut">
                     <tr>
                       <th>S.No</th>
                       <th>Creator name</th>

@@ -3,6 +3,7 @@
     <div class="banner">
         <% if(user){ %>
             <h1>Welcome to Cyrus Group Mr <%= user.name %></h1>
+            <h3>Your role is <%= user.role %> </h3>
         <% } else {%>
             <h1>Welcome to Cyrus Group</h1>
             <!-- <div class="home-cards-wrapper">

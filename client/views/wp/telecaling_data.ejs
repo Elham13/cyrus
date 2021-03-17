@@ -6,12 +6,14 @@
     <li><a href="/wp">Water Purifier</a></li>
     <li>Telecaling Data</li>
 </ul>
-<div class="wp-inner"> 
+<div class="wp-inner" id="printable"> 
       <div style="margin-top: 10px;">
         <input type="number" class="filterTable" onkeyup="filterNumberTable(this, 'wpTable', 3)" placeholder="Search With Phone No">
         <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 9)" placeholder="Search FollowUp Dates">
       </div>
       <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('wpTable')">Download table as excel <i class="far fa-file-excel"></i></button>
+      <button class="downloadAsPdf" onclick="downloadPageAsPdf('wpTable')">Download page as pdf <i class="far fa-file-pdf"></i></button>
+      <button onclick="printPageArea('printable')" class="downloadAsPdf">Print this page</button>
       <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
         <div class="modal" id="modal">
           <div class="modal-head">
