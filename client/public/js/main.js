@@ -50,7 +50,7 @@ const addminSidebarToggle = () => {
 
 const hideAndShowModals = () => {
   const showModalBtns = document.querySelectorAll('.add');
-console.log(showModalBtns)
+  console.log(showModalBtns)
   for(let btn of showModalBtns){
     
     btn.addEventListener('click', () => {

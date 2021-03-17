@@ -6,12 +6,9 @@
     <li><a href="/solar">Distributor</a></li>
     <li>Stock Reports</li>
 </ul>
-    <div class="wp-inner" id="printable">
-      <button onclick="printPageArea('printable')" class="downloadAsPdf">Print this page</button>
-      <button class="downloadAsPdf" onclick="downloadPageAsPdf('printable')">Download page as pdf <i class="far fa-file-pdf"></i></button>
-      <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('wpTable')">Download table as excel <i class="far fa-file-excel"></i></button>
+    <div class="wp-inner">
       <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
-            <div class="modal" id="modal">
+            <div class="modal" id="modal"> 
                 <div class="modal-head">
                 <h3>Stock inwards form</h3>
                 <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
@@ -48,14 +45,13 @@
             </div>
 
             <h3 class="tableHeadin">Stock Inwards</h3>
-            <table class="wptable" id="wpTable">
+            <table class="wptable">
                 <tr>
                     <th>S.No</th>
                     <th>Creator Name</th>
                     <th>Product name</th>
                     <th>Number of Products</th>
                     <th>Stock Available</th>
-                    <th>Action</th>
                 </tr> 
                 <% if(stocks.length > 0) { %>
                     <% stocks.forEach((stock, index) => { %>
@@ -73,20 +69,12 @@
                           <td style="background-color: red; color: #fff;"><%= stock.numberOfProducts - stock.numberOfProductsDifference %></td>
                         <% }else{ %>
                           <td><%= stock.numberOfProducts - stock.numberOfProductsDifference %></td>
-                        <% } %> 
-
-                        <td class="action-cell">
-                          <form action="/solarDeleteStockInward" method="POST">
-                              <input type="hidden" name="id" value="<%= stock._id%>">
-                              <button title="Delete" class="delete-row"><i class="fas fa-trash"></i></button>
-                          </form>
-                        </td>
+                        <% } %>
                     </tr>
                     <% }) %>
                 <% } %>
             </table>
 
-            <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('wpTableOut')">Download table as excel <i class="far fa-file-excel"></i></button>
             <a href="javascript:void(0)" class="add" style="margin-bottom: -20px;">Add<span><i class="fas fa-plus"></i></span></a>
                 <div class="modal" id="modal">
                   <div class="modal-head">
@@ -122,7 +110,7 @@
                 </div>
 
                 <h3 class="tableHeadin">Stock Outwards</h3>
-                <table class="wptable" id="wpTableOut">
+                <table class="wptable">
                     <tr>
                       <th>S.No</th>
                       <th>Creator name</th>
@@ -131,7 +119,6 @@
                       <th>Client Name</th>
                       <th>Client Number</th>
                       <th>Technician Name</th>
-                      <th>Delete</th>
                     </tr>
                     <% if(stocks.length > 0) { %>
                       <% stocks.forEach((outward) => { %>
@@ -145,13 +132,6 @@
                               <td><%= out.clientName %></td>
                               <td><%= out.clientNumber %></td>
                               <td><%= out.technicianName %></td>
-                              <td class="action-cell">
-                                <form action="/solarDeleteStockOutward" method="POST">
-                                    <input type="hidden" name="id" value="<%= outward._id%>">
-                                    <input type="hidden" name="index" value="<%= index %>">
-                                    <button title="Delete" class="delete-row"><i class="fas fa-trash"></i></button>
-                                </form>
-                              </td>
                             </tr>
                           <% }) %>
                         <% } %>

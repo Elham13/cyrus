@@ -55,6 +55,11 @@ const {
     postSolarEditStatus,
     postSolarAddMoreProduct,
     postSolarEmiPaymentStatus,
+    postSolarDeletClient,
+    postSolarEditService,
+    postSolarDeleteTelecaling,
+    postSolarDeleteStockInward,
+    postSolarDeleteStockOutward,
 } = require('./solarroutes');
 
 const {
@@ -102,7 +107,7 @@ router.post('/thirdPyament', postThirPayment);
 router.post('/showSingleCust', postShowSingleCust);
 router.post('/updateServices', postUpdateServices);
 router.post('/editRemark', posteditRemark);
-router.post('/editStatus', posteditStatus);
+router.post('/editStatus', posteditStatus); 
 router.post('/addMoreProduct', postAddMoreProduct);
 router.post('/emiPaymentStatus', postEmiPaymentStatus);
 router.post('/addService', postAddService);
@@ -130,6 +135,11 @@ router.post('/solarEditRemark', postSolarEditRemark);
 router.post('/solarEditStatus', postSolarEditStatus);
 router.post('/solarAddMoreProduct', postSolarAddMoreProduct);
 router.post('/solarEmiPaymentStatus', postSolarEmiPaymentStatus)
+router.post('/solarDeletClient', postSolarDeletClient);
+router.post('/solarEditService', postSolarEditService);
+router.post('/solarDeleteTelecaling', postSolarDeleteTelecaling);
+router.post('/solarDeleteStockInward', postSolarDeleteStockInward);
+router.post('/solarDeleteStockOutward', postSolarDeleteStockOutward);
 
 router.get('/rsPropertiesInHand', ensureAuthenticated, checkRole('Admin',''), getRSPropertiesInHand)
 router.get('/rsPropertiesSales', ensureAuthenticated, checkRole('Admin',''), getRSPropertiesSales)

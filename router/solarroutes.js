@@ -95,7 +95,7 @@ const postTotalSales = async (req, res) => {
         customerName: custName,
         productName: prodName,
         reference: reference,
-        phoneNumber: phNumber,
+        phoneNumber: phNumber, 
         alternatePhoneNumber: phNumber1,
         address: address,
         installationDate: instDate,
@@ -107,9 +107,22 @@ const postTotalSales = async (req, res) => {
         chequeNo: chequeNo,
         chequeDate: chequeDate,
         remarks: remarks,
-        emi: boolEmi,
+        emi: boolEmi, 
+        firstNextPaymentDate: moment(instDate).add(2, 'months').format(),
+        firstEmiDate: moment(instDate).add(1, 'months').format(),
+        secondEmiDate: moment(instDate).add(2, 'months').format(),
+        thirdEmiDate: moment(instDate).add(3, 'months').format(),
         advancePayment: advAmount,
         duration: duration,
+        nextDates: [moment(instDate).add(3, 'months').format()],
+        services: [{
+            DueServiceDate: moment(instDate).add(3, 'months').format(),
+            ServiceStatus: "Pending",
+            ServicingDate: "",
+            ServiceNextDate: "",
+            ServicingExecutive: '',
+            ServicingRemark: '',
+        }],
     }
 
     const addClient = new SolarTotalSales(newClient);
@@ -132,7 +145,7 @@ const postSolarStockInward = async (req, res) => {
 
 const postSolarStockOutward = async (req, res) => { 
     const { creatorName, prodName, noOfProd, clientName, clientPhNo, technicianName } = req.body;
-    const stocks = await solarStockInwards.findOne({productName: prodName.toUpperCase()});
+    const stocks = await SolarStockInwards.findOne({productName: prodName.toUpperCase()});
     if(stocks !== null){
         const newStockOutward = {
             creatorName: creatorName, 
@@ -143,17 +156,16 @@ const postSolarStockOutward = async (req, res) => {
             technicianName: technicianName,
         }
         let outward = stocks.stockOutward;
-        outward = [...outward, newStockOutward];
-        await solarStockInwards.findOneAndUpdate({productName: prodName.toUpperCase()}, {$set: {stockOutward: outward}})
+        outward = [...outward, newStockOutward]; 
 
-        if(stocks.stockOutward.length > 0){
-            var sum = 0;
-            stocks.stockOutward.forEach(out => {
-                sum += parseInt(out.numberOfProducts);
-            });
-            stocks.numberOfProductsDifference = sum + parseInt(noOfProd);
-            await stocks.save();
-        }
+        await SolarStockInwards.findOneAndUpdate({productName: prodName.toUpperCase()}, {$set: {stockOutward: outward}})
+
+        var sum = 0;
+        stocks.stockOutward.forEach(out => {
+            sum += parseInt(out.numberOfProducts);
+        });
+        stocks.numberOfProductsDifference = sum + parseInt(noOfProd);
+        await stocks.save();
     }
     res.redirect('/solarStockReports');
 }
@@ -189,8 +201,12 @@ const postSolarTelecaling = async (req, res) => {
 
 const postShowSolarSingleCust = async (req, res) => {
     const {id} = req.body;
+    let user = null;
+    if(req.user){
+        user = req.user
+    }
     const client = await SolarTotalSales.findById(id);
-    res.render('solar/single_customer', {singleClient: client, user: req.user});
+    res.render('solar/single_customer', {singleClient: client, user: user});
 }
 
 const postSolarEditRemark = async (req, res) => {
@@ -232,53 +248,168 @@ const postSolarAddMoreProduct = async (req, res) => {
 
 const postSolarEmiPaymentStatus = async (req, res) => {
     let {id, 
-        firstPaidAmount, 
-        firstPaidDate, 
+        firstPaidAmount,
+        firstPaidAmountOptional,
+        firstPaidDate,
+        firstPaidDateOptional,
         firstPaymentStatus,
+        firstPaymentMode,
         secondPaidAmount,
+        secondPaidAmountOptional,
         secondPaidDate,
+        secondPaidDateOptional,
+        secondPaymentMode,
         secondPaymentStatus,
         thirdPaidAmount,
+        thirdPaidAmountOptional,
+        thirdPaymentMode,
         thirdPaidDate,
+        thirdPaidDateOptional,
         thirdPaymentStatus,
+        totalOutstanding1, 
+        totalOutstanding2,
+        totalOutstanding3,
     } = req.body;
+
+    const customer = await SolarTotalSales.findById(id);
 
     firstPaidDate = new Date(firstPaidDate);
     secondPaidDate = new Date(secondPaidDate);
     thirdPaidDate = new Date(thirdPaidDate);
 
 
-    const customer = await SolarTotalSales.findById(id);
     if(firstPaymentStatus){
         if(firstPaymentStatus == 'Paid'){
-            customer.firstPaymentStatus = firstPaymentStatus;
-            customer.firstPaidAmount = firstPaidAmount;
-            customer.firstPaidDate = firstPaidDate;
-            customer.firstNextPaymentDate = moment(firstPaidDate).add(1, 'months').format();
+            if(customer.dueAmountsCleared1){
+                customer.dueAmountsCleared2 = null;
+                customer.dueAmountsCleared3 = null;
+            }
+            if(totalOutstanding1 !== undefined){
+                if(totalOutstanding1 == "on"){
+                    customer.dueAmountsCleared1 = true;
+                }
+            }
+            customer.firstPaymentStatus =  firstPaymentStatus;
+            customer.firstPaidAmount = firstPaidAmountOptional !== "" ? firstPaidAmountOptional : firstPaidAmount;
+            customer.firstPaidDate = firstPaidDateOptional !== "" ? firstPaidDateOptional : firstPaidDate;
+            customer.firstNextPaymentDate = moment(customer.installationDate).add(2, "months").format();
+            customer.firstPaymentMode = firstPaymentMode;
             await customer.save();
-            res.redirect('/wpTotalSales')
+            res.redirect('/solarTotalSales')
         }
     }
     if(secondPaymentStatus){
         if(secondPaymentStatus == 'Paid'){
+            if(customer.dueAmountsCleared2){
+                customer.dueAmountsCleared3 = null;
+            }
+            if(totalOutstanding2 !== undefined){
+                if(totalOutstanding2 == "on"){
+                    customer.dueAmountsCleared2 = true;
+                }
+            }
             customer.secondPaymentStatus = secondPaymentStatus;
-            customer.secondPaidAmount = secondPaidAmount;
-            customer.secondPaidDate = secondPaidDate;
-            customer.secondNextPaymentDate = moment(secondPaidDate).add(1, 'months').format();
+            customer.secondPaidAmount = secondPaidAmountOptional !== "" ? secondPaidAmountOptional : secondPaidAmount;
+            customer.secondPaidDate = secondPaidDateOptional !== "" ? secondPaidDateOptional : secondPaidDate;
+            customer.secondNextPaymentDate = moment(customer.installationDate).add(3, "months").format();
+            customer.secondPaymentMode = secondPaymentMode;
             await customer.save();
-            res.redirect('/wpTotalSales')
+            res.redirect('/solarTotalSales')
         }
     }
     if(thirdPaymentStatus){
         if(thirdPaymentStatus == 'Paid'){
+            if(totalOutstanding3 !== undefined){
+                if(totalOutstanding3 == "on"){
+                    customer.dueAmountsCleared3 = true;
+                }
+            }
             customer.thirdPaymentStatus = thirdPaymentStatus;
-            customer.thirdPaidAmount = thirdPaidAmount;
-            customer.thirdPaidDate = thirdPaidDate;
+            customer.thirdPaidAmount = thirdPaidAmountOptional !== "" ? thirdPaidAmountOptional : thirdPaidAmount;
+            customer.thirdPaidDate = thirdPaidDateOptional !== "" ? thirdPaidDateOptional : thirdPaidDate;
+            customer.thirdPaymentMode = thirdPaymentMode;
             await customer.save();
-            res.redirect('/wpTotalSales')
+            res.redirect('/solarTotalSales')
         }
     }
+    
         
+}
+
+const postSolarDeletClient = async (req, res) => {
+    await SolarTotalSales.findByIdAndDelete(req.body.id);
+    res.redirect('/solarTotalSales');
+}
+
+const postSolarEditService = async (req, res) => {
+    const {id, status, serviceExec, serviceDate, remark} = req.body;
+    const customer = await SolarTotalSales.findById(id);
+    console.log(req.originalUrl)
+    if(customer.services.length == 1){
+        const newService = {
+            DueServiceDate: moment(customer.services[0].DueServiceDate).format(),
+            ServiceStatus: status,
+            ServicingDate: moment(serviceDate).format(),
+            ServiceNextDate: moment(serviceDate).add(3, "months").format(),
+            ServicingExecutive: serviceExec,
+            ServicingRemark: remark,
+        }
+        customer.services = [newService];
+
+        const newService2 = {
+            DueServiceDate: moment(customer.services[0].ServiceNextDate).format(),
+            ServiceStatus: "Pending",
+            ServicingDate: '',
+            ServiceNextDate: '',
+            ServicingExecutive: "",
+            ServicingRemark: "",
+        }
+        customer.services = [...customer.services, newService2];
+        await customer.save();
+        res.redirect('/solarTotalSales');
+    }else{
+        const newService = {
+            DueServiceDate: moment(customer.services[customer.services.length - 2].DueServiceDate).add(3, 'months').format(),
+            ServiceStatus: status,
+            ServicingDate: moment(serviceDate).format(),
+            ServiceNextDate: moment(serviceDate).add(3, "months").format(),
+            ServicingExecutive: serviceExec,
+            ServicingRemark: remark,
+        }
+        customer.services[customer.services.length - 1] = newService;
+
+        const newService2 = {
+            DueServiceDate: moment(customer.services[customer.services.length - 1].ServiceNextDate).format(),
+            ServiceStatus: "Pending",
+            ServicingDate: '',
+            ServiceNextDate: '',
+            ServicingExecutive: "",
+            ServicingRemark: "",
+        }
+        customer.services = [...customer.services, newService2];
+        await customer.save();
+        res.redirect('/solarTotalSales');
+    }
+}
+
+const postSolarDeleteTelecaling = async (req, res) => {
+    await SolarTelecalingData.findByIdAndDelete(req.body.id);
+    res.redirect('/solarTelecaling');
+}
+
+const postSolarDeleteStockInward = async (req, res) => {
+    await SolarStockInwards.findByIdAndDelete(req.body.id);
+    res.redirect('/solarStockReports');
+}
+
+const postSolarDeleteStockOutward = async (req, res) => {
+    const {id, index} = req.body;
+    const stock = await SolarStockInwards.findById(id);
+    const deletedNoOfProducts = parseInt(stock.stockOutward[index].numberOfProducts);
+    stock.numberOfProducts = stock.numberOfProducts + deletedNoOfProducts;
+    stock.stockOutward.splice(index, 1);
+    await stock.save();
+    res.redirect('/solarStockReports');
 }
 
 module.exports = {
@@ -297,4 +428,9 @@ module.exports = {
     postSolarEditStatus,
     postSolarAddMoreProduct,
     postSolarEmiPaymentStatus,
+    postSolarDeletClient,
+    postSolarEditService,
+    postSolarDeleteTelecaling,
+    postSolarDeleteStockInward,
+    postSolarDeleteStockOutward,
 }

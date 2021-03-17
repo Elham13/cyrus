@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const ClientsSchema = new mongoose.Schema({
+const SolarTotalSalesSchema = new mongoose.Schema({
     customerId: String,
     creatorName: String,
     customerName: String,
@@ -30,7 +30,7 @@ const ClientsSchema = new mongoose.Schema({
     },
     firstPaidAmount: {
         type: Number,
-        default: null,
+        default: 0,
     },
     firstNextPaymentDate: {
         type: Date,
@@ -40,13 +40,18 @@ const ClientsSchema = new mongoose.Schema({
         type: Date,
         default: null,
     },
+    firstEmiDate: {
+        type: Date,
+        default: null,
+    },
+    firstPaymentMode: String,
     secondPaymentStatus: {
         type: String,
         default: 'Pending',
     },
     secondPaidAmount: {
         type: Number,
-        default: null,
+        default: 0,
     },
     secondNextPaymentDate: {
         type: Date,
@@ -56,20 +61,50 @@ const ClientsSchema = new mongoose.Schema({
         type: Date,
         default: null,
     },
+    secondEmiDate: {
+        type: Date,
+        default: null,
+    },
+    secondPaymentMode: String,
     thirdPaymentStatus: {
         type: String,
         default: 'Pending',
     },
     thirdPaidAmount: {
         type: Number,
-        default: null,
+        default: 0,
     },
     thirdPaidDate: {
         type: Date,
         default: null,
     },
+    thirdEmiDate: {
+        type: Date,
+        default: null,
+    },
+    thirdPaymentMode: String,
+    serviceStatus: {
+        type: String,
+        default: 'Pending'
+    },
+    dueAmountsCleared1: {
+        type: Boolean,
+        default: false,
+    },
+    dueAmountsCleared2: {
+        type: Boolean,
+        default: false,
+    },
+    dueAmountsCleared3: {
+        type: Boolean,
+        default: false,
+    },
     nextDates: {
         type: Array,
+    },
+    services: {
+        type: Array,
+        default: []
     },
     dateCreated: {
         type: Date,
@@ -77,4 +112,4 @@ const ClientsSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("SolarTotalSales", ClientsSchema);
+module.exports = mongoose.model("SolarTotalSales", SolarTotalSalesSchema);

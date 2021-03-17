@@ -6,7 +6,7 @@ const ExpensesModal = require('../models/expense');
 
 
 const getTotalSales = async (req, res) => {
-    const Clients = await Client.find({});
+    const Clients = await Client.find({}); 
     let user = null;
     if(req.user){
         user = req.user;
@@ -99,11 +99,6 @@ const postWaterPurifier = async (req, res) => {
     let boolEmi = true;
     emi == 'on' ? boolEmi = true : boolEmi = false;
 
-    console.log(req.body)
-
-// ----------------------------------Next date Calculations---------------------------------------------------
-console.log(moment(instDate).add(3, 'months'))
-// ----------------------------------Next date Calculations---------------------------------------------------
     const newClient = {
         customerId: custId,
         creatorName: creatorName,
@@ -556,6 +551,7 @@ const postDeleteExpense = async (req, res) => {
     await ExpensesModal.findByIdAndDelete(req.body.id);
     res.redirect('/wpExpenses');
 }
+
 
 
 module.exports = {
