@@ -23,6 +23,14 @@ const {
     posteditStatus,
     postAddMoreProduct,
     postEmiPaymentStatus,
+    postAddService,
+    postDeleteService,
+    postDeletClient,
+    postDeleteTelecaling,
+    postEditService,
+    postDeleteStockOutward,
+    postDeleteStockInward,
+    postDeleteExpense,
     getTotalSales,
     getTelecaling,
     getStockReport,
@@ -78,7 +86,7 @@ router.post('/wpAddStockInwards', postStockInwards);
 router.post('/wpAddStockOwtwards', postStockOutwards);
 router.post('/wpServicesPending', postServicePending);
 router.post('/wpExpenses', postExpenses);
-router.post('/checkEMI', postCheciEMI);
+router.post('/checkEMI', postCheciEMI); 
 router.post('/firstPyament', postFirstPayment);
 router.post('/secondPayment', postSecondPayment);
 router.post('/thirdPyament', postThirPayment);
@@ -88,6 +96,16 @@ router.post('/editRemark', posteditRemark);
 router.post('/editStatus', posteditStatus);
 router.post('/addMoreProduct', postAddMoreProduct);
 router.post('/emiPaymentStatus', postEmiPaymentStatus);
+router.post('/addService', postAddService);
+router.post('/deleteService', postDeleteService);
+router.post('/deletClient', postDeletClient);
+router.post('/deleteTelecaling', postDeleteTelecaling);
+router.post('/editService', postEditService);
+router.post('/editService1', postEditService);
+router.post('/deleteStockOutward', postDeleteStockOutward);
+router.post('/deleteStockInward', postDeleteStockInward);
+router.post('/deleteExpense', postDeleteExpense);
+
 
 router.get('/solarTotalSales', ensureAuthenticated, checkRole('CEO', 'manager'), getSolarTotalSales);
 router.get('/solarTelecaling', ensureAuthenticated, checkRole('CEO', 'manager'), getSolarTelecaling);

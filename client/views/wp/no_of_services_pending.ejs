@@ -9,27 +9,34 @@
     <div class="wp-inner">
       <div style="margin-top: 10px;">
         <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 1)" placeholder="Search With Name">
-        <select class="filterTable" onchange="filterTextTable(this, 'wpTable', 7)" >
-          <option selected disabled>Search with status</option>
-          <option value="Completed">Completed</option>
-          <option value="Pending">Pending</option>
-        </select>
+        <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('wpTable')">Download table as excel <i class="far fa-file-excel"></i></button>
       </div>
             <div class="modal" id="serviceStatusModal">
               <div class="modal-head">
                 <h3>No of pending services form</h3>
                 <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
               </div>               
-                <form action="/wpServicesPending" method="POST">
-                    <div>
-                        <label for="custId">Status: <span>*</span></label>
-                        <select name="status" required id="serviceStatusDropDown">
-                          <option selected disabled>Select a status</option>
-                          <option value="Pending">Pending</option>
-                          <option value="Completed">Completed</option>
-                        </select>
-                    </div>
-                    <input type="hidden" name="id">
+                <form action="/editService1" method="POST">
+                  <div>
+                    <label for="status">Change Status <span>*</span></label>
+                    <select name="status" required>
+                        <option disabled selected>Select</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                  </div>
+                  <input type="hidden" name="id">
+                  <div>
+                    <label for="serviceExec">Servicing Executive Name <span>*</span></label>
+                    <input type="text" name="serviceExec" required>
+                  </div>
+                  <div>
+                    <label for="serviceDate">Servicing Date <span>*</span></label>
+                    <input type="date" name="serviceDate" required>
+                  </div>
+                  <div>
+                    <label for="remark">Remarks </label>
+                    <input type="text" name="remark" >
+                  </div>
                     <button type="submit">Update</button>
                 </form>
             </div>
@@ -42,32 +49,73 @@
                   <th>Address</th>
                   <th>Installation Date</th>
                   <th>Installation Executive</th>
-                  <th>Status</th> 
-                  <th>Next Servicing Date</th>
-                  <th>Latest Servicing Date</th> 
+                  <th colspan="8" style="text-align: center;">Services</th>
                 </tr> 
                 <% if(clients.length > 0) { %>
                   <% clients.forEach((service, index) => { %>
                     <tr>
-                      <td><%= service.customerId %></td>
-                      <td><%= service.customerName %></td>
-                      <td><%= service.phoneNumber %></td>
-                      <td><%= service.address %></td>
-                      <td><%= service.installationDate.toLocaleDateString() %></td>
-                      <td><%= service.installationExecutive %></td>
-                      <td class="editable_cell"><%= service.serviceStatus %>
-                        <a href="javascript:void(0)" class="editServiceBtn edit">
-                          <input type="hidden" name="id" value="<%= service._id %>">
-                          <i class="fas fa-edit"></i>
-                        </a>
-                      </td>
-                      <td><%= new Date(service.nextDates[service.nextDates.length - 1]).toLocaleDateString() %></td>
-                      <% if(service.nextDates[service.nextDates.length - 2] !== undefined){  %>
-                        <td><%= new Date(service.nextDates[service.nextDates.length - 2]).toLocaleDateString() %></td>
-                      <% }else{ %>
-                        <td style="background-color: #ccc;"></td>
-                      <% } %>
+                      <td rowspan="<%= service.services.length + 1 %>"><%= service.customerId %></td>
+                      <td rowspan="<%= service.services.length + 1 %>"><%= service.customerName %></td>
+                      <td rowspan="<%= service.services.length + 1 %>"><%= service.phoneNumber %></td>
+                      <td rowspan="<%= service.services.length + 1 %>"><%= service.address %></td>
+                      <td rowspan="<%= service.services.length + 1 %>"><%= service.installationDate.toLocaleDateString() %></td>
+                      <td rowspan="<%= service.services.length + 1 %>"><%= service.installationExecutive %></td>
+                      <td class="th2">S.No</td>
+                      <td class="th2">Service Due Date</td>
+                      <td class="th2">Service Status</td>
+                      <td class="th2">Service Date</td>
+                      <td class="th2">Next Service Date</td>
+                      <td class="th2">Service Executive</td>
+                      <td class="th2">Remarks</td>
+                      <td class="th2">Delete</td>
                     </tr>
+                    <!-- Services -->
+                    <% service.services.forEach((ser, ind) => { %>
+                      <tr>
+                        <td ><%= ind + 1 %></td>
+                        <td ><%= new Date(ser.DueServiceDate).toLocaleDateString() %></td>
+
+                        <% if(ser.ServiceStatus == "Pending"){ %>
+                          <td class="editable_cell"><%= ser.ServiceStatus %>
+                            <a href="javascript:void(0)" class="editServiceBtn edit">
+                              <input type="hidden" name="id" value="<%= service._id %>">
+                              <i class="fas fa-edit"></i>
+                            </a>
+                          </td>
+                        <% }else{ %>
+                          <td><%= ser.ServiceStatus %></td>
+                        <% } %>
+                        
+
+                        <% if(ser.ServicingDate !== ""){ %>
+                          <td><%= new Date(ser.ServicingDate).toLocaleDateString() %></td>
+                        <% }else{ %>
+                          <td></td>
+                        <% } %>
+
+                        <% if(ser.ServiceNextDate !== ""){ %>
+                          <td><%= new Date(ser.ServiceNextDate).toLocaleDateString() %></td>
+                        <% }else{ %>
+                          <td></td>
+                        <% } %>
+
+                        <td ><%= ser.ServicingExecutive %></td>
+                        <td ><%= ser.ServicingRemark %></td>
+
+                        <% if(service.services.length == 1 || (ind + 1) == service.services.length){ %>
+                          <td></td>
+                        <% }else{ %>
+                          <td class="action-cell">
+                            <form action="/deleteService" method="POST">
+                                <input type="hidden" name="id" value="<%= service._id%>">
+                                <input type="hidden" name="index" value="<%= ind %>">
+                                <button title="Delete" class="delete-row"><i class="fas fa-trash"></i></button>
+                            </form>
+                          </td>
+                        <% } %>
+                      </tr>
+                    <% }) %>
+                    
                   <% }) %>
                 <% } %>
               </table>

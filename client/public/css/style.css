@@ -339,6 +339,7 @@ ul.breadcrumb li a:hover {
 
 .wp-wrapper .wp-inner {
   margin-bottom: 20px;
+  overflow-x: scroll;
 }
 
 @media only screen and (max-width: 600px) {
@@ -410,7 +411,8 @@ ul.breadcrumb li a:hover {
 .modal form #followUpDate,
 .modal form #prospectAmount,
 .modal form #nextPaymentDate,
-.modal form #followUpDate1 {
+.modal form #followUpDate1,
+.modal form #nextServicingDate {
   display: none;
 }
 .modal form .emi-checkbox {
@@ -450,6 +452,8 @@ ul.breadcrumb li a:hover {
   padding: 5px;
   margin-top: 10px;
   cursor: pointer;
+  background-color: green;
+  color: #fff;
 }
 
 .modal form #advanceAmount,
@@ -533,21 +537,21 @@ ul.breadcrumb li a:hover {
 
 .wptable td .true-emi,
 .wptable td .false-emi {
-  cursor: pointer;
   padding: 5px 10px;
   border: none;
   outline: none;
   margin: 0 auto;
+  pointer-events: none;
   display: block;
 }
 
 .wptable td .true-emi {
   background-color: green;
   color: #f2f2f2;
-  transform: 0.3s;
 }
-.wptable td .true-emi:active {
-  transform: scale(1.1);
+
+.wptable tr:hover{
+  background-color: #f0f0f0;
 }
 
 #tableSearch,
@@ -559,6 +563,41 @@ ul.breadcrumb li a:hover {
   border-radius: 5px;
   padding: 5px 10px;
 }
+
+.th2{
+  background-color: #0303bb;
+  color: #fff;
+}
+
+.action-cell{
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit-row, 
+.delete-row{
+  background-color: black;
+  color: #fff;
+  text-decoration: none;
+  padding: 5px;
+  display: inline;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 2px;
+  margin: 0;
+}
+.edit-row:active, 
+.delete-row:active{
+  transform: scale(0.8);
+}
+.edit-row{
+  background-color: green;
+}
+.delete-row{
+  background-color: red;
+}
+
 
 @media only screen and (max-width: 789px) {
   .wptable td,
@@ -791,41 +830,32 @@ ul.breadcrumb li a:hover {
 /*------------------------------------------------------------Admin Page -----------------------------------------------------------------------  */
 
 /*------------------------------------------------------------EMI Page -----------------------------------------------------------------------  */
-.emi-wrapper {
-  min-height: calc(100vh - 50px);
-  margin: 0 14vw;
-  box-shadow: 2px 2px 20px -10px #000;
-  padding: 20px;
-}
 
-.add-payment {
-  float: right;
-  text-decoration: none;
-}
-
-.emi-wrapper #addPaymentForm {
-  float: right;
-  display: none;
-  margin-right: 20px;
-}
-
-.emi-wrapper h2 {
+.emi-wrapper .section-head{
   text-align: center;
+  background-color: #00664b;
+  padding: 10px;
+  color: #f2f2f2;
 }
 
 .emi-table {
   width: 100%;
-  margin-top: 30px;
+  margin-bottom: 30px;
 }
 .emi-table,
 .emi-table th,
 .emi-table td {
-  border: 1px solid #444;
+  border: 1px solid #2e2e2e;
   border-collapse: collapse;
 }
 .emi-table th,
 .emi-table td {
   padding: 2px;
+}
+
+.emi-table th{
+  background-color: #000066;
+  color: #f2f2f2;
 }
 
 .editable_cell {
@@ -858,7 +888,20 @@ ul.breadcrumb li a:hover {
 }
 /*------------------------------------------------------------EMI Page -----------------------------------------------------------------------  */
 
+
+/*------------------------------------------------------------Service single Page -----------------------------------------------------------------------  */
+.services-wrapper{
+
+}
+/*------------------------------------------------------------Service single Page -----------------------------------------------------------------------  */
+
+
 /*------------------------------------------------------------ Show Single Customer -----------------------------------------------------------------------  */
+.donwload-page-btn-wrapper{
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
 .downloadAsPdf {
   background-color: #000066;
   color: #f2f2f2;
@@ -868,8 +911,8 @@ ul.breadcrumb li a:hover {
   cursor: pointer;
   font-size: 14px;
   border-radius: 5px;
-  float: right;
   margin: 0 5px;
+  float: right;
 }
 .downloadAsPdf:active {
   transform: scale(0.9);
@@ -885,37 +928,17 @@ ul.breadcrumb li a:hover {
 }
 .sc-inner {
   margin: 0 30px;
-  display: flex;
-  padding: 50px;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
-.list {
-  padding: 30px;
-  background-color: #474e5d;
-  box-shadow: 0 0 20px -5px #474e5d;
+.sc-left{
+  background-color: #36cece;
+  margin-right: 30px;
 }
-.list li {
-  color: #e6e6e6;
-  list-style-type: none;
-  display: flex;
-}
-.list li p:nth-child(1) {
-  color: pink;
-}
-.list li p:nth-child(2) {
-  color: #12d800;
-}
-.list li p {
-  background-color: #05001f;
-  margin: 2px 1px;
-  width: 180px;
-  padding: 5px 10px;
+.sc-right{
+  /* background-color: orchid; */
 }
 
 @media only screen and (max-width: 600px) {
-  .list li p {
-    font-size: 11px;
-    width: 130px;
-  }
 }
 /*------------------------------------------------------------ Show Single Customer -----------------------------------------------------------------------  */

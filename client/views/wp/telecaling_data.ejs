@@ -115,13 +115,14 @@
               <th>Remark</th>
               <th>Follow Up Date</th>
               <th>Status</th>
+              <th>Action</th>
             </tr>
             <% if(prospects.length > 0) { %>
               <% prospects.forEach((prospect, index) => { %>
                 <tr>
                   <td><%= index + 1 %></td>
                   <td><%= prospect.customerName %></td>
-                  <td><%= prospect.creatorName %></td>
+                  <td><%= prospect.creatorName %></td> 
                   <td><%= prospect.phoneNumber %></td>
                   <td><%= prospect.city %></td>
                   <td><%= prospect.address %></td>
@@ -152,6 +153,14 @@
                   <% } else if(prospect.followUpDate !== null ) { %>
                     <td><%= prospect.followUpDate.toLocaleDateString() %></td>
                   <% }  %>
+
+                  <td class="action-cell">
+                    <form action="/deleteTelecaling" method="POST">
+                        <input type="hidden" name="id" value="<%= prospect._id%>">
+                        <button title="Delete" class="delete-row"><i class="fas fa-trash"></i></button>
+                    </form>
+                  </td>
+
                 </tr>
               <% }) %>
             <% } %>

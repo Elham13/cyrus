@@ -53,6 +53,7 @@
                     <th>Product name</th>
                     <th>Number of Products</th>
                     <th>Stock Available</th>
+                    <th>Action</th>
                 </tr> 
                 <% if(stocks.length > 0) { %>
                     <% stocks.forEach((stock, index) => { %>
@@ -70,7 +71,14 @@
                           <td style="background-color: red; color: #fff;"><%= stock.numberOfProducts - stock.numberOfProductsDifference %></td>
                         <% }else{ %>
                           <td><%= stock.numberOfProducts - stock.numberOfProductsDifference %></td>
-                        <% } %>
+                        <% } %> 
+
+                        <td class="action-cell">
+                          <form action="/deleteStockInward" method="POST">
+                              <input type="hidden" name="id" value="<%= stock._id%>">
+                              <button title="Delete" class="delete-row"><i class="fas fa-trash"></i></button>
+                          </form>
+                        </td>
                     </tr>
                     <% }) %>
                 <% } %>
@@ -120,6 +128,7 @@
                       <th>Client Name</th>
                       <th>Client Number</th>
                       <th>Technician Name</th>
+                      <th>Delete</th>
                     </tr>
                     <% if(stocks.length > 0) { %>
                       <% stocks.forEach((outward) => { %>
@@ -133,6 +142,13 @@
                               <td><%= out.clientName %></td>
                               <td><%= out.clientNumber %></td>
                               <td><%= out.technicianName %></td>
+                              <td class="action-cell">
+                                <form action="/deleteStockOutward" method="POST">
+                                    <input type="hidden" name="id" value="<%= outward._id%>">
+                                    <input type="hidden" name="index" value="<%= index %>">
+                                    <button title="Delete" class="delete-row"><i class="fas fa-trash"></i></button>
+                                </form>
+                              </td>
                             </tr>
                           <% }) %>
                         <% } %>

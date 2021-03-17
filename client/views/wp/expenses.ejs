@@ -59,6 +59,7 @@
               <th>Purpose</th>
               <th>Remarks</th>
               <th>Payment mode</th>
+              <th>Delete</th>
             </tr>
             <% if(expenses.length > 0) { %>
               <% expenses.forEach((expense, index) => { %>
@@ -71,6 +72,12 @@
                   <td><%= expense.purpose %></td>
                   <td><%= expense.remark %></td>
                   <td><%= expense.paymentMode %></td>
+                  <td class="action-cell">
+                    <form action="/deleteExpense" method="POST">
+                        <input type="hidden" name="id" value="<%= expense._id%>">
+                        <button title="Delete" class="delete-row"><i class="fas fa-trash"></i></button>
+                    </form>
+                  </td>
                 </tr>
               <% }) %>
             <% } %>

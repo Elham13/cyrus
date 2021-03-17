@@ -131,10 +131,15 @@ const hideAndShowBankDetais = () => {
 }
 
 const emiThings = () => {
-  const modalBtns = document.querySelectorAll('.edit');
+  const modalBtn1 = document.querySelector('.edit1');
+  const modalBtn2 = document.querySelector('.edit2');
+  const modalBtn3 = document.querySelector('.edit3');
   const paymentStatusModal1 = document.getElementById('paymentStatusModal1');
   const paymentStatusModal2 = document.getElementById('paymentStatusModal2');
   const paymentStatusModal3 = document.getElementById('paymentStatusModal3');
+  const firstPymentStatus = document.getElementById('firstPymentStatus');
+  const secondPymentStatus = document.getElementById('secondPymentStatus');
+  const thirdPymentStatus = document.getElementById('thirdPymentStatus');
   const closeBtn = document.querySelectorAll('.close');
   const paymentCells = document.querySelectorAll('.editable_cell1');
   const mainBal = document.getElementById('mainBal');
@@ -142,33 +147,48 @@ const emiThings = () => {
   const emiDuration = document.getElementById('duration');
   const mainMinusAdv = parseInt(mainBal.innerText) - parseInt(advPaid.innerText);
 
-    modalBtns[0].addEventListener('click', () => {
-      paymentStatusModal1.style.top = '50%';
-      paymentStatusModal1.style.opacity = '1';
-      paymentStatusModal1.style.zIndex = '1';
-    });
-    modalBtns[1].addEventListener('click', () => {
-      paymentStatusModal2.style.top = '50%';
-      paymentStatusModal2.style.opacity = '1';
-      paymentStatusModal2.style.zIndex = '1';
-    });
+  if(modalBtn1){
+    if(firstPymentStatus.value == "Pending"){
+      modalBtn1.addEventListener('click', () => {
+        paymentStatusModal1.style.top = '50%';
+        paymentStatusModal1.style.opacity = '1';
+        paymentStatusModal1.style.zIndex = '1';
+      });
+    }
+  }
+  
+  if(modalBtn2){
+    if(secondPymentStatus.value == "Pending"){
+      modalBtn2.addEventListener('click', () => {
+        paymentStatusModal2.style.top = '50%';
+        paymentStatusModal2.style.opacity = '1';
+        paymentStatusModal2.style.zIndex = '1';
+      });
+    }
+  }
     
 
-  for(let close of closeBtn){
-    close.addEventListener('click', () => {
-        close.parentElement.parentElement.style.top = '-150%';
-        close.parentElement.parentElement.opacity = '0';
-        close.parentElement.parentElement.zIndex = '0';
-    })
-  }
+    for(let close of closeBtn){
+      close.addEventListener('click', () => {
+          close.parentElement.parentElement.style.top = '-150%';
+          close.parentElement.parentElement.opacity = '0';
+          close.parentElement.parentElement.zIndex = '0';
+      })
+    }
+
+    if(emiDuration.value == "3 Months"){
+      if(modalBtn3){
+        if(thirdPymentStatus.value == "Pending"){
+          modalBtn3.addEventListener('click', () => {
+            paymentStatusModal3.style.top = '50%';
+            paymentStatusModal3.style.opacity = '1';
+            paymentStatusModal3.style.zIndex = '1';
+          });
+        }
+      }
+    }
 
   if(emiDuration.value == "3 Months"){
-    modalBtns[2].addEventListener('click', () => {
-      paymentStatusModal3.style.top = '50%';
-      paymentStatusModal3.style.opacity = '1';
-      paymentStatusModal3.style.zIndex = '1';
-    });
-    
     paymentCells[0].innerText = (mainMinusAdv / 3).toFixed(2);
     paymentCells[1].innerText = (mainMinusAdv / 3).toFixed(2);
     paymentCells[2].innerText = (mainMinusAdv / 3).toFixed(2);
@@ -319,6 +339,29 @@ const controlDropDown = () => {
   })
 }
 
+
+
+const customEditModal = (rows, modal) => {
+  const editRow = document.querySelectorAll(rows);
+  const editModal = document.getElementById(modal);
+
+  if(editRow.length){
+    for(let btn of editRow){
+      btn.addEventListener('click', () => {
+        editModal.style.top = '50%';
+        editModal.style.opacity = '1';
+        editModal.style.zIndex = '1';
+        // Set id to form
+        editModal.lastElementChild.children[0].value = btn.previousElementSibling.previousElementSibling.value;
+        // Set index of the row
+        editModal.lastElementChild.children[1].value = btn.previousElementSibling.value;
+        // Set service next date
+        editModal.lastElementChild.children[2].value = btn.previousElementSibling.previousElementSibling.previousElementSibling.value;
+      });
+    }
+  }
+}
+
 const init = () => {
   const path = window.location.pathname;
 
@@ -327,6 +370,8 @@ const init = () => {
   }
   if(path=='/showSingleCust' || path=="/showSolarSingleCust"){
     downloadPageAsPdf();
+    emiThings();
+    customEditModal('.editSerivceStatus', 'editRowModal');
   }
   if(path=='/admin'){
     toggleModal();

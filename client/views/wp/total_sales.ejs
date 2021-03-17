@@ -8,8 +8,14 @@
 </ul>
     <div class="wp-inner"> 
       <div style="margin-top: 10px;">
-        <input type="text" id="tableSearch" onkeyup="filterTextTable(this, 'wpTable', 1)" placeholder="Search With Name">
-        <input type="number" id="tableSearch1" onkeyup="filterNumberTable(this, 'wpTable', 3)" placeholder="Search With Phone No">
+        <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 1)" placeholder="Search With Name">
+        <select class="filterTable" onchange="filterTextTable(this, 'wpTable', 10)">
+          <option selected disabled>Select a Status</option>
+          <option value="Completed">Completed</option>
+          <option value="Pending">Pending</option>
+        </select>
+        <!-- <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 10)" placeholder="Search Emi Status"> -->
+        <input type="number" class="filterTable" onkeyup="filterNumberTable(this, 'wpTable', 3)" placeholder="Search With Phone No">
       </div>
       <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
             <div class="modal" id="modal">
@@ -113,8 +119,11 @@
               <th>Installation Executive</th>
               <th>Amount</th>
               <th>Payment Mode</th>
-              <th>Remarks</th>
               <th>EMI</th>
+              <th>Emi Status</th>
+              <th>Next Emi Date</th>
+              <th>Remarks</th>
+              <th>Action</th>
             </tr>
             <% if(clients.length > 0){ %> 
               <% clients.forEach((client, index) => { %>
@@ -134,21 +143,89 @@
                   <td>&#8377; <%= client.amount %></td>
                   <td><%= client.paymentMode %></td>
                   
+                  <td> 
+                    <% if(client.emi){ %>
+                      <button class="true-emi"><i class="fas fa-check"></i></button>
+                    <% }else{ %>
+                      <button class="false-emi" style="pointer-events: none"><i class="fas fa-times"></i></button>
+                    <% } %>
+                  </td>
+
+                  <!-- Emi Status -->
+                  <% if(client.emi){ %>
+                    <td>
+                      <% if(client.duration == "3 Months"){ %>
+                        <% if(client.firstPaymentStatus=="Pending" || client.secondPaymentStatus=="Pending" || client.thirdPaymentStatus=="Pending"){ %>
+                          <% if(client.dueAmountsCleared1 || client.dueAmountsCleared2 || client.dueAmountsCleared3){ %>
+                            Completed
+                          <% }else{ %>
+                            Pending
+                          <% } %>
+                        <% }else{ %>
+                          Completed
+                        <% } %>
+                      <% }else{ %>
+                        <% if(client.firstPaymentStatus=="Pending" || client.secondPaymentStatus=="Pending"){ %>
+                          <% if(client.dueAmountsCleared1 || client.dueAmountsCleared2){ %>
+                            Completed
+                          <% }else{ %>
+                            Pending
+                          <% } %>
+                        <% }else{ %>
+                          Completed
+                        <% } %>
+                      <% } %>
+                    </td>
+                  <% }else{ %>
+                    <td style="background-color: #ccc;"></td>
+                  <% } %>
+                  <!-- Emi Status -->
+
+                  <!-- Next Emi Date -->
+                  <% if(client.emi){ %>
+                    
+                      <% if(client.duration == "3 Months"){ %>
+                        <% if(client.dueAmountsCleared1 || client.dueAmountsCleared2 || client.dueAmountsCleared3 || client.thirdPaymentStatus=="Paid"){ %>
+                          <td style="background-color: #ccc;"></td>
+                        <% }else{ %>
+                            <% if(client.secondPaymentStatus=="Paid"){ %>
+                              <td><%= client.secondNextPaymentDate.toLocaleDateString() %></td>
+                            <% }else if(client.firstPaymentStatus=="Paid"){ %>
+                              <td><%= client.firstNextPaymentDate.toLocaleDateString() %></td>
+                            <% }else{ %>
+                              <td><%= client.firstNextPaymentDate.toLocaleDateString() %></td>
+                            <% } %>
+                        <% } %>
+                        <!-- if 2 months -->
+                      <% }else{ %>
+                        <% if(client.dueAmountsCleared1 || client.dueAmountsCleared2 ||  client.secondPaymentStatus=="Paid"){ %>
+                          <td style="background-color: #ccc;"></td>
+                        <% }else{ %>
+                          <% if(client.firstPaymentStatus=="Paid"){ %>
+                            <td><%= client.firstNextPaymentDate.toLocaleDateString() %></td>
+                          <% }else{ %>
+                            <td><%= client.firstNextPaymentDate.toLocaleDateString() %></td>
+                          <% } %>
+                        <% } %>
+                      <% } %>
+                      
+                  <% }else{ %>
+                    <td style="background-color: #ccc;"></td>
+                  <% } %>
+                  
+                  <!-- Next Emi Date -->
+                  
                   <% if(client.remarks !== "") { %>
                     <td><%= client.remarks %></td>
                   <% }else{ %>
                     <td style="background-color: #ccc;"></td>
                   <% } %>
-                  
-                  <td>
-                    <% if(client.emi){ %>
-                      <form action="/checkEMI" method="POST">
-                        <input type="hidden" name="id" value="<%= client._id %>">
-                        <button class="true-emi"><i class="fas fa-check"></i></button>
-                      </form>
-                    <% }else{ %>
-                      <button class="false-emi" style="pointer-events: none"><i class="fas fa-times"></i></button>
-                    <% } %>
+
+                  <td class="action-cell">
+                    <form action="/deletClient" method="POST">
+                        <input type="hidden" name="id" value="<%= client._id%>">
+                        <button title="Delete" class="delete-row"><i class="fas fa-trash"></i></button>
+                    </form>
                   </td>
                 </tr>
               <% }) %>                      
