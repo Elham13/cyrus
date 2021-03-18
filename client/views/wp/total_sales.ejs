@@ -8,6 +8,7 @@
 </ul>
     <div class="wp-inner" id="printable">
       <div style="margin-top: 10px;" >
+        <div><%- include('../partials/messages') -%></div>
         <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 1)" placeholder="Search With Name">
         <select class="filterTable" onchange="filterTextTable(this, 'wpTable', 10)">
           <option selected disabled>Select a Status</option>
