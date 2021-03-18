@@ -120,10 +120,10 @@ router.post('/deleteStockOutward', postDeleteStockOutward);
 router.post('/deleteStockInward', postDeleteStockInward);
 router.post('/deleteExpense', postDeleteExpense);
 
-router.get('/solarTotalSales', ensureAuthenticated, checkRole('Admin','Sales Departments'), getSolarTotalSales);
-router.get('/solarTelecaling', ensureAuthenticated, checkRole('Admin','Telecalings Departments'), getSolarTelecaling);
-router.get('/solarExpenses', ensureAuthenticated, checkRole('Admin',''), getSolarExpenses);
-router.get('/solarStockReports', ensureAuthenticated, checkRole('Admin','Stocks Departments'),  getSolarStockReports);
+router.get('/solarTotalSales', ensureAuthenticated, checkRole('Admins','Sales Departments'), getSolarTotalSales);
+router.get('/solarTelecaling', ensureAuthenticated, checkRole('Admins','Telecalings Departments'), getSolarTelecaling);
+router.get('/solarExpenses', ensureAuthenticated, checkRole('Admins',''), getSolarExpenses);
+router.get('/solarStockReports', ensureAuthenticated, checkRole('Admins','Stocks Departments'),  getSolarStockReports);
 router.post('/totalSales', postTotalSales);
 router.post('/solarCheckEmi', postSolarCehckEmi);
 router.post('/solarTelecaling', postSolarTelecaling);

@@ -3,7 +3,7 @@
 <div class="wp-wrapper">
   <ul class="breadcrumb">
     <li><a href="/">Home</a></li>
-    <li><a href="/solar">Distributor</a></li>
+    <li><a href="/solar">Distribution</a></li>
     <li>Total Sales</li>
   </ul>
     <div class="wp-inner" id="printable">
@@ -53,11 +53,13 @@
                         <input type="text" name="address" required>
                     </div>
                     <div>
-                        <label for="instDate">Installation Date: <span>*</span></label>
+                      <!-- Changes -->
+                        <label for="instDate">Suply Date: <span>*</span></label>
                         <input type="date" name="instDate" required>
                     </div>
                     <div>
-                        <label for="instExec">Installation Executive: <span>*</span></label>
+                      <!-- Changes -->
+                        <label for="instExec">Suply Executive: <span>*</span></label>
                         <input type="text" name="instExec" required>
                     </div>
                     <div>
@@ -118,13 +120,13 @@
               <th>Product name</th>
               <th>Ph Number</th>
               <th>Address</th>
-              <th>Installation Date</th>
-              <th>Installation Executive</th>
+              <th>Suply Date</th>
+              <th>Suply Executive</th>
               <th>Amount</th>
               <th>Payment Mode</th>
               <th>EMI</th>
               <th>Emi Status</th>
-              <th>Next Emi Date</th>
+              <th>Next Payment Date</th> 
               <th>Remarks</th>
               <th>Action</th>
             </tr>
@@ -184,7 +186,7 @@
                   <% } %>
                   <!-- Emi Status -->
 
-                  <!-- Next Emi Date -->
+                  <!-- Next Payment Date -->
                   <% if(client.emi){ %>
                     
                       <% if(client.duration == "3 Months"){ %>
@@ -216,7 +218,7 @@
                     <td style="background-color: #ccc;"></td>
                   <% } %>
                   
-                  <!-- Next Emi Date -->
+                  <!-- Next Payment Date -->
                   
                   <% if(client.remarks !== "") { %>
                     <td><%= client.remarks %></td>

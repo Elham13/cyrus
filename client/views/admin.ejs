@@ -10,9 +10,8 @@
     <div class="users">
       <div style="display: flex; justify-content: space-between">
         <h3>List of created users</h3>
-        <a href="javascript:void(0)" class="add"
-          >Add User<span><i class="fas fa-plus"></i></span
-        ></a>
+        <p style="color: red;"><strong>Note:</strong> Change everything but never change your own role</p>
+        <a href="javascript:void(0)" class="add">Add User<span><i class="fas fa-plus"></i></span></a>
       </div>
 
       <div class="modal" id="modal">
@@ -50,7 +49,8 @@
             <select name="companyName">
               <option selected disabled>Select a company</option>
               <option value="wp">Water Purifier</option>
-              <option value="solar">Solar</option>
+              <!-- Changes -->
+              <option value="solar">Distribution</option>
             </select>
           </div>
           <div>
@@ -123,13 +123,21 @@
             <td style="background-color: #888"></td>
           <% } %>
           <td><%= user1.mobileNumber %></td>
-          <td><%= user1.role %></td>
+          <% if(user1.role == "Super Admin"){ %>
+            <td style="background-color: #270000; color: #fff;"><%= user1.role %></td>
+          <% }else{ %>
+            <td><%= user1.role %></td>
+          <% } %>
+
           <td>
             <a href="javascript:void(0)" class="eidtBtn"><i class="fas fa-edit"></i></a>
+
+            <% if(user1.role !== "Super Admin"){ %>
             <form action="/romoveUser" method="POST" style="display: inline;">
               <input type="hidden" name="id" class="userIds" value="<%= user1._id %>">
               <button class="deleteBtn"><i class="fas fa-trash"></i></button>
             </form>
+            <% } %>
           </td>
         </tr>
         <% }) %> <% } %>

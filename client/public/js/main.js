@@ -371,9 +371,7 @@ const showOnRoleSelection = () => {
   const selectRole = document.getElementById('selectRole');
   const company = document.getElementById('company');
   selectRole.addEventListener('change', () => {
-    if(selectRole.value !== "Admin"){
-      company.style.display = 'flex';
-    }
+    company.style.display = 'flex';
   });
 }
 

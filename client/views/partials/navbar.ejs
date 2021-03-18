@@ -1,10 +1,10 @@
 <div class="topnav" id="myTopnav">
     <a href="/" class="logo"><img src="images/logo.png" alt=""></a>
     <a href="/wp">Water Purifier</a>
-    <a href="/solar">Distributor</a>
+    <a href="/solar">Distribution</a>
     <a href="/re">Real Estate</a>
     <% if(user){ %>
-        <% if(user.role == "Admin"){ %>
+        <% if(user.role == "Super Admin"){ %>
             <a href="/admin">Admin</a> 
         <% } %>
     <% } %>
@@ -12,6 +12,8 @@
         <form action="/logout?_method=DELETE" method="POST" id="logoutForm">
             <button type="submit" class="logout" id="logoutBtn">Logout</button>
         </form>
+    <% }else{%>
+        <a href="/login">Login</a>
     <% }%>
     <a href="javascript:void(0);" class="icon" onclick="toggleNavigation()">
     <i class="fa fa-bars"></i>
