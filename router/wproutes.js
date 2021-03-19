@@ -100,6 +100,49 @@ const postWaterPurifier = async (req, res) => {
         if(advAmount == ''){
             req.flash("error_msg", "Advance Amount is mandatory");
             res.redirect('/wpTotalSales');
+        }else{
+            let boolEmi = true;
+            emi == 'on' ? boolEmi = true : boolEmi = false;
+
+            const newClient = {
+                customerId: custId,
+                creatorName: creatorName,
+                customerName: custName,
+                productName: prodName,
+                reference: reference,
+                phoneNumber: phNumber, 
+                alternatePhoneNumber: phNumber1,
+                address: address,
+                installationDate: instDate,
+                installationExecutive: instExec,
+                amount: amount,
+                paymentMode: paymentMode,
+                accNo: accNo,
+                branchName: branchName,
+                chequeNo: chequeNo,
+                chequeDate: chequeDate,
+                remarks: remarks,
+                emi: boolEmi, 
+                firstNextPaymentDate: moment(instDate).add(2, 'months').format(),
+                firstEmiDate: moment(instDate).add(1, 'months').format(),
+                secondEmiDate: moment(instDate).add(2, 'months').format(),
+                thirdEmiDate: moment(instDate).add(3, 'months').format(),
+                advancePayment: advAmount,
+                duration: duration,
+                nextDates: [moment(instDate).add(3, 'months').format()],
+                services: [{
+                    DueServiceDate: moment(instDate).add(3, 'months').format(),
+                    ServiceStatus: "Pending",
+                    ServicingDate: "",
+                    ServiceNextDate: "",
+                    ServicingExecutive: '',
+                    ServicingRemark: '',
+                }],
+            }
+
+            const addClient = new Client(newClient);
+            await addClient.save();
+            if (req.body) res.redirect('/wpTotalSales')
         }
     }else{
         let boolEmi = true;
