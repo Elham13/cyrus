@@ -935,8 +935,6 @@ ul.breadcrumb li a:hover {
 }
 .sc-inner {
   margin: 0 30px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
 }
 .sc-left{
   margin-right: 30px;
