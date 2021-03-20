@@ -16,6 +16,130 @@
     
 
     <div class="sc-inner" id="scInner">
+      <div class="sc-left">
+            <div style="display: flex; justify-content: space-between; background-color: #00664b; padding: 10px 3px; color: #f1f1f1;">
+                <% if(singleClient !== null){ %>
+                    <h3><%= singleClient.customerName %>'s complete report</h3>
+                <% } %> 
+                <div class="donwload-page-btn-wrapper" style="margin-bottom: auto;">
+                    <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('tableOne')">Download table as excel <i class="far fa-file-excel"></i></button>
+                </div>
+            </div>
+            <table class="wptable" id="tableOne" style="background-color: #f1f1f1;">
+                <tr>
+                    <th>Creator Name</th>
+                    <td><%= singleClient.creatorName %></td>
+                </tr>
+                <tr>
+                    <th>Customer Id</th>
+                    <td><%= singleClient.customerId %></td>
+                </tr>
+                
+                <tr>
+                    <th>Customer Name</th>
+                    <td><%= singleClient.customerName %></td>
+                </tr>
+                <tr>
+                    <th>Product Name</th>
+                    <td><%= singleClient.productName %></td>
+                </tr>
+                <tr>
+                    <th>Reference</th>
+                    <td><%= singleClient.reference %></td>
+                </tr>
+                <tr>
+                    <th>Phone Number</th>
+                    <td><%= singleClient.phoneNumber %></td>
+                </tr>
+                <% if(singleClient.alternatePhoneNumber){ %>
+                    <tr>
+                        <th>Alternate Phone Number</th>
+                        <td><%= singleClient.alternatePhoneNumber %></td>
+                    </tr>
+                <% } %>
+                <tr>
+                    <th>Address</th>
+                    <td><%= singleClient.address %></td>
+                </tr>
+                <tr>
+                    <th>Installation Date</th>
+                    <td><%= singleClient.installationDate.toLocaleDateString() %></td>
+                </tr>
+                <tr>
+                    <th>Installation Executive</th>
+                    <td><%= singleClient.installationExecutive %></td>
+                </tr>
+                <tr>
+                    <th>Amount</th>
+                    <td><%= singleClient.amount %></td>
+                </tr>
+                <tr>
+                    <th>Advance paid amount</th>
+                    <td><%= singleClient.advancePayment %></td>
+                </tr>
+                <% if(singleClient.emi) { %>
+                    <tr>
+                        <th>Number of Emi</th>
+                        <% if(singleClient.duration == '3 Months') { %>
+                            <td>3 Installments</td>
+                        <% } %>
+                        <% if(singleClient.duration == '2 Months') { %>
+                            <td>2 Installments</td>
+                        <% } %>
+                    </tr>
+                    
+                    <tr>
+                        <th>Emi Amount</th>
+                        <% if(singleClient.duration == '3 Months'){ %>
+                            <td><%= ((singleClient.amount - singleClient.advancePayment) / 3).toFixed(2) %></td>
+                        <% }else{ %>
+                            <td><%= ((singleClient.amount - singleClient.advancePayment) / 2).toFixed(2) %></td>
+                        <% }%>
+                    </tr>
+                <% } %>
+                <tr>
+                    <th>Payment Mode</th>
+                    <td><%= singleClient.paymentMode %></td>
+                </tr>
+                <% if(singleClient.paymentMode == 'Cheque') { %>
+                    <tr>
+                        <th>Account Number</th>
+                        <td><%= singleClient.accNo %></td>
+                    </tr>
+                <% } %>
+                <% if(singleClient.paymentMode == 'Cheque') { %>
+                    <tr>
+                        <th>Branch Name</th>
+                        <td><%= singleClient.branchName %></td>
+                    </tr>
+                <% } %>
+                <% if(singleClient.paymentMode == 'Cheque') { %>
+                    <tr>
+                        <th>Cheque Number</th>
+                        <td><%= singleClient.chequeNo %></td>
+                    </tr>
+                <% } %>
+                <% if(singleClient.paymentMode == 'Cheque') { %>
+                    <tr>
+                        <th>Cheque Date</th>
+                        <td><%= singleClient.chequeDate.toLocaleDateString() %></td>
+                    </tr>
+                <% } %>
+                <% if(singleClient.remarks !== '') { %>
+                    <tr>
+                        <th>Remarks</th>
+                        <td><%= singleClient.remarks %></td>
+                    </tr>
+                <% } %>
+                <% if(singleClient.services.length > 0){ %>
+                    <tr>
+                        <th>No of total Services</th>
+                        <td><%= singleClient.services.length %></td>
+                    </tr>
+                <% } %>
+            
+            </table>
+        </div>
         <div class="sc-right">
           <% if(singleClient.emi){ %>
             <div class="emi-wrapper"> 
