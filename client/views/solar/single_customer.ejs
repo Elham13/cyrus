@@ -1,5 +1,5 @@
 <%- include('../partials/header') -%> 
-<%- include('../partials/navbar') -%>
+<%- include('../partials/navbar') -%> 
 
 <div class="sc-wrapper">
     <ul class="breadcrumb">
@@ -8,15 +8,66 @@
         <li><a href="/solarTotalSales">Total Sales</a></li>
         <li>Customer Report</li>
     </ul>
+
+    <input type="hidden" id="clientEmi" value="<%= singleClient.emi %>">
     
     <div class="donwload-page-btn-wrapper">
-      <button class="downloadAsPdf" onclick="downloadPageAsPdf('scInner')">Download page as pdf <i class="far fa-file-pdf"></i></button>
-      <button onclick="printPageArea('scInner')" class="downloadAsPdf">Print this page</button>
+      <button class="downloadAsPdf singleClientUpdateBtn">Edit Client Info <i class="far fa-edit"></i></button>
+      <div>
+        <button class="downloadAsPdf" onclick="downloadPageAsPdf('scInner')">Download page as pdf <i class="far fa-file-pdf"></i></button>
+        <button onclick="printPageArea('scInner')" class="downloadAsPdf">Print this page</button>
+      </div>
     </div>
     
 
     <div class="sc-inner" id="scInner">
         <div class="sc-left">
+
+          <!-- Client Update -->
+          <div class="modal" id="singleClientUpdateModal">
+          <div class="modal-head">
+            <h3>Edit Client info</h3>
+            <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+          </div>
+          <form action="/solarEditClient" method="POST">
+            <input type="hidden" name="id" value="<%= singleClient._id %>" />
+            <div>
+              <label for="custName">Customer Name:</label>
+              <input type="text" name="custName" value="<%= singleClient.customerName %>" >
+            </div>
+            <div>
+                <label for="prodName">Product Name:</label>
+                <input type="text" name="prodName" value="<%= singleClient.productName %>" >
+            </div>
+            <div>
+                <label for="reference">Reference:</label>
+                <input type="text" name="reference" value="<%= singleClient.reference %>" >
+            </div>
+            <div>
+                <label for="phNumber">Phone Number:</label>
+                <input type="text" name="phNumber" value="<%= singleClient.phoneNumber %>">
+            </div>
+            <div>
+                <label for="phNumber1">Alternate Phone Number:</label>
+                <input type="text" name="phNumber1" value="<%= singleClient.alternatePhoneNumber %>" >
+            </div>
+            <div>
+                <label for="address">Address:</label>
+                <input type="text" name="address" value="<%= singleClient.address %>">
+            </div>
+            <div>
+                <label for="instExec">Installation Executive:</label>
+                <input type="text" name="instExec" value="<%= singleClient.installationExecutive %>">
+            </div>
+            <div>
+                <label for="amount">Amount:</label>
+                <input type="number" name="amount" value="<%= singleClient.amount %>">
+            </div>
+            <button type="submit">Change</button>
+          </form>
+          </div>
+          <!-- Client Update -->
+
             <div style="display: flex; justify-content: space-between; background-color: #00664b; padding: 10px 3px; color: #f1f1f1;">
                 <% if(singleClient !== null){ %>
                     <h3><%= singleClient.customerName %>'s complete report</h3>

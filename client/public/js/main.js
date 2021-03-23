@@ -316,10 +316,20 @@ const hideAndShowCustomModal = (opentBtns, modalToOpen) => {
   for(let btn of opentBtns){
     btn.onclick = () => {
       modalToOpen.lastElementChild.children[1].value = btn.firstElementChild.value;
+      window.scrollTo(0, 0);
       modalToOpen.style.opacity = '1';
-      modalToOpen.style.top = '50%';
+      modalToOpen.style.top = '50vh';
       modalToOpen.style.zIndex = '1';
     }
+  }
+
+  const btns = document.querySelectorAll('.close');
+  for(let btn of btns){
+    btn.addEventListener('click', () => {
+      modalToOpen.style.opacity = '0';
+      modalToOpen.style.top = '-150%';
+      modalToOpen.style.zIndex = '1';
+    });
   }
 }
 
@@ -383,9 +393,13 @@ const init = () => {
     emiThings();
   }
   if(path=='/showSingleCust' || path=="/showSolarSingleCust"){
+    const clientEmi = document.getElementById('clientEmi');
     downloadPageAsPdf();
-    emiThings();
+    if(clientEmi.value == 'true'){
+      emiThings();
+    }
     customEditModal('.editSerivceStatus', 'editRowModal');
+    hideAndShowCustomModal(document.querySelectorAll('.singleClientUpdateBtn'), document.getElementById('singleClientUpdateModal'));
   }
   if(path=='/admin'){
     toggleModal();
@@ -397,6 +411,7 @@ const init = () => {
     hideAndShowModals();
     hideAndShowBankDetais();
     toggleEmi();
+    hideAndShowCustomModal(document.querySelectorAll('.remarkBtns'), document.getElementById('updateRemarkModal'));
   }
 
   if(path == '/wpTelecaling' || path == '/solarTelecaling'){

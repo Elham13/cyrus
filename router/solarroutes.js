@@ -412,6 +412,35 @@ const postSolarDeleteStockOutward = async (req, res) => {
     res.redirect('/solarStockReports');
 }
 
+const postSolarUpdateRemark = async (req, res) => {
+    const {remark, id} = req.body; 
+    const client = await SolarTotalSales.findById(id);
+    const d = new Date();
+    const now = d.toLocaleDateString();
+    if(client.remarks == ''){
+        client.remarks = '('+now+')'+remark;
+    }else{
+        client.remarks = '('+now+')'+remark+'. '+client.remarks;
+    }
+    await client.save();
+    res.redirect('/solarTotalSales');
+}
+
+const postSolarEditClient = async (req, res) => {
+    const {id, custName, prodName, reference, phNumber, phNumber1, address, instExec, amount} = req.body;
+    const client = await SolarTotalSales.findById(id);
+    client.customerName = custName;
+    client.productName = prodName;
+    client.reference = reference;
+    client.phoneNumber = phNumber;
+    client.alternatePhoneNumber = phNumber1;
+    client.address = address;
+    client.installationExecutive = instExec;
+    client.amount = amount;
+    await client.save();
+    res.redirect('/solarTotalSales');
+}
+
 module.exports = {
     getSolarTotalSales,
     getSolarTelecaling,
@@ -433,4 +462,6 @@ module.exports = {
     postSolarDeleteTelecaling,
     postSolarDeleteStockInward,
     postSolarDeleteStockOutward,
+    postSolarUpdateRemark,
+    postSolarEditClient,
 }

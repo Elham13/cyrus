@@ -8,15 +8,65 @@
         <li><a href="/wpTotalSales">Total Sales</a></li>
         <li>Customer Report</li>
     </ul>
+
+    <input type="hidden" id="clientEmi" value="<%= singleClient.emi %>">
     
     <div class="donwload-page-btn-wrapper">
-      <button class="downloadAsPdf" onclick="downloadPageAsPdf('scInner')">Download page as pdf <i class="far fa-file-pdf"></i></button>
-      <button onclick="printPageArea('scInner')" class="downloadAsPdf">Print this page</button>
+      <button class="downloadAsPdf singleClientUpdateBtn">Edit Client Info <i class="far fa-edit"></i></button>
+      <div>
+        <button class="downloadAsPdf" onclick="downloadPageAsPdf('scInner')">Download page as pdf <i class="far fa-file-pdf"></i></button>
+        <button onclick="printPageArea('scInner')" class="downloadAsPdf">Print this page</button> 
+      </div>
     </div>
     
 
     <div class="sc-inner" id="scInner">
       <div class="sc-left">
+         <!-- Client Update -->
+         <div class="modal" id="singleClientUpdateModal">
+          <div class="modal-head">
+            <h3>Edit Client info</h3>
+            <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+          </div>
+          <form action="/editClient" method="POST">
+            <input type="hidden" name="id" value="<%= singleClient._id %>" />
+            <div>
+              <label for="custName">Customer Name:</label>
+              <input type="text" name="custName" value="<%= singleClient.customerName %>" >
+            </div>
+            <div>
+                <label for="prodName">Product Name:</label>
+                <input type="text" name="prodName" value="<%= singleClient.productName %>" >
+            </div>
+            <div>
+                <label for="reference">Reference:</label>
+                <input type="text" name="reference" value="<%= singleClient.reference %>" >
+            </div>
+            <div>
+                <label for="phNumber">Phone Number:</label>
+                <input type="text" name="phNumber" value="<%= singleClient.phoneNumber %>">
+            </div>
+            <div>
+                <label for="phNumber1">Alternate Phone Number:</label>
+                <input type="text" name="phNumber1" value="<%= singleClient.alternatePhoneNumber %>" >
+            </div>
+            <div>
+                <label for="address">Address:</label>
+                <input type="text" name="address" value="<%= singleClient.address %>">
+            </div>
+            <div>
+                <label for="instExec">Installation Executive:</label>
+                <input type="text" name="instExec" value="<%= singleClient.installationExecutive %>">
+            </div>
+            <div>
+                <label for="amount">Amount:</label>
+                <input type="number" name="amount" value="<%= singleClient.amount %>">
+            </div>
+            <button type="submit">Change</button>
+          </form>
+        </div>
+        <!-- Client Update -->
+
             <div style="display: flex; justify-content: space-between; background-color: #00664b; padding: 10px 3px; color: #f1f1f1;">
                 <% if(singleClient !== null){ %>
                     <h3><%= singleClient.customerName %>'s complete report</h3>
@@ -63,7 +113,7 @@
                 </tr>
                 <tr>
                     <th>Installation Date</th>
-                    <td><%= singleClient.installationDate.toLocaleDateString() %></td>
+                    <td><%= singleClient.installationDate.getDate() %>/<%= singleClient.installationDate.getMonth() + 1 %>/<%= singleClient.installationDate.getFullYear() %></td>
                 </tr>
                 <tr>
                     <th>Installation Executive</th>
@@ -73,11 +123,12 @@
                     <th>Amount</th>
                     <td><%= singleClient.amount %></td>
                 </tr>
-                <tr>
-                    <th>Advance paid amount</th>
-                    <td><%= singleClient.advancePayment %></td>
-                </tr>
+                
                 <% if(singleClient.emi) { %>
+                    <tr>
+                      <th>Advance paid amount</th>
+                      <td><%= singleClient.advancePayment %></td>
+                    </tr>
                     <tr>
                         <th>Number of Emi</th>
                         <% if(singleClient.duration == '3 Months') { %>
@@ -122,7 +173,7 @@
                 <% if(singleClient.paymentMode == 'Cheque') { %>
                     <tr>
                         <th>Cheque Date</th>
-                        <td><%= singleClient.chequeDate.toLocaleDateString() %></td>
+                        <td><%= singleClient.chequeDate.getDate() %>/<%= singleClient.chequeDate.getMonth() + 1 %>/<%= singleClient.chequeDate.getFullYear() %></td>
                     </tr>
                 <% } %>
                 <% if(singleClient.remarks !== '') { %>
@@ -353,13 +404,13 @@
                       <% if(singleClient.dueAmountsCleared1 == true){ %>
                         <td style="background-color: #ccc;"></td>
                       <% }else{ %>
-                        <td><%= singleClient.firstEmiDate.toLocaleDateString() %></td>
+                        <td><%= singleClient.firstEmiDate.getDate() %>/<%= singleClient.firstEmiDate.getMonth() + 1 %>/<%= singleClient.firstEmiDate.getFullYear() %></td>
                       <% } %>
                       <!-- Emi Date -->
               
                       <!-- First paid date -->
                       <% if(singleClient.firstPaidDate) { %>
-                        <td><%= singleClient.firstPaidDate.toLocaleDateString() %></td>
+                        <td><%= singleClient.firstPaidDate.getDate() %>/<%= singleClient.firstPaidDate.getMonth() + 1 %>/<%= singleClient.firstPaidDate.getFullYear() %></td>
                       <% }else{ %>
                         <td style="background-color: #ccc;"></td>
                       <% } %> 
@@ -370,7 +421,7 @@
                         <% if(singleClient.dueAmountsCleared1 == true){ %>
                             <td style="background-color: #ccc;"></td>
                         <% }else{ %>
-                          <td><%= singleClient.firstNextPaymentDate.toLocaleDateString() %></td>
+                            <td><%= singleClient.firstNextPaymentDate.getDate() %>/<%= singleClient.firstNextPaymentDate.getMonth() + 1 %>/<%= singleClient.firstNextPaymentDate.getFullYear() %></td>
                         <% } %>
                       <% }else{ %>
                         <td style="background-color: #ccc;"></td>
@@ -435,7 +486,7 @@
                       <% if(singleClient.dueAmountsCleared1){ %>
                         <td style="background-color: #ccc;"></td>
                       <% }else{ %>
-                        <td><%= singleClient.secondEmiDate.toLocaleDateString() %></td>
+                        <td><%= singleClient.secondEmiDate.getDate() %>/<%= singleClient.secondEmiDate.getMonth() + 1 %>/<%= singleClient.secondEmiDate.getFullYear() %></td>
                       <% } %>
                       <!-- Emi Date -->
               
@@ -444,7 +495,7 @@
                         <% if(singleClient.dueAmountsCleared1){ %>
                             <td style="background-color: #ccc;"></td>
                         <% }else{ %>
-                            <td><%= singleClient.secondPaidDate.toLocaleDateString() %></td>
+                            <td><%= singleClient.secondPaidDate.getDate() %>/<%= singleClient.secondPaidDate.getMonth() + 1 %>/<%= singleClient.secondPaidDate.getFullYear() %></td>
                         <% } %>
                       <% }else{ %>
                         <td style="background-color: #ccc;"></td>
@@ -457,7 +508,7 @@
                           <% if(singleClient.dueAmountsCleared2 || singleClient.dueAmountsCleared1){ %>
                             <td style="background-color: #ccc;"></td>
                           <% }else{ %>
-                            <td><%= singleClient.secondNextPaymentDate.toLocaleDateString() %></td>
+                            <td><%= singleClient.secondNextPaymentDate.getDate() %>/<%= singleClient.secondNextPaymentDate.getMonth() + 1 %>/<%= singleClient.secondNextPaymentDate.getFullYear() %></td>
                           <% } %>
                         <% }else{ %>
                           <td style="background-color: #ccc;"></td>
@@ -529,13 +580,13 @@
                       <% if(singleClient.dueAmountsCleared1 || singleClient.dueAmountsCleared2){ %>
                         <td style="background-color: #ccc;"></td>
                       <% }else{ %>
-                        <td><%= singleClient.thirdEmiDate.toLocaleDateString() %></td>
+                        <td><%= singleClient.thirdEmiDate.getDate() %>/<%= singleClient.thirdEmiDate.getMonth() + 1 %>/<%= singleClient.thirdEmiDate.getFullYear() %></td>
                       <% } %>
                       <!-- Emi Date -->
               
                       <!-- Third paid date -->
                       <% if(singleClient.thirdPaidDate) { %>
-                        <td><%= singleClient.thirdPaidDate.toLocaleDateString() %></td>
+                        <td><%= singleClient.thirdPaidDate.getDate() %>/<%= singleClient.thirdPaidDate.getMonth() + 1 %>/<%= singleClient.thirdPaidDate.getFullYear() %></td>
                       <% }else{ %>
                         <td style="background-color: #ccc;"></td>
                       <% } %> 
@@ -610,7 +661,7 @@
                         <% singleClient.services.forEach((service, index) => { %>
                             <tr style="background-color: #f1f1f1;">
                                 <td><%= index + 1 %></td>
-                                <td><%= new Date(service.DueServiceDate).toLocaleDateString() %></td>
+                                <td><%= new Date(service.DueServiceDate).getDate() %>/<%= new Date(service.DueServiceDate).getMonth() + 1 %>/<%= new Date(service.DueServiceDate).getFullYear() %></td>
                                
                                 <% if(service.ServiceStatus == "Pending"){ %>
                                   <td class="editable_cell"><%= service.ServiceStatus %>
@@ -627,13 +678,13 @@
                                 
 
                                 <% if(service.ServicingDate !== ""){ %>
-                                  <td><%= new Date(service.ServicingDate).toLocaleDateString() %></td>
+                                  <td><%= new Date(service.ServicingDate).getDate() %>/<%= new Date(service.ServicingDate).getMonth() + 1 %>/<%= new Date(service.ServicingDate).getFullYear() %></td>
                                 <% }else{ %>
                                   <td></td>
                                 <% } %>
 
                                 <% if(service.ServiceNextDate !== ""){ %>
-                                  <td><%= new Date(service.ServiceNextDate).toLocaleDateString() %></td>
+                                  <td><%= new Date(service.ServiceNextDate).getDate() %>/<%= new Date(service.ServiceNextDate).getMonth() + 1 %>/<%= new Date(service.ServiceNextDate).getFullYear() %></td>
                                 <% }else{ %>
                                   <td></td>
                                 <% } %>

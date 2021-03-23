@@ -19,6 +19,8 @@
         <input type="number" class="filterTable" onkeyup="filterNumberTable(this, 'wpTable', 3)" placeholder="Search With Phone No">
       </div>
       <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
+
+      <!-- Add New Client Modal -->
             <div class="modal" id="modal">
               <div class="modal-head">
                 <h3>Add a client</h3>
@@ -108,15 +110,34 @@
                     <button type="submit">Add</button>
                 </form>
             </div>
-            <button class="downloadAsPdf"  onclick="downloadPageAsExcel('wpTable', 'totalSales')">Download table as excel <i class="far fa-file-excel"></i></button>
-            <button class="downloadAsPdf" onclick="downloadPageAsPdf('wpTable')">Download page as pdf <i class="far fa-file-pdf"></i></button>
-            <button onclick="printPageArea('printable')" class="downloadAsPdf">Print this page</button>
+      <!-- Add New Client Modal -->
+
+      <!-- Remark Modal -->
+        <div class="modal" id="updateRemarkModal">
+          <div class="modal-head">
+            <h3>Update remark</h3>
+            <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+          </div>
+          <form action="/updateRemark" method="POST">
+            <div>
+              <label for="remark">Enter a remark:</label>
+              <input type="remark" name="remark" />
+            </div>
+            <input type="hidden" name="id" required />
+            <button type="submit">Update</button>
+          </form>
+        </div>
+      <!-- Remark Modal -->
+
+      <button class="downloadAsPdf"  onclick="downloadPageAsExcel('wpTable', 'totalSales')">Download table as excel <i class="far fa-file-excel"></i></button>
+      <button class="downloadAsPdf" onclick="downloadPageAsPdf('wpTable')">Download page as pdf <i class="far fa-file-pdf"></i></button>
+      <button onclick="printPageArea('printable')" class="downloadAsPdf">Print this page</button> 
 
         <table class="wptable" id="wpTable">
             <tr>
               <th>Customer Id</th>
               <th>Customer name</th>
-              <th>Product name</th>
+              <th>Product name</th> 
               <th>Ph Number</th>
               <th>Address</th>
               <th>Installation Date</th>
@@ -138,11 +159,11 @@
                       <button type="submit" class="edit"><i class="fas fa-eye"></i></button>
                     </form>
                   </td>
-                  <td><%= client.customerName %></td>
+                  <td><%= client.customerName %></td> 
                   <td><%= client.productName %></td>
                   <td><%= client.phoneNumber %></td>
                   <td><%= client.address %></td>
-                  <td><%= client.installationDate.toLocaleDateString() %></td>
+                  <td><%= client.installationDate.getDate() %>/<%= client.installationDate.getMonth() + 1 %>/<%= client.installationDate.getFullYear() %></td>
                   <td><%= client.installationExecutive %></td>
                   <td>&#8377; <%= client.amount %></td>
                   <td><%= client.paymentMode %></td>
@@ -193,11 +214,11 @@
                           <td style="background-color: #ccc;"></td>
                         <% }else{ %>
                             <% if(client.secondPaymentStatus=="Paid"){ %>
-                              <td><%= client.secondNextPaymentDate.toLocaleDateString() %></td>
-                            <% }else if(client.firstPaymentStatus=="Paid"){ %>
-                              <td><%= client.firstNextPaymentDate.toLocaleDateString() %></td>
+                              <td><%= client.secondNextPaymentDate.getDate() %>/<%= client.secondNextPaymentDate.getMonth() + 1 %>/<%= client.secondNextPaymentDate.getFullYear() %></td>
+                              <% }else if(client.firstPaymentStatus=="Paid"){ %>
+                                <td><%= client.firstNextPaymentDate.getDate() %>/<%= client.firstNextPaymentDate.getMonth() + 1 %>/<%= client.firstNextPaymentDate.getFullYear() %></td>
                             <% }else{ %>
-                              <td><%= client.firstNextPaymentDate.toLocaleDateString() %></td>
+                              <td><%= client.firstNextPaymentDate.getDate() %>/<%= client.firstNextPaymentDate.getMonth() + 1 %>/<%= client.firstNextPaymentDate.getFullYear() %></td>
                             <% } %>
                         <% } %>
                         <!-- if 2 months -->
@@ -206,9 +227,9 @@
                           <td style="background-color: #ccc;"></td>
                         <% }else{ %>
                           <% if(client.firstPaymentStatus=="Paid"){ %>
-                            <td><%= client.firstNextPaymentDate.toLocaleDateString() %></td>
+                            <td><%= client.firstNextPaymentDate.getDate() %>/<%= client.firstNextPaymentDate.getMonth() + 1 %>/<%= client.firstNextPaymentDate.getFullYear() %></td>
                           <% }else{ %>
-                            <td><%= client.firstNextPaymentDate.toLocaleDateString() %></td>
+                            <td><%= client.firstNextPaymentDate.getDate() %>/<%= client.firstNextPaymentDate.getMonth() + 1 %>/<%= client.firstNextPaymentDate.getFullYear() %></td>
                           <% } %>
                         <% } %>
                       <% } %>
@@ -220,9 +241,13 @@
                   <!-- Next Emi Date -->
                   
                   <% if(client.remarks !== "") { %>
-                    <td><%= client.remarks %></td>
+                    <td class="editable_cell" style="padding-right: 20px; font-size: 11px"><%= client.remarks %>
+                      <a href="javascript:void(0)" class="edit remarkBtns"><input type="hidden" value="<%= client._id %>"><i class="fas fa-edit"></i></a>
+                    </td>
                   <% }else{ %>
-                    <td style="background-color: #ccc;"></td>
+                    <td class="editable_cell" style="padding-right: 20px; background-color: #ccc;">
+                      <a href="javascript:void(0)" class="edit remarkBtns"><input type="hidden" value="<%= client._id %>"><i class="fas fa-edit"></i></a>
+                    </td>
                   <% } %>
 
                   <td class="action-cell">

@@ -96,13 +96,71 @@ const postWaterPurifier = async (req, res) => {
         duration 
     } = req.body;
 
-    if(emi == "on"){
-        if(advAmount == ''){
-            req.flash("error_msg", "Advance Amount is mandatory");
+    const foundClients = await Client.find({});
+    var duplicateNumberFound = false;
+    
+    
+    foundClients.forEach(async(cli) => {
+        if(cli.phoneNumber == phNumber){
+            req.flash("error_msg", "A client with same phone number is already exist");
+            duplicateNumberFound = true;
             res.redirect('/wpTotalSales');
+        }
+    });
+
+    if(!duplicateNumberFound){
+        if(emi == "on"){
+            if(advAmount == ''){
+                req.flash("error_msg", "Advance Amount is mandatory");
+                res.redirect('/wpTotalSales');
+            }else{
+                let boolEmi = true;
+                emi == 'on' ? boolEmi = true : boolEmi = false;
+
+                const newClient = {
+                    customerId: custId,
+                    creatorName: creatorName,
+                    customerName: custName,
+                    productName: prodName,
+                    reference: reference,
+                    phoneNumber: phNumber, 
+                    alternatePhoneNumber: phNumber1,
+                    address: address,
+                    installationDate: instDate,
+                    installationExecutive: instExec,
+                    amount: amount,
+                    paymentMode: paymentMode,
+                    accNo: accNo,
+                    branchName: branchName,
+                    chequeNo: chequeNo,
+                    chequeDate: chequeDate,
+                    remarks: remarks,
+                    emi: boolEmi, 
+                    firstNextPaymentDate: moment(instDate).add(2, 'months').format(),
+                    firstEmiDate: moment(instDate).add(1, 'months').format(),
+                    secondEmiDate: moment(instDate).add(2, 'months').format(),
+                    thirdEmiDate: moment(instDate).add(3, 'months').format(),
+                    advancePayment: advAmount,
+                    duration: duration,
+                    nextDates: [moment(instDate).add(3, 'months').format()],
+                    services: [{
+                        DueServiceDate: moment(instDate).add(3, 'months').format(),
+                        ServiceStatus: "Pending",
+                        ServicingDate: "",
+                        ServiceNextDate: "",
+                        ServicingExecutive: '',
+                        ServicingRemark: '',
+                    }],
+                }
+
+                const addClient = new Client(newClient);
+                await addClient.save();
+                if (req.body) res.redirect('/wpTotalSales')
+            }
         }else{
             let boolEmi = true;
             emi == 'on' ? boolEmi = true : boolEmi = false;
+
 
             const newClient = {
                 customerId: custId,
@@ -144,49 +202,6 @@ const postWaterPurifier = async (req, res) => {
             await addClient.save();
             if (req.body) res.redirect('/wpTotalSales')
         }
-    }else{
-        let boolEmi = true;
-        emi == 'on' ? boolEmi = true : boolEmi = false;
-
-        const newClient = {
-            customerId: custId,
-            creatorName: creatorName,
-            customerName: custName,
-            productName: prodName,
-            reference: reference,
-            phoneNumber: phNumber, 
-            alternatePhoneNumber: phNumber1,
-            address: address,
-            installationDate: instDate,
-            installationExecutive: instExec,
-            amount: amount,
-            paymentMode: paymentMode,
-            accNo: accNo,
-            branchName: branchName,
-            chequeNo: chequeNo,
-            chequeDate: chequeDate,
-            remarks: remarks,
-            emi: boolEmi, 
-            firstNextPaymentDate: moment(instDate).add(2, 'months').format(),
-            firstEmiDate: moment(instDate).add(1, 'months').format(),
-            secondEmiDate: moment(instDate).add(2, 'months').format(),
-            thirdEmiDate: moment(instDate).add(3, 'months').format(),
-            advancePayment: advAmount,
-            duration: duration,
-            nextDates: [moment(instDate).add(3, 'months').format()],
-            services: [{
-                DueServiceDate: moment(instDate).add(3, 'months').format(),
-                ServiceStatus: "Pending",
-                ServicingDate: "",
-                ServiceNextDate: "",
-                ServicingExecutive: '',
-                ServicingRemark: '',
-            }],
-        }
-
-        const addClient = new Client(newClient);
-        await addClient.save();
-        if (req.body) res.redirect('/wpTotalSales')
     }
 }
 
@@ -602,6 +617,34 @@ const postDeleteExpense = async (req, res) => {
     res.redirect('/wpExpenses');
 }
 
+const postUpdateRemark = async (req, res) => {
+    const {remark, id} = req.body; 
+    const client = await Client.findById(id);
+    const d = new Date();
+    const now = d.toLocaleDateString();
+    if(client.remarks == ''){
+        client.remarks = '('+now+')'+remark;
+    }else{
+        client.remarks = '('+now+')'+remark+'. '+client.remarks;
+    }
+    await client.save();
+    res.redirect('/wpTotalSales');
+}
+
+const postEditClient = async (req, res) => {
+    const {id, custName, prodName, reference, phNumber, phNumber1, address, instExec, amount} = req.body;
+    const client = await Client.findById(id);
+    client.customerName = custName;
+    client.productName = prodName;
+    client.reference = reference;
+    client.phoneNumber = phNumber;
+    client.alternatePhoneNumber = phNumber1;
+    client.address = address;
+    client.installationExecutive = instExec;
+    client.amount = amount;
+    await client.save();
+    res.redirect('/wpTotalSales');
+}
 
 
 module.exports = {
@@ -635,4 +678,6 @@ module.exports = {
     postDeleteStockOutward,
     postDeleteStockInward,
     postDeleteExpense,
+    postUpdateRemark,
+    postEditClient,
 };

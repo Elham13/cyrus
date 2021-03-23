@@ -16,6 +16,7 @@
 body {
   font-family: roboto;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 /* ------------------------------------------------------------Header--------------------------------------------------------------------- */
@@ -906,7 +907,7 @@ ul.breadcrumb li a:hover {
 /*------------------------------------------------------------ Show Single Customer -----------------------------------------------------------------------  */
 .donwload-page-btn-wrapper{
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-bottom: 20px;
 }
 .downloadAsPdf {

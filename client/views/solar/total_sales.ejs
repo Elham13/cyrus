@@ -18,6 +18,7 @@
         <input type="number" class="filterTable" onkeyup="filterNumberTable(this, 'wpTable', 3)" placeholder="Search With Phone No">
       </div>
       <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
+            <!-- Add new Client Modal -->
             <div class="modal" id="modal">
               <div class="modal-head">
                 <h3>Add a client</h3>
@@ -109,6 +110,26 @@
                     <button type="submit">Add</button>
                 </form>
             </div>
+            <!-- Add new Client Modal -->
+
+            <!-- Remark Modal -->
+            <div class="modal" id="updateRemarkModal">
+              <div class="modal-head">
+                <h3>Update remark</h3>
+                <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+              </div>
+              <form action="/solarUpdateRemark" method="POST">
+                <div>
+                  <label for="remark">Enter a remark:</label>
+                  <input type="remark" name="remark" />
+                </div>
+                <input type="hidden" name="id" required />
+                <button type="submit">Update</button>
+              </form>
+            </div>
+          <!-- Remark Modal -->
+
+
             <button class="downloadAsPdf"  onclick="downloadPageAsExcel('wpTable', 'totalSales')">Download table as excel <i class="far fa-file-excel"></i></button>
             <button class="downloadAsPdf" onclick="downloadPageAsPdf('wpTable')">Download page as pdf <i class="far fa-file-pdf"></i></button>
             <button onclick="printPageArea('printable')" class="downloadAsPdf">Print this page</button>
@@ -184,7 +205,7 @@
                   <% }else{ %>
                     <td style="background-color: #ccc;"></td>
                   <% } %>
-                  <!-- Emi Status -->
+                  <!-- Emi Status --> 
 
                   <!-- Next Payment Date -->
                   <% if(client.emi){ %>
@@ -221,9 +242,13 @@
                   <!-- Next Payment Date -->
                   
                   <% if(client.remarks !== "") { %>
-                    <td><%= client.remarks %></td>
+                    <td class="editable_cell" style="padding-right: 20px; font-size: 11px"><%= client.remarks %>
+                      <a href="javascript:void(0)" class="edit remarkBtns"><input type="hidden" value="<%= client._id %>"><i class="fas fa-edit"></i></a>
+                    </td>
                   <% }else{ %>
-                    <td style="background-color: #ccc;"></td>
+                    <td class="editable_cell" style="padding-right: 20px; background-color: #ccc;">
+                      <a href="javascript:void(0)" class="edit remarkBtns"><input type="hidden" value="<%= client._id %>"><i class="fas fa-edit"></i></a>
+                    </td>
                   <% } %>
 
                   <td class="action-cell">

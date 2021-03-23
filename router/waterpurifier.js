@@ -31,6 +31,8 @@ const {
     postDeleteStockOutward,
     postDeleteStockInward,
     postDeleteExpense,
+    postUpdateRemark,
+    postEditClient,
     getTotalSales,
     getTelecaling,
     getStockReport,
@@ -60,6 +62,8 @@ const {
     postSolarDeleteTelecaling,
     postSolarDeleteStockInward,
     postSolarDeleteStockOutward,
+    postSolarUpdateRemark,
+    postSolarEditClient,
 } = require('./solarroutes');
 
 const {
@@ -104,7 +108,7 @@ router.post('/checkEMI', postCheciEMI);
 router.post('/firstPyament', postFirstPayment);
 router.post('/secondPayment', postSecondPayment);
 router.post('/thirdPyament', postThirPayment);
-router.post('/showSingleCust', postShowSingleCust);
+router.post('/showSingleCust', ensureAuthenticated, checkRole('Admin', ''), postShowSingleCust);
 router.post('/updateServices', postUpdateServices);
 router.post('/editRemark', posteditRemark);
 router.post('/editStatus', posteditStatus); 
@@ -119,6 +123,9 @@ router.post('/editService1', postEditService);
 router.post('/deleteStockOutward', postDeleteStockOutward);
 router.post('/deleteStockInward', postDeleteStockInward);
 router.post('/deleteExpense', postDeleteExpense);
+router.post('/updateRemark', postUpdateRemark);
+router.post('/editClient', postEditClient);
+
 
 router.get('/solarTotalSales', ensureAuthenticated, checkRole('Admins','Sales Departments'), getSolarTotalSales);
 router.get('/solarTelecaling', ensureAuthenticated, checkRole('Admins','Telecalings Departments'), getSolarTelecaling);
@@ -130,7 +137,7 @@ router.post('/solarTelecaling', postSolarTelecaling);
 router.post('/solarExpenses', postSolarExpense);
 router.post('/solarStockInward', postSolarStockInward);
 router.post('/solarStockOutward', postSolarStockOutward); 
-router.post('/showSolarSingleCust', postShowSolarSingleCust);
+router.post('/showSolarSingleCust', ensureAuthenticated, checkRole('Admins', ''), postShowSolarSingleCust);
 router.post('/solarEditRemark', postSolarEditRemark);
 router.post('/solarEditStatus', postSolarEditStatus);
 router.post('/solarAddMoreProduct', postSolarAddMoreProduct);
@@ -140,6 +147,8 @@ router.post('/solarEditService', postSolarEditService);
 router.post('/solarDeleteTelecaling', postSolarDeleteTelecaling);
 router.post('/solarDeleteStockInward', postSolarDeleteStockInward);
 router.post('/solarDeleteStockOutward', postSolarDeleteStockOutward);
+router.post('/solarUpdateRemark', postSolarUpdateRemark);
+router.post('/solarEditClient', postSolarEditClient);
 
 router.get('/rsPropertiesInHand', ensureAuthenticated, checkRole('Admin',''), getRSPropertiesInHand)
 router.get('/rsPropertiesSales', ensureAuthenticated, checkRole('Admin',''), getRSPropertiesSales)
