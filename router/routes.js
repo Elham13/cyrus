@@ -45,8 +45,12 @@ const getRealEstate = (req, res) => {
 
 //------------------------------------------------------------------ Admin ---------------------------------------------------------------------//
 const getAdmin = async (req, res) => {
+    let user = null;
+    if(req.user){
+        user = req.user
+    }
     const users = await UsersModal.find({});
-    res.render('admin', {users: users, user: req.user})
+    res.render('admin', {users: users, user: user});
 }
 //------------------------------------------------------------------ Admin ---------------------------------------------------------------------//
 

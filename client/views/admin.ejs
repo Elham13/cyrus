@@ -118,7 +118,7 @@
           <td><%= index + 1 %></td>
           <td><%= user1.name %></td>
           <% if(user1.email){ %>
-            <td><%= user1.email %></td>
+            <td><%= user1.email %></td> 
           <% }else{ %>
             <td style="background-color: #888"></td>
           <% } %>
@@ -132,11 +132,16 @@
           <td>
             <a href="javascript:void(0)" class="eidtBtn"><i class="fas fa-edit"></i></a>
 
-            <% if(user1.role !== "Super Admin"){ %>
-            <form action="/romoveUser" method="POST" style="display: inline;">
+            <% if(user1.role == "Super Admin"){ %>
+            <form action="/romoveUser" method="POST" style="display: none;">
               <input type="hidden" name="id" class="userIds" value="<%= user1._id %>">
               <button class="deleteBtn"><i class="fas fa-trash"></i></button>
             </form>
+            <% }else{ %>
+              <form action="/romoveUser" method="POST" style="display: inline;">
+                <input type="hidden" name="id" class="userIds" value="<%= user1._id %>">
+                <button class="deleteBtn"><i class="fas fa-trash"></i></button>
+              </form>
             <% } %>
           </td>
         </tr>
