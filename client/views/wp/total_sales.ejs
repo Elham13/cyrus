@@ -154,8 +154,7 @@
               <% clients.forEach((client, index) => { %>
                 <tr>
                   <td class="editable_cell" style="padding-right: 20px"><%= client.customerId %>
-                    <form action="/showSingleCust" method="POST">
-                      <input type="hidden" name="id" value="<%= client._id %>">
+                    <form action="/showSingleCust/<%= client._id %>" method="GET">
                       <button type="submit" class="edit"><i class="fas fa-eye"></i></button>
                     </form>
                   </td>

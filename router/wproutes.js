@@ -64,12 +64,14 @@ const getExpenses = async (req, res) => {
     res.render('wp/expenses', {expenses: Expenses, user: user});
 }
 
-const getShowSingleCust = (req, res) => {
+const getShowSingleCust = async (req, res) => {
+    const {id} = req.params;
     let user = null;
     if(req.user){
-        user = req.user;
+        user = req.user 
     }
-    res.render('wp/single_customer', {singleClient: null, user: user})
+    const client = await Client.findById(id);
+    res.render('wp/single_customer', {singleClient: client, user: user});
 }
 
 const postWaterPurifier = async (req, res) => {
@@ -265,10 +267,8 @@ const postStockOutwards = async (req, res) => {
     res.redirect('/wpStockReport');
 }
 
-
 const postServicePending = async (req, res) => {
     const {id, status, serviceRemark, serviceExecutive} = req.body;
-    console.log(req.body);
     const customer = await Client.findById(id);
     customer.serviceStatus = status;
     const latestDate = new Date(customer.nextDates[customer.nextDates.length - 1])
@@ -279,7 +279,6 @@ const postServicePending = async (req, res) => {
     await customer.save();
     res.redirect('/wpServicesPending');
 }
-
 
 const postExpenses = async (req, res) => {
     const { date, creatorName, execName, amount, purpose, remark, paymentMode } = req.body;
@@ -336,16 +335,6 @@ const postThirPayment = async (req, res) => {
     client.thirdPaidDate = paidDate;
     await client.save();
     res.redirect('/wpTotalSales');
-}
-
-const postShowSingleCust = async (req, res) => {
-    const {id} = req.body;
-    let user = null;
-    if(req.user){
-        user = req.user
-    }
-    const client = await Client.findById(id);
-    res.render('wp/single_customer', {singleClient: client, user: user});
 }
 
 const postUpdateServices = async (req, res) => {
@@ -435,8 +424,6 @@ const postEmiPaymentStatus = async (req, res) => {
     secondPaidDate = new Date(secondPaidDate);
     thirdPaidDate = new Date(thirdPaidDate);
 
-    console.log(req.body);
-    
     if(firstPaymentStatus){
         if(firstPaymentStatus == 'Paid'){
             if(customer.dueAmountsCleared1){
@@ -454,7 +441,7 @@ const postEmiPaymentStatus = async (req, res) => {
             customer.firstNextPaymentDate = moment(customer.installationDate).add(2, "months").format();
             customer.firstPaymentMode = firstPaymentMode;
             await customer.save();
-            res.redirect('/wpTotalSales')
+            res.redirect(`/showSingleCust/${id}`)
         }
     }
     if(secondPaymentStatus){
@@ -473,7 +460,7 @@ const postEmiPaymentStatus = async (req, res) => {
             customer.secondNextPaymentDate = moment(customer.installationDate).add(3, "months").format();
             customer.secondPaymentMode = secondPaymentMode;
             await customer.save();
-            res.redirect('/wpTotalSales')
+            res.redirect(`/showSingleCust/${id}`)
         }
     }
     if(thirdPaymentStatus){
@@ -488,19 +475,11 @@ const postEmiPaymentStatus = async (req, res) => {
             customer.thirdPaidDate = thirdPaidDateOptional !== "" ? thirdPaidDateOptional : thirdPaidDate;
             customer.thirdPaymentMode = thirdPaymentMode;
             await customer.save();
-            res.redirect('/wpTotalSales')
+            res.redirect(`/showSingleCust/${id}`)
         }
     }
     
 } 
-
-const postAddService = async (req, res) => {
-    const {id, serviceDate, serviceStatus, serviceExec, serviceRemark, instDate} = req.body;
-
-    const customer = await Client.findById(id);
-    console.log(req.body);
-    
-}
 
 const postDeleteService = async (req, res) => {
     const {id, index} = req.body;
@@ -540,7 +519,6 @@ const postDeleteTelecaling = async (req, res) => {
 const postEditService = async (req, res) => {
     const {id, status, serviceExec, serviceDate, remark} = req.body;
     const customer = await Client.findById(id);
-    console.log(req.originalUrl)
     if(customer.services.length == 1){
         const newService = {
             DueServiceDate: moment(customer.services[0].DueServiceDate).format(),
@@ -563,7 +541,7 @@ const postEditService = async (req, res) => {
         customer.services = [...customer.services, newService2];
         await customer.save();
         if(req.originalUrl == "/editService"){
-            res.redirect('/wpTotalSales');
+            res.redirect(`/showSingleCust/${id}`);
         }
         if(req.originalUrl == "/editService1"){
             res.redirect('/wpServicesPending')
@@ -590,7 +568,7 @@ const postEditService = async (req, res) => {
         customer.services = [...customer.services, newService2];
         await customer.save();
         if(req.originalUrl == "/editService"){
-            res.redirect('/wpTotalSales');
+            res.redirect(`/showSingleCust/${id}`);
         }
         if(req.originalUrl == "/editService1"){
             res.redirect('/wpServicesPending')
@@ -612,6 +590,7 @@ const postDeleteStockInward = async (req, res) => {
     await StockInwards.findByIdAndDelete(req.body.id);
     res.redirect('/wpStockReport');
 }
+
 const postDeleteExpense = async (req, res) => {
     await ExpensesModal.findByIdAndDelete(req.body.id);
     res.redirect('/wpExpenses');
@@ -643,7 +622,7 @@ const postEditClient = async (req, res) => {
     client.installationExecutive = instExec;
     client.amount = amount;
     await client.save();
-    res.redirect('/wpTotalSales');
+    res.redirect(`/showSingleCust/${id}`);
 }
 
 
@@ -664,13 +643,11 @@ module.exports = {
     postFirstPayment,
     postSecondPayment,
     postThirPayment,
-    postShowSingleCust,
     postUpdateServices,
     posteditRemark,
     posteditStatus,
     postAddMoreProduct,
     postEmiPaymentStatus,
-    postAddService,
     postDeleteService,
     postDeletClient,
     postDeleteTelecaling,

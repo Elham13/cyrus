@@ -45,6 +45,16 @@ const getSolarTelecaling = async(req, res) => {
     res.render('solar/telecaling_data', {prospects: TelecalingData, user: user});
 }
 
+const getShowSolarSingleCust = async (req, res) => {
+    const {id} = req.params;
+    let user = null;
+    if(req.user){
+        user = req.user
+    }
+    const client = await SolarTotalSales.findById(id);
+    res.render('solar/single_customer', {singleClient: client, user: user});
+}
+
 const postSolarExpense = async (req, res) => {
     const { date, creatorName, execName, amount, purpose, remark, paymentMode } = req.body; 
     const newExpense = {
@@ -199,16 +209,6 @@ const postSolarTelecaling = async (req, res) => {
     res.redirect('/solarTelecaling');
 }
 
-const postShowSolarSingleCust = async (req, res) => {
-    const {id} = req.body;
-    let user = null;
-    if(req.user){
-        user = req.user
-    }
-    const client = await SolarTotalSales.findById(id);
-    res.render('solar/single_customer', {singleClient: client, user: user});
-}
-
 const postSolarEditRemark = async (req, res) => {
     const {id, remark} = req.body;
     const telecalingDate = await SolarTelecalingData.findById(id);
@@ -295,7 +295,7 @@ const postSolarEmiPaymentStatus = async (req, res) => {
             customer.firstNextPaymentDate = moment(customer.installationDate).add(2, "months").format();
             customer.firstPaymentMode = firstPaymentMode;
             await customer.save();
-            res.redirect('/solarTotalSales')
+            res.redirect(`/showSolarSingleCust/${id}`)
         }
     }
     if(secondPaymentStatus){
@@ -314,7 +314,7 @@ const postSolarEmiPaymentStatus = async (req, res) => {
             customer.secondNextPaymentDate = moment(customer.installationDate).add(3, "months").format();
             customer.secondPaymentMode = secondPaymentMode;
             await customer.save();
-            res.redirect('/solarTotalSales')
+            res.redirect(`/showSolarSingleCust/${id}`)
         }
     }
     if(thirdPaymentStatus){
@@ -329,7 +329,7 @@ const postSolarEmiPaymentStatus = async (req, res) => {
             customer.thirdPaidDate = thirdPaidDateOptional !== "" ? thirdPaidDateOptional : thirdPaidDate;
             customer.thirdPaymentMode = thirdPaymentMode;
             await customer.save();
-            res.redirect('/solarTotalSales')
+            res.redirect(`/showSolarSingleCust/${id}`)
         }
     }
     
@@ -344,7 +344,6 @@ const postSolarDeletClient = async (req, res) => {
 const postSolarEditService = async (req, res) => {
     const {id, status, serviceExec, serviceDate, remark} = req.body;
     const customer = await SolarTotalSales.findById(id);
-    console.log(req.originalUrl)
     if(customer.services.length == 1){
         const newService = {
             DueServiceDate: moment(customer.services[0].DueServiceDate).format(),
@@ -366,7 +365,7 @@ const postSolarEditService = async (req, res) => {
         }
         customer.services = [...customer.services, newService2];
         await customer.save();
-        res.redirect('/solarTotalSales');
+        res.redirect(`/showSolarSingleCust/${id}`);
     }else{
         const newService = {
             DueServiceDate: moment(customer.services[customer.services.length - 2].DueServiceDate).add(3, 'months').format(),
@@ -388,7 +387,7 @@ const postSolarEditService = async (req, res) => {
         }
         customer.services = [...customer.services, newService2];
         await customer.save();
-        res.redirect('/solarTotalSales');
+        res.redirect(`/showSolarSingleCust/${id}`);
     }
 }
 
@@ -438,7 +437,7 @@ const postSolarEditClient = async (req, res) => {
     client.installationExecutive = instExec;
     client.amount = amount;
     await client.save();
-    res.redirect('/solarTotalSales');
+    res.redirect(`/showSolarSingleCust/${id}`);
 }
 
 module.exports = {
@@ -446,13 +445,13 @@ module.exports = {
     getSolarTelecaling,
     getSolarExpenses,
     getSolarStockReports,
+    getShowSolarSingleCust,
     postSolarExpense,
     postSolarStockInward,
     postSolarStockOutward,
     postTotalSales,
     postSolarCehckEmi,
     postSolarTelecaling,
-    postShowSolarSingleCust,
     postSolarEditRemark,
     postSolarEditStatus,
     postSolarAddMoreProduct,

@@ -351,6 +351,7 @@ const controlDropDown = () => {
 const customEditModal = (rows, modal) => {
   const editRow = document.querySelectorAll(rows);
   const editModal = document.getElementById(modal);
+  const closeBtns = document.querySelectorAll('.close');
 
   if(editRow.length){
     for(let btn of editRow){
@@ -366,6 +367,14 @@ const customEditModal = (rows, modal) => {
         editModal.lastElementChild.children[2].value = btn.previousElementSibling.previousElementSibling.previousElementSibling.value;
       });
     }
+  }
+
+  for(let btn of closeBtns){
+    btn.addEventListener('click', () => {
+      editModal.style.top = '-150%';
+      editModal.style.opacity = '0';
+      editModal.style.zIndex = '0';
+    });
   }
 }
 
@@ -389,10 +398,7 @@ const showOnRoleSelection = () => {
 const init = () => {
   const path = window.location.pathname;
 
-  if(path=='/checkEMI' || path=="/solarCheckEMI"){
-    emiThings();
-  }
-  if(path=='/showSingleCust' || path=="/showSolarSingleCust"){
+  if(path.indexOf('showSingleCust') > - 1 || path.indexOf("showSolarSingleCust") > -1){
     const clientEmi = document.getElementById('clientEmi');
     downloadPageAsPdf();
     if(clientEmi.value == 'true'){
@@ -401,6 +407,7 @@ const init = () => {
     customEditModal('.editSerivceStatus', 'editRowModal');
     hideAndShowCustomModal(document.querySelectorAll('.singleClientUpdateBtn'), document.getElementById('singleClientUpdateModal'));
   }
+
   if(path=='/admin'){
     toggleModal();
     toggleUpdateModal();
