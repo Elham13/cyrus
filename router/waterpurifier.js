@@ -44,9 +44,10 @@ const {
     getSolarTotalSales,
     getSolarTelecaling,
     getSolarExpenses,
-    postSolarExpense,
+    getSolarServicesPending,
     getSolarStockReports,
     getShowSolarSingleCust,
+    postSolarExpense,
     postSolarStockInward,
     postSolarStockOutward,
     postTotalSales,
@@ -64,6 +65,7 @@ const {
     postSolarUpdateRemark,
     postSolarEditClient,
     postSolarAddSell,
+    postSolarDeleteService,
 } = require('./solarroutes');
 
 const {
@@ -92,6 +94,12 @@ router.get('/contactUs', getContactUs);
 router.get('/aboutUs', getAboutUs);
 router.post('/contactUs', postContactUs);
 
+// router.get('/wpTotalSales', getTotalSales);
+// router.get('/wpTelecaling', getTelecaling);
+// router.get('/wpStockReport', getStockReport);
+// router.get('/wpServicesPending', getServicesPending);
+// router.get('/wpExpenses', getExpenses);
+// router.get('/showSingleCust/:id',  getShowSingleCust);
 router.get('/wpTotalSales', ensureAuthenticated, checkRole('Admin','Sales Department'), getTotalSales);
 router.get('/wpTelecaling', ensureAuthenticated, checkRole('Admin','Telecalings Department'), getTelecaling);
 router.get('/wpStockReport', ensureAuthenticated, checkRole('Admin','Stocks Department'), getStockReport);
@@ -126,10 +134,17 @@ router.post('/editClient', postEditClient);
 router.post('/addSell', postAddSell);
 
 
+// router.get('/solarTotalSales', getSolarTotalSales);
+// router.get('/solarTelecaling', getSolarTelecaling);
+// router.get('/solarExpenses',  getSolarExpenses);
+// router.get('/solarStockReports',  getSolarStockReports);
+// router.get('/solarServicesPending', getSolarServicesPending);
+// router.get('/showSolarSingleCust/:id', getShowSolarSingleCust);
 router.get('/solarTotalSales', ensureAuthenticated, checkRole('Admins','Sales Departments'), getSolarTotalSales);
 router.get('/solarTelecaling', ensureAuthenticated, checkRole('Admins','Telecalings Departments'), getSolarTelecaling);
 router.get('/solarExpenses', ensureAuthenticated, checkRole('Admins',''), getSolarExpenses);
 router.get('/solarStockReports', ensureAuthenticated, checkRole('Admins','Stocks Departments'),  getSolarStockReports);
+router.get('/solarServicesPending', ensureAuthenticated, checkRole('Admins','Services Departments'), getSolarServicesPending);
 router.get('/showSolarSingleCust/:id', ensureAuthenticated, checkRole('Admins', ''), getShowSolarSingleCust);
 router.post('/totalSales', postTotalSales);
 router.post('/solarCheckEmi', postSolarCehckEmi);
@@ -143,12 +158,14 @@ router.post('/solarAddMoreProduct', postSolarAddMoreProduct);
 router.post('/solarEmiPaymentStatus', postSolarEmiPaymentStatus)
 router.post('/solarDeletClient', postSolarDeletClient);
 router.post('/solarEditService', postSolarEditService);
+router.post('/solarEditService1', postSolarEditService);
 router.post('/solarDeleteTelecaling', postSolarDeleteTelecaling);
 router.post('/solarDeleteStockInward', postSolarDeleteStockInward);
 router.post('/solarDeleteStockOutward', postSolarDeleteStockOutward);
 router.post('/solarUpdateRemark', postSolarUpdateRemark);
 router.post('/solarEditClient', postSolarEditClient);
 router.post('/solarAddSell', postSolarAddSell);
+router.post('/solarDeleteService', postSolarDeleteService);
 
 router.get('/rsPropertiesInHand', ensureAuthenticated, checkRole('Admin',''), getRSPropertiesInHand)
 router.get('/rsPropertiesSales', ensureAuthenticated, checkRole('Admin',''), getRSPropertiesSales)

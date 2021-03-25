@@ -3,7 +3,7 @@
 <div class="wp-wrapper"> 
   <ul class="breadcrumb">
     <li><a href="/">Home</a></li>
-    <li><a href="/wp">Water Purifier</a></li>
+    <li><a href="/solar">Distribution</a></li>
     <li>Number of services pending</li>
 </ul>
     <div class="wp-inner" id="printable">
@@ -20,7 +20,7 @@
                 <h3>No of pending services form</h3>
                 <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
               </div>               
-                <form action="/editService1" method="POST">
+                <form action="/solarEditService1" method="POST">
                   <div>
                     <label for="status">Change Status <span>*</span></label>
                     <select name="status" required>
@@ -116,7 +116,7 @@
 
                         <% if(service.services.length !== 1 && ind+1 !== service.services.length){ %>
                           <td class="action-cell" rowspan="3">
-                            <form action="/deleteService" method="POST">
+                            <form action="/solarDeleteService" method="POST">
                                 <input type="hidden" name="id" value="<%= service._id%>">
                                 <input type="hidden" name="index" value="<%= ind %>">
                                 <button title="Delete" class="delete-row"><i class="fas fa-trash"></i></button>

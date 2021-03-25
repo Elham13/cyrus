@@ -55,6 +55,7 @@ const getServicesPending = async (req, res) => {
     }
     res.render('wp/no_of_services_pending', {user: user, clients: client});
 }
+
 const getExpenses = async (req, res) => {
     const Expenses = await ExpensesModal.find({});
     let user = null;
@@ -485,22 +486,6 @@ const postDeleteService = async (req, res) => {
     const {id, index} = req.body;
     const customer = await Client.findById(id);
 
-    // for(let i=0; i<customer.services.length; i++){
-    //     if(i >= index){
-    //             // The Very Last Service
-    //         if(i == customer.services.length - 1){
-    //             customer.services[i].DueServiceDate = moment(customer.services[i - 1].DueServiceDate).add(3, 'months');
-    //             customer.services[i].ServiceStatus = "Pending";
-    //             customer.services[i].ServicingDate = "";
-    //             customer.services[i].ServicingExecutive = "";
-    //             customer.services[i].ServicingRemark = "";
-    //             await customer.save();
-    //         }else{
-    //             customer.services[i].DueServiceDate = moment(customer.services[i].DueServiceDate).subtract(3, 'months').format();
-
-    //         }
-    //     }
-    // }
     customer.services.splice(index, 1);
     await customer.save();
     res.redirect('/wpServicesPending');
@@ -519,7 +504,7 @@ const postDeleteTelecaling = async (req, res) => {
 const postEditService = async (req, res) => {
     const {id, status, serviceExec, serviceDate, remark} = req.body;
     const customer = await Client.findById(id);
-    if(customer.services.length == 1){
+    if(customer.services.length == 1){ 
         const newService = {
             DueServiceDate: moment(customer.services[0].DueServiceDate).format(),
             ServiceStatus: status,

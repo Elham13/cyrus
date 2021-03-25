@@ -453,7 +453,7 @@ const init = () => {
     hideAndShowModals();
     verntureNameInput();
   }
-  if(path=='/wpServicesPending'){
+  if(path=='/wpServicesPending' || path=='/solarServicesPending'){
     hideAndShowModals();
     hideAndShowCustomModal(document.querySelectorAll('.editServiceBtn'), document.getElementById('serviceStatusModal'));
   }

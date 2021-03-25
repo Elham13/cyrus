@@ -55,6 +55,27 @@ const getShowSolarSingleCust = async (req, res) => {
     res.render('solar/single_customer', {singleClient: client, user: user});
 }
 
+const getSolarServicesPending = async (req, res) => {
+    const client = await SolarTotalSales.find({});
+
+    client.forEach(customer => {
+        const next = new Date(customer.nextDates[customer.nextDates.length - 1]).toLocaleDateString();
+        const now = new Date().toLocaleDateString();
+        if(next == now){
+            const fun = async () => {
+                await Client.findOneAndUpdate({_id: customer._id}, {serviceStatus: "Pending"})
+            }
+            fun();
+        }
+    });
+
+    let user = null;
+    if(req.user){
+        user = req.user;
+    }
+    res.render('solar/service_pending', {user: user, clients: client});
+}
+
 const postSolarExpense = async (req, res) => {
     const { date, creatorName, execName, amount, purpose, remark, paymentMode } = req.body; 
     const newExpense = {
@@ -364,8 +385,13 @@ const postSolarEditService = async (req, res) => {
             ServicingRemark: "",
         }
         customer.services = [...customer.services, newService2];
-        await customer.save();
-        res.redirect(`/showSolarSingleCust/${id}`);
+        await customer.save(); 
+        if(req.originalUrl == "/solarEditService"){
+            res.redirect(`/showSolarSingleCust/${id}`);
+        }
+        if(req.originalUrl == "/solarEditService1"){
+            res.redirect(`/solarServicesPending`);
+        }
     }else{
         const newService = {
             DueServiceDate: moment(customer.services[customer.services.length - 2].DueServiceDate).add(3, 'months').format(),
@@ -387,7 +413,12 @@ const postSolarEditService = async (req, res) => {
         }
         customer.services = [...customer.services, newService2];
         await customer.save();
-        res.redirect(`/showSolarSingleCust/${id}`);
+        if(req.originalUrl == "/solarEditService"){
+            res.redirect(`/showSolarSingleCust/${id}`);
+        }
+        if(req.originalUrl == "/solarEditService1"){
+            res.redirect(`/solarServicesPending`);
+        }
     }
 }
 
@@ -459,11 +490,21 @@ const postSolarAddSell = async (req, res) => {
     res.redirect(`/showSolarSingleCust/${id}`)
 }
 
+const postSolarDeleteService = async (req, res) => {
+    const {id, index} = req.body;
+    const customer = await SolarTotalSales.findById(id);
+
+    customer.services.splice(index, 1);
+    await customer.save();
+    res.redirect('/solarServicesPending');
+}
+
 module.exports = {
     getSolarTotalSales,
     getSolarTelecaling,
     getSolarExpenses,
     getSolarStockReports,
+    getSolarServicesPending,
     getShowSolarSingleCust,
     postSolarExpense,
     postSolarStockInward,
@@ -483,4 +524,5 @@ module.exports = {
     postSolarUpdateRemark,
     postSolarEditClient,
     postSolarAddSell,
+    postSolarDeleteService,
 }

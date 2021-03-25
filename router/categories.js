@@ -28,14 +28,18 @@ router.delete('/logout',  logout);
 
 // Water purifier
 router.get('/wp', ensureAuthenticated, getWaterPurifier); 
+// router.get('/wp', getWaterPurifier); 
 
 // Water purifier
+// router.get('/solar', getSolar);
 router.get('/solar', ensureAuthenticated, getSolar);
 
 // Real estate
+// router.get('/re', getRealEstate);
 router.get('/re', ensureAuthenticated, getRealEstate);
 
 // Admin
+// router.get('/admin', getAdmin);
 router.get('/admin', ensureAuthenticated, checkRole('', ''), getAdmin);
 router.post('/romoveUser', postRemoveUser);
 router.post('/updateUser', postUpdateUser);
