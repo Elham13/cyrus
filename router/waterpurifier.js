@@ -31,6 +31,7 @@ const {
     postDeleteExpense,
     postUpdateRemark,
     postEditClient,
+    postAddSell,
     getTotalSales,
     getTelecaling,
     getStockReport,
@@ -62,6 +63,7 @@ const {
     postSolarDeleteStockOutward,
     postSolarUpdateRemark,
     postSolarEditClient,
+    postSolarAddSell,
 } = require('./solarroutes');
 
 const {
@@ -121,6 +123,7 @@ router.post('/deleteStockInward', postDeleteStockInward);
 router.post('/deleteExpense', postDeleteExpense);
 router.post('/updateRemark', postUpdateRemark);
 router.post('/editClient', postEditClient);
+router.post('/addSell', postAddSell);
 
 
 router.get('/solarTotalSales', ensureAuthenticated, checkRole('Admins','Sales Departments'), getSolarTotalSales);
@@ -145,6 +148,7 @@ router.post('/solarDeleteStockInward', postSolarDeleteStockInward);
 router.post('/solarDeleteStockOutward', postSolarDeleteStockOutward);
 router.post('/solarUpdateRemark', postSolarUpdateRemark);
 router.post('/solarEditClient', postSolarEditClient);
+router.post('/solarAddSell', postSolarAddSell);
 
 router.get('/rsPropertiesInHand', ensureAuthenticated, checkRole('Admin',''), getRSPropertiesInHand)
 router.get('/rsPropertiesSales', ensureAuthenticated, checkRole('Admin',''), getRSPropertiesSales)

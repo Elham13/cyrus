@@ -440,6 +440,25 @@ const postSolarEditClient = async (req, res) => {
     res.redirect(`/showSolarSingleCust/${id}`);
 }
 
+const postSolarAddSell = async (req, res) => {
+    const {id, prodName, amount, paymentMode, saleOrExchange, soldDate, exchangeDate, instExec, instDate, remark} = req.body;
+    const client = await SolarTotalSales.findById(id)
+    const obj = {
+        prodName,
+        amount,
+        paymentMode,
+        saleOrExchange,
+        soldDate,
+        exchangeDate,
+        instExec,
+        instDate,
+        remark
+    }
+    client.salesAndExchanges.push(obj);
+    await client.save();
+    res.redirect(`/showSolarSingleCust/${id}`)
+}
+
 module.exports = {
     getSolarTotalSales,
     getSolarTelecaling,
@@ -463,4 +482,5 @@ module.exports = {
     postSolarDeleteStockOutward,
     postSolarUpdateRemark,
     postSolarEditClient,
+    postSolarAddSell,
 }

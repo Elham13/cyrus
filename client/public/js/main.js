@@ -394,6 +394,24 @@ const showOnRoleSelection = () => {
   });
 }
 
+const toggleSaleInputs = () => {
+  const saleOrExchange = document.getElementById('saleOrExchange');
+  const soldDate = document.getElementById('soldDate');
+  const exchangeDate = document.getElementById('exchangeDate');
+
+  saleOrExchange.addEventListener('change', () => {
+    if(saleOrExchange.value == 'Sale') {
+      soldDate.style.display = 'flex';
+      exchangeDate.style.display = 'none';
+    }
+    if(saleOrExchange.value == 'Exchange'){
+      soldDate.style.display = 'none';
+      exchangeDate.style.display = 'flex';
+    }
+  });
+}
+
+
 
 const init = () => {
   const path = window.location.pathname;
@@ -406,6 +424,8 @@ const init = () => {
     }
     customEditModal('.editSerivceStatus', 'editRowModal');
     hideAndShowCustomModal(document.querySelectorAll('.singleClientUpdateBtn'), document.getElementById('singleClientUpdateModal'));
+    hideAndShowCustomModal(document.querySelectorAll('.openSellModal'), document.getElementById('addSell'));
+    toggleSaleInputs();
   }
 
   if(path=='/admin'){

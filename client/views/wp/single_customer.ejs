@@ -190,514 +190,626 @@
                 <% } %>
             
             </table>
-        </div>
-        <div class="sc-right">
-          <% if(singleClient.emi){ %>
-            <div class="emi-wrapper"> 
-                <div class="wp-wrapper" style="padding: 0;">
-                  <div style="display: flex; justify-content: space-between; align-items: center; background-color: #00664b; color: #f1f1f1;">
-                    <h3 class="section-head"><%= singleClient.customerName %>'s EMI representation</h3>
-                    <button class="downloadAsPdf" onclick="downloadPageAsExcel('wpTable', 'emi')">Download table as excel <i class="far fa-file-excel"></i></button>
+      </div>
+      <div class="sc-right">
+        <% if(singleClient.emi){ %>
+          <div class="emi-wrapper"> 
+              <div class="wp-wrapper" style="padding: 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; background-color: #00664b; color: #f1f1f1;">
+                  <h3 class="section-head"><%= singleClient.customerName %>'s EMI representation</h3>
+                  <button class="downloadAsPdf" onclick="downloadPageAsExcel('wpTable', 'emi')">Download table as excel <i class="far fa-file-excel"></i></button>
+                </div>
+            
+                <input type="hidden" id="duration" value="<%= singleClient.duration %>" />
+                <input type="hidden" id="firstPymentStatus" value="<%= singleClient.firstPaymentStatus %>" />
+                <input type="hidden" id="secondPymentStatus" value="<%= singleClient.secondPaymentStatus %>" />
+                <input type="hidden" id="thirdPymentStatus" value="<%= singleClient.thirdPaymentStatus %>" />
+                
+                <!-- First Payment Status Modal -->
+                <div class="modal" id="paymentStatusModal1">
+                  <div class="modal-head">
+                    <h3>Change payment status</h3>
+                    <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
                   </div>
-              
-                  <input type="hidden" id="duration" value="<%= singleClient.duration %>" />
-                  <input type="hidden" id="firstPymentStatus" value="<%= singleClient.firstPaymentStatus %>" />
-                  <input type="hidden" id="secondPymentStatus" value="<%= singleClient.secondPaymentStatus %>" />
-                  <input type="hidden" id="thirdPymentStatus" value="<%= singleClient.thirdPaymentStatus %>" />
-                  
-                  <!-- First Payment Status Modal -->
-                  <div class="modal" id="paymentStatusModal1">
-                    <div class="modal-head">
-                      <h3>Change payment status</h3>
-                      <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
-                    </div>
-                    <form action="/emiPaymentStatus" method="POST">
-                      <input type="hidden" name="id" value="<%= singleClient._id %>" />
-                      <% if(singleClient.duration === '3 Months'){ %>
-                        <input type="hidden" name="firstPaidAmount" value="<%= ((singleClient.amount - singleClient.advancePayment) / 3).toFixed(2) %>" />
-                      <% }else{ %>
-                        <input type="hidden" name="firstPaidAmount" value="<%= ((singleClient.amount - singleClient.advancePayment) / 2).toFixed(2) %>" />
-                      <% } %>
-                      <input type="hidden" name="firstPaidDate" value="<%= new Date()  %>"/>
-                      <div>
-                        <label for="firstPaymentStatus">Status: <span>*</span></label>
-                        <select name="firstPaymentStatus" id="" required>
-                          <option disabled selected>Select a status</option>
-                          <option value="Paid">Paid</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label for="totalOutstanding1" id="totalOutstanding">Pay The Total outstanding</label>
-                        <input type="checkbox" name="totalOutstanding1" id="">
-                      </div>
-                      <div>
-                        <label for="">Payment Mode</label>
-                        <select name="firstPaymentMode" id="" required>
-                          <option selected disabled>Select</option>
-                          <option value="Cash">Cash</option>
-                          <option value="Cheque">Cheque</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label for="firstPaidAmountOptional">Amount Paid (Optional)</label>
-                        <input type="number" name="firstPaidAmountOptional" id="firstPaidAmountOptional">
-                      </div>
-                      <div>
-                        <label for="firstPaidDateOptional">Paid Date (Optional)</label>
-                        <input type="date" name="firstPaidDateOptional" >
-                      </div>
-                      <button type="submit">Change</button>
-                    </form>
-                  </div>
-                  <!-- First Payment Status Modal -->
-              
-                  <!-- Second Payment Status Modal -->
-                  <div class="modal" id="paymentStatusModal2">
-                    <div class="modal-head">
-                      <h3>Change payment status</h3>
-                      <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
-                    </div>
-                    <form action="/emiPaymentStatus" method="POST">
-                      <input type="hidden" name="id" value="<%= singleClient._id %>" />
-                      <% if(singleClient.duration === '3 Months'){ %>
-                        <input type="hidden" name="secondPaidAmount" value="<%= ((singleClient.amount - singleClient.advancePayment) / 3).toFixed(2) %>" />
-                      <% }else{ %>
-                        <input type="hidden" name="secondPaidAmount" value="<%= singleClient.amount - singleClient.advancePayment - singleClient.firstPaidAmount %>" />
-                      <% } %>
-                      <input type="hidden" name="secondPaidDate" value="<%= new Date()  %>"/>
-                      <div>
-                        <label for="secondPaymentStatus">Status: <span>*</span></label>
-                        <select name="secondPaymentStatus"  required>
-                          <option disabled selected>Select a status</option>
-                          <option value="Paid">Paid</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label for="totalOutstanding2" id="totalOutstanding">Pay The Total outstanding</label>
-                        <input type="checkbox"  name="totalOutstanding2" id="">
-                      </div>
-                      <div>
-                        <label for="">Payment Mode</label>
-                        <select name="secondPaymentMode" id="" required>
-                          <option selected disabled>Select</option>
-                          <option value="Cash">Cash</option>
-                          <option value="Cheque">Cheque</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label for="secondPaidAmountOptional">Amount Paid (Optional)</label>
-                        <input type="number" name="secondPaidAmountOptional" id="secondPaidAmountOptional">
-                      </div>
-                      <div>
-                        <label for="secondPaidDateOptional">Paid Date (Optional)</label>
-                        <input type="date" name="secondPaidDateOptional" >
-                      </div>
-                      <button type="submit">Change</button>
-                    </form>
-                  </div>
-                  <!-- Second Payment Status Modal -->
-              
-                  <!-- Third Payment Status Modal -->
-                  <div class="modal" id="paymentStatusModal3">
-                    <div class="modal-head">
-                      <h3>Change payment status</h3>
-                      <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
-                    </div>
-                    <form action="/emiPaymentStatus" method="POST">
-                      <input type="hidden" name="id" value="<%= singleClient._id %>" />
-                        <input type="hidden" name="thirdPaidAmount" value="<%= singleClient.amount - singleClient.advancePayment - singleClient.secondPaidAmount - singleClient.firstPaidAmount %>" />
-                      <input type="hidden" name="thirdPaidDate" value="<%= new Date()  %>"/>
-                      <div>
-                        <label for="thirdPaymentStatus">Status: <span>*</span></label>
-                        <select name="thirdPaymentStatus" id="" required>
-                          <option disabled selected>Select a status</option>
-                          <option value="Paid">Paid</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label for="totalOutstanding3" id="totalOutstanding">Pay The Total outstanding</label>
-                        <input type="checkbox"  name="totalOutstanding3" id="">
-                      </div>
-                      <div>
-                        <label for="thirdPaymentMode">Payment Mode</label>
-                        <select name="thirdPaymentMode" id="" required>
-                          <option selected disabled>Select</option>
-                          <option value="Cash">Cash</option>
-                          <option value="Cheque">Cheque</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label for="thirdPaidAmountOptional">Amount Paid (Optional)</label>
-                        <input type="number" name="thirdPaidAmountOptional" id="thirdPaidAmountOptional">
-                      </div>
-                      <div>
-                        <label for="thirdPaidDateOptional">Paid Date (Optional)</label>
-                        <input type="date" name="thirdPaidDateOptional" >
-                      </div>
-                      <button type="submit">Change</button>
-                    </form>
-                  </div>
-                  <!-- Third Payment Status Modal -->
-              
-              
-                  <table class="emi-table" id="wpTable">
-                    <tr>
-                      <th>Main Balance</th>
-                      <th>Advance</th>
-                      <th>Installment</th>
-                      <th>Emi Amount</th>
-                      <th>Payment Status</th>
-                      <th>Amount Paid</th>
-                      <th>Balance Remaining</th>
-                      <th>Emi date</th>
-                      <th>Paid date</th>
-                      <th>Next Payment date</th>
-                    </tr>
-
-
-                    <tr style="background-color: #f1f1f1;">
-                      <td rowspan="3" id="mainBal"><%= singleClient.amount %></td>
-                      <td rowspan="3" id="advPaid"><%= singleClient.advancePayment %></td>
-                      <td>1</td>
-              
-                      <!-- First emi ammount -->
-                      <td class="editable_cell1">
-                      </td>
-                      <!-- First emi ammount -->
-              
-                      <!-- First Payment Status -->
-                      <td class="editable_cell"><%= singleClient.firstPaymentStatus %>
-                        <% if(singleClient.dueAmountsCleared1 || singleClient.dueAmountsCleared2 || singleClient.dueAmountsCleared3){ %>
-                        <% }else{ %>
-                            <% if(singleClient.firstPaymentStatus == "Pending"){ %>
-                                <a href="javascript:void(0)"  class="edit edit1"><i class="fas fa-edit"></i></a>
-                            <% } %>
-                        <% } %>
-                      </td>
-                      <!-- First Payment Status -->
-              
-                      <!-- First Amount Paid -->
-                      <% if(singleClient.firstPaidAmount){ %>
-                        <% if(singleClient.dueAmountsCleared1) { %>
-                          <td><%= singleClient.amount - singleClient.advancePayment %></td>
-                        <% }else{ %>
-                          <td id="paidAmt1"><%= singleClient.firstPaidAmount %></td>
-                        <% } %>
-                      <% }else{ %>
-                        <td style="background-color: #ccc;" id="paidAmt1"></td>
-                      <% } %>
-                      <!-- First Amount Paid -->
-              
-                      <!-- First Remaining Bal -->
-                      <% if(singleClient.firstPaymentStatus == "Paid") { %>
-                        <% if(singleClient.dueAmountsCleared1 == true){ %>
-                          <td>0</td>
-                        <% }else{ %>
-                          <td><%= singleClient.amount - singleClient.advancePayment - singleClient.firstPaidAmount %></td>
-                        <% } %>
-                      <% }else{ %>
-                        <td style="background-color: #ccc;"></td>
-                      <% } %> 
-                      <!-- First Remaining Bal -->
-              
-                      <!-- Emi Date -->
-                      <% if(singleClient.dueAmountsCleared1 == true){ %>
-                        <td style="background-color: #ccc;"></td>
-                      <% }else{ %>
-                        <td><%= singleClient.firstEmiDate.getDate() %>/<%= singleClient.firstEmiDate.getMonth() + 1 %>/<%= singleClient.firstEmiDate.getFullYear() %></td>
-                      <% } %>
-                      <!-- Emi Date -->
-              
-                      <!-- First paid date -->
-                      <% if(singleClient.firstPaidDate) { %>
-                        <td><%= singleClient.firstPaidDate.getDate() %>/<%= singleClient.firstPaidDate.getMonth() + 1 %>/<%= singleClient.firstPaidDate.getFullYear() %></td>
-                      <% }else{ %>
-                        <td style="background-color: #ccc;"></td>
-                      <% } %> 
-                      <!-- First paid date -->
-              
-                      <!-- First next payment date -->
-                      <% if(singleClient.firstNextPaymentDate) { %>
-                        <% if(singleClient.dueAmountsCleared1 == true){ %>
-                            <td style="background-color: #ccc;"></td>
-                        <% }else{ %>
-                            <td><%= singleClient.firstNextPaymentDate.getDate() %>/<%= singleClient.firstNextPaymentDate.getMonth() + 1 %>/<%= singleClient.firstNextPaymentDate.getFullYear() %></td>
-                        <% } %>
-                      <% }else{ %>
-                        <td style="background-color: #ccc;"></td>
-                      <% } %>
-                      <!-- First next payment date -->
-                    </tr>
-              
-                    <tr style="background-color: #f1f1f1;">
-                      <td>2</td>
-                      <!-- Second emi paid -->
-                        <td class="editable_cell1" >
-                        </td>
-                      <!-- Second emi paid -->
-              
-                      <!-- Second Payment Status -->
-                        <% if(singleClient.dueAmountsCleared1){ %>
-                            <td style="background-color: #ccc;"></td>
-                        <% }else{ %>
-                            <td class="editable_cell">
-                            <%= singleClient.secondPaymentStatus %>
-                            <% if(singleClient.dueAmountsCleared1 || singleClient.dueAmountsCleared2 || singleClient.dueAmountsCleared3){ %>
-                                <% }else{ %>
-                                    <% if(singleClient.secondPaymentStatus == "Pending" && singleClient.firstPaymentStatus == "Paid"){ %>
-                                        <a href="javascript:void(0)"  class="edit edit2"><i class="fas fa-edit"></i></a>
-                                    <% } %>
-                                <% } %>
-                              </td>
-                        <% } %>
-                      <!-- Second Payment Status -->
-              
-                      
-              
-                      <!-- Second Amount Paid -->
-                      <% if(singleClient.secondPaidAmount){ %>
-                        <% if(singleClient.dueAmountsCleared1){ %>
-                            <td>0</td>
-                        <% }else{ %>
-                            <% if(singleClient.dueAmountsCleared2) { %>
-                                <td><%= singleClient.amount - singleClient.advancePayment - singleClient.firstPaidAmount %></td>
-                            <% }else{ %>
-                                <td id="paidAmt2"><%= singleClient.secondPaidAmount %></td>
-                            <% } %>
-                        <% } %>
-                      <% }else{ %>
-                        <td style="background-color: #ccc;" id="paidAmt2"></td>
-                      <% } %>
-                      <!-- Second Amount Paid -->
-              
-                      <!-- Second remaining bal -->
-                      <% if(singleClient.secondPaymentStatus == "Paid") { %>
-                        <% if(singleClient.dueAmountsCleared2 || singleClient.dueAmountsCleared1){ %>
-                          <td>0</td>
-                        <% }else{ %>
-                          <td><%= singleClient.amount - singleClient.advancePayment - singleClient.firstPaidAmount - singleClient.secondPaidAmount %></td>
-                        <% } %>
-                      <% }else{ %>
-                        <td style="background-color: #ccc;"></td>
-                      <% } %> 
-                      <!-- Second remaining bal -->
-              
-                      <!-- Emi Date -->
-                      <% if(singleClient.dueAmountsCleared1){ %>
-                        <td style="background-color: #ccc;"></td>
-                      <% }else{ %>
-                        <td><%= singleClient.secondEmiDate.getDate() %>/<%= singleClient.secondEmiDate.getMonth() + 1 %>/<%= singleClient.secondEmiDate.getFullYear() %></td>
-                      <% } %>
-                      <!-- Emi Date -->
-              
-                      <!-- Second Paid Date -->
-                      <% if(singleClient.secondPaidDate) { %>
-                        <% if(singleClient.dueAmountsCleared1){ %>
-                            <td style="background-color: #ccc;"></td>
-                        <% }else{ %>
-                            <td><%= singleClient.secondPaidDate.getDate() %>/<%= singleClient.secondPaidDate.getMonth() + 1 %>/<%= singleClient.secondPaidDate.getFullYear() %></td>
-                        <% } %>
-                      <% }else{ %>
-                        <td style="background-color: #ccc;"></td>
-                      <% } %> 
-                      <!-- Second Paid Date -->
-              
-                      <!-- Second next payment date -->
-                      <% if(singleClient.duration === "3 Months") { %>
-                        <% if(singleClient.secondNextPaymentDate) { %>
-                          <% if(singleClient.dueAmountsCleared2 || singleClient.dueAmountsCleared1){ %>
-                            <td style="background-color: #ccc;"></td>
-                          <% }else{ %>
-                            <td><%= singleClient.secondNextPaymentDate.getDate() %>/<%= singleClient.secondNextPaymentDate.getMonth() + 1 %>/<%= singleClient.secondNextPaymentDate.getFullYear() %></td>
-                          <% } %>
-                        <% }else{ %>
-                          <td style="background-color: #ccc;"></td>
-                        <% } %>
-                      <% } %>
-                      <!-- Second next payment date -->
-
-                      <% if(singleClient.duration == "2 Months"){ %>
-                        <!-- Paid all true -->
-                        <% if(singleClient.dueAmountsCleared2 || singleClient.dueAmountsCleared1){ %>
-                          <td style="background-color: green; color: #fff;">All Paid</td>
-                        <% } %>
-                        <!-- Paid all true -->
-                      <% } %>
-                    </tr>
-              
-                    
-
+                  <form action="/emiPaymentStatus" method="POST">
+                    <input type="hidden" name="id" value="<%= singleClient._id %>" />
                     <% if(singleClient.duration === '3 Months'){ %>
-                    <tr style="background-color: #f1f1f1;">
-                      <td>3</td>
-              
-                      <!-- Third emi amount -->
-                        <td class="editable_cell1">
-                        </td>
-                      <!-- Third emi amount -->
-              
-                      <!-- Third Payment Status -->
-                        <% if(singleClient.dueAmountsCleared1 || singleClient.dueAmountsCleared2){ %>
-                            <td style="background-color: #ccc;"></td>
-                        <% }else{ %>
-                            <td class="editable_cell">
-                                <%= singleClient.thirdPaymentStatus %>
-                                <% if(singleClient.dueAmountsCleared1==true || singleClient.dueAmountsCleared2==true || singleClient.dueAmountsCleared3==true){ %>
-                                <% }else{ %>
-                                    <% if(singleClient.thirdPaymentStatus == "Pending" && singleClient.secondPaymentStatus == "Paid" && singleClient.firstPaymentStatus == "Paid"){ %>
-                                        <a href="javascript:void(0)"  class="edit edit3"><i class="fas fa-edit"></i></a>
-                                    <% } %>
-                                <% } %>
+                      <input type="hidden" name="firstPaidAmount" value="<%= ((singleClient.amount - singleClient.advancePayment) / 3).toFixed(2) %>" />
+                    <% }else{ %>
+                      <input type="hidden" name="firstPaidAmount" value="<%= ((singleClient.amount - singleClient.advancePayment) / 2).toFixed(2) %>" />
+                    <% } %>
+                    <input type="hidden" name="firstPaidDate" value="<%= new Date()  %>"/>
+                    <div>
+                      <label for="firstPaymentStatus">Status: <span>*</span></label>
+                      <select name="firstPaymentStatus" id="" required>
+                        <option disabled selected>Select a status</option>
+                        <option value="Paid">Paid</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="totalOutstanding1" id="totalOutstanding">Pay The Total outstanding</label>
+                      <input type="checkbox" name="totalOutstanding1" id="">
+                    </div>
+                    <div>
+                      <label for="">Payment Mode</label>
+                      <select name="firstPaymentMode" id="" required>
+                        <option selected disabled>Select</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Cheque">Cheque</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="firstPaidAmountOptional">Amount Paid (Optional)</label>
+                      <input type="number" name="firstPaidAmountOptional" id="firstPaidAmountOptional">
+                    </div>
+                    <div>
+                      <label for="firstPaidDateOptional">Paid Date (Optional)</label>
+                      <input type="date" name="firstPaidDateOptional" >
+                    </div>
+                    <button type="submit">Change</button>
+                  </form>
+                </div>
+                <!-- First Payment Status Modal -->
+            
+                <!-- Second Payment Status Modal -->
+                <div class="modal" id="paymentStatusModal2">
+                  <div class="modal-head">
+                    <h3>Change payment status</h3>
+                    <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+                  </div>
+                  <form action="/emiPaymentStatus" method="POST">
+                    <input type="hidden" name="id" value="<%= singleClient._id %>" />
+                    <% if(singleClient.duration === '3 Months'){ %>
+                      <input type="hidden" name="secondPaidAmount" value="<%= ((singleClient.amount - singleClient.advancePayment) / 3).toFixed(2) %>" />
+                    <% }else{ %>
+                      <input type="hidden" name="secondPaidAmount" value="<%= singleClient.amount - singleClient.advancePayment - singleClient.firstPaidAmount %>" />
+                    <% } %>
+                    <input type="hidden" name="secondPaidDate" value="<%= new Date()  %>"/>
+                    <div>
+                      <label for="secondPaymentStatus">Status: <span>*</span></label>
+                      <select name="secondPaymentStatus"  required>
+                        <option disabled selected>Select a status</option>
+                        <option value="Paid">Paid</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="totalOutstanding2" id="totalOutstanding">Pay The Total outstanding</label>
+                      <input type="checkbox"  name="totalOutstanding2" id="">
+                    </div>
+                    <div>
+                      <label for="">Payment Mode</label>
+                      <select name="secondPaymentMode" id="" required>
+                        <option selected disabled>Select</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Cheque">Cheque</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="secondPaidAmountOptional">Amount Paid (Optional)</label>
+                      <input type="number" name="secondPaidAmountOptional" id="secondPaidAmountOptional">
+                    </div>
+                    <div>
+                      <label for="secondPaidDateOptional">Paid Date (Optional)</label>
+                      <input type="date" name="secondPaidDateOptional" >
+                    </div>
+                    <button type="submit">Change</button>
+                  </form>
+                </div>
+                <!-- Second Payment Status Modal -->
+            
+                <!-- Third Payment Status Modal -->
+                <div class="modal" id="paymentStatusModal3">
+                  <div class="modal-head">
+                    <h3>Change payment status</h3>
+                    <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+                  </div>
+                  <form action="/emiPaymentStatus" method="POST">
+                    <input type="hidden" name="id" value="<%= singleClient._id %>" />
+                      <input type="hidden" name="thirdPaidAmount" value="<%= singleClient.amount - singleClient.advancePayment - singleClient.secondPaidAmount - singleClient.firstPaidAmount %>" />
+                    <input type="hidden" name="thirdPaidDate" value="<%= new Date()  %>"/>
+                    <div>
+                      <label for="thirdPaymentStatus">Status: <span>*</span></label>
+                      <select name="thirdPaymentStatus" id="" required>
+                        <option disabled selected>Select a status</option>
+                        <option value="Paid">Paid</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="totalOutstanding3" id="totalOutstanding">Pay The Total outstanding</label>
+                      <input type="checkbox"  name="totalOutstanding3" id="">
+                    </div>
+                    <div>
+                      <label for="thirdPaymentMode">Payment Mode</label>
+                      <select name="thirdPaymentMode" id="" required>
+                        <option selected disabled>Select</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Cheque">Cheque</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="thirdPaidAmountOptional">Amount Paid (Optional)</label>
+                      <input type="number" name="thirdPaidAmountOptional" id="thirdPaidAmountOptional">
+                    </div>
+                    <div>
+                      <label for="thirdPaidDateOptional">Paid Date (Optional)</label>
+                      <input type="date" name="thirdPaidDateOptional" >
+                    </div>
+                    <button type="submit">Change</button>
+                  </form>
+                </div>
+                <!-- Third Payment Status Modal -->
+            
+            
+                <table class="emi-table" id="wpTable">
+                  <tr>
+                    <th>Main Balance</th>
+                    <th>Advance</th>
+                    <th>Installment</th>
+                    <th>Emi Amount</th>
+                    <th>Payment Status</th>
+                    <th>Amount Paid</th>
+                    <th>Balance Remaining</th>
+                    <th>Emi date</th>
+                    <th>Paid date</th>
+                    <th>Next Payment date</th>
+                  </tr>
+
+
+                  <tr style="background-color: #f1f1f1;">
+                    <td rowspan="3" id="mainBal"><%= singleClient.amount %></td>
+                    <td rowspan="3" id="advPaid"><%= singleClient.advancePayment %></td>
+                    <td>1</td>
+            
+                    <!-- First emi ammount -->
+                    <td class="editable_cell1">
+                    </td>
+                    <!-- First emi ammount -->
+            
+                    <!-- First Payment Status -->
+                    <td class="editable_cell"><%= singleClient.firstPaymentStatus %>
+                      <% if(singleClient.dueAmountsCleared1 || singleClient.dueAmountsCleared2 || singleClient.dueAmountsCleared3){ %>
+                      <% }else{ %>
+                          <% if(singleClient.firstPaymentStatus == "Pending"){ %>
+                              <a href="javascript:void(0)"  class="edit edit1"><i class="fas fa-edit"></i></a>
+                          <% } %>
+                      <% } %>
+                    </td>
+                    <!-- First Payment Status -->
+            
+                    <!-- First Amount Paid -->
+                    <% if(singleClient.firstPaidAmount){ %>
+                      <% if(singleClient.dueAmountsCleared1) { %>
+                        <td><%= singleClient.amount - singleClient.advancePayment %></td>
+                      <% }else{ %>
+                        <td id="paidAmt1"><%= singleClient.firstPaidAmount %></td>
+                      <% } %>
+                    <% }else{ %>
+                      <td style="background-color: #ccc;" id="paidAmt1"></td>
+                    <% } %>
+                    <!-- First Amount Paid -->
+            
+                    <!-- First Remaining Bal -->
+                    <% if(singleClient.firstPaymentStatus == "Paid") { %>
+                      <% if(singleClient.dueAmountsCleared1 == true){ %>
+                        <td>0</td>
+                      <% }else{ %>
+                        <td><%= singleClient.amount - singleClient.advancePayment - singleClient.firstPaidAmount %></td>
+                      <% } %>
+                    <% }else{ %>
+                      <td style="background-color: #ccc;"></td>
+                    <% } %> 
+                    <!-- First Remaining Bal -->
+            
+                    <!-- Emi Date -->
+                    <% if(singleClient.dueAmountsCleared1 == true){ %>
+                      <td style="background-color: #ccc;"></td>
+                    <% }else{ %>
+                      <td><%= singleClient.firstEmiDate.getDate() %>/<%= singleClient.firstEmiDate.getMonth() + 1 %>/<%= singleClient.firstEmiDate.getFullYear() %></td>
+                    <% } %>
+                    <!-- Emi Date -->
+            
+                    <!-- First paid date -->
+                    <% if(singleClient.firstPaidDate) { %>
+                      <td><%= singleClient.firstPaidDate.getDate() %>/<%= singleClient.firstPaidDate.getMonth() + 1 %>/<%= singleClient.firstPaidDate.getFullYear() %></td>
+                    <% }else{ %>
+                      <td style="background-color: #ccc;"></td>
+                    <% } %> 
+                    <!-- First paid date -->
+            
+                    <!-- First next payment date -->
+                    <% if(singleClient.firstNextPaymentDate) { %>
+                      <% if(singleClient.dueAmountsCleared1 == true){ %>
+                          <td style="background-color: #ccc;"></td>
+                      <% }else{ %>
+                          <td><%= singleClient.firstNextPaymentDate.getDate() %>/<%= singleClient.firstNextPaymentDate.getMonth() + 1 %>/<%= singleClient.firstNextPaymentDate.getFullYear() %></td>
+                      <% } %>
+                    <% }else{ %>
+                      <td style="background-color: #ccc;"></td>
+                    <% } %>
+                    <!-- First next payment date -->
+                  </tr>
+            
+                  <tr style="background-color: #f1f1f1;">
+                    <td>2</td>
+                    <!-- Second emi paid -->
+                      <td class="editable_cell1" >
+                      </td>
+                    <!-- Second emi paid -->
+            
+                    <!-- Second Payment Status -->
+                      <% if(singleClient.dueAmountsCleared1){ %>
+                          <td style="background-color: #ccc;"></td>
+                      <% }else{ %>
+                          <td class="editable_cell">
+                          <%= singleClient.secondPaymentStatus %>
+                          <% if(singleClient.dueAmountsCleared1 || singleClient.dueAmountsCleared2 || singleClient.dueAmountsCleared3){ %>
+                              <% }else{ %>
+                                  <% if(singleClient.secondPaymentStatus == "Pending" && singleClient.firstPaymentStatus == "Paid"){ %>
+                                      <a href="javascript:void(0)"  class="edit edit2"><i class="fas fa-edit"></i></a>
+                                  <% } %>
+                              <% } %>
                             </td>
-                        <% } %>
-                      <!-- Third Payment Status -->
-              
-                      <!-- Third Amount Paid -->
-                      <% if(singleClient.thirdPaidAmount){ %>
-                        <% if(singleClient.dueAmountsCleared3) { %>
-                          <td><%= singleClient.amount - singleClient.advancePayment - singleClient.firstPaidAmount - singleClient.secondPaidAmount %></td>
-                        <% }else{ %>
-                          <td id="paidAmt3"><%= singleClient.thirdPaidAmount %></td>
-                        <% } %>
-                      <% }else{ %>
-                        <td style="background-color: #ccc;" id="paidAmt3"></td>
                       <% } %>
-                      <!-- Third Amount Paid -->
-              
-                      <!-- Third remaining bal -->
-                      <% if(singleClient.thirdPaymentStatus == "Paid") { %>
-                        <% if(singleClient.dueAmountsCleared2 == true){ %>
+                    <!-- Second Payment Status -->
+            
+                    
+            
+                    <!-- Second Amount Paid -->
+                    <% if(singleClient.secondPaidAmount){ %>
+                      <% if(singleClient.dueAmountsCleared1){ %>
                           <td>0</td>
+                      <% }else{ %>
+                          <% if(singleClient.dueAmountsCleared2) { %>
+                              <td><%= singleClient.amount - singleClient.advancePayment - singleClient.firstPaidAmount %></td>
+                          <% }else{ %>
+                              <td id="paidAmt2"><%= singleClient.secondPaidAmount %></td>
+                          <% } %>
+                      <% } %>
+                    <% }else{ %>
+                      <td style="background-color: #ccc;" id="paidAmt2"></td>
+                    <% } %>
+                    <!-- Second Amount Paid -->
+            
+                    <!-- Second remaining bal -->
+                    <% if(singleClient.secondPaymentStatus == "Paid") { %>
+                      <% if(singleClient.dueAmountsCleared2 || singleClient.dueAmountsCleared1){ %>
+                        <td>0</td>
+                      <% }else{ %>
+                        <td><%= singleClient.amount - singleClient.advancePayment - singleClient.firstPaidAmount - singleClient.secondPaidAmount %></td>
+                      <% } %>
+                    <% }else{ %>
+                      <td style="background-color: #ccc;"></td>
+                    <% } %> 
+                    <!-- Second remaining bal -->
+            
+                    <!-- Emi Date -->
+                    <% if(singleClient.dueAmountsCleared1){ %>
+                      <td style="background-color: #ccc;"></td>
+                    <% }else{ %>
+                      <td><%= singleClient.secondEmiDate.getDate() %>/<%= singleClient.secondEmiDate.getMonth() + 1 %>/<%= singleClient.secondEmiDate.getFullYear() %></td>
+                    <% } %>
+                    <!-- Emi Date -->
+            
+                    <!-- Second Paid Date -->
+                    <% if(singleClient.secondPaidDate) { %>
+                      <% if(singleClient.dueAmountsCleared1){ %>
+                          <td style="background-color: #ccc;"></td>
+                      <% }else{ %>
+                          <td><%= singleClient.secondPaidDate.getDate() %>/<%= singleClient.secondPaidDate.getMonth() + 1 %>/<%= singleClient.secondPaidDate.getFullYear() %></td>
+                      <% } %>
+                    <% }else{ %>
+                      <td style="background-color: #ccc;"></td>
+                    <% } %> 
+                    <!-- Second Paid Date -->
+            
+                    <!-- Second next payment date -->
+                    <% if(singleClient.duration === "3 Months") { %>
+                      <% if(singleClient.secondNextPaymentDate) { %>
+                        <% if(singleClient.dueAmountsCleared2 || singleClient.dueAmountsCleared1){ %>
+                          <td style="background-color: #ccc;"></td>
                         <% }else{ %>
-                          <td><%= singleClient.amount - singleClient.advancePayment - singleClient.firstPaidAmount - singleClient.secondPaidAmount - singleClient.thirdPaidAmount %></td>
+                          <td><%= singleClient.secondNextPaymentDate.getDate() %>/<%= singleClient.secondNextPaymentDate.getMonth() + 1 %>/<%= singleClient.secondNextPaymentDate.getFullYear() %></td>
                         <% } %>
                       <% }else{ %>
                         <td style="background-color: #ccc;"></td>
-                      <% } %> 
-                      <!-- Third remaining bal -->
-              
-                      <!-- Emi Date -->
-                      <% if(singleClient.dueAmountsCleared1 || singleClient.dueAmountsCleared2){ %>
-                        <td style="background-color: #ccc;"></td>
-                      <% }else{ %>
-                        <td><%= singleClient.thirdEmiDate.getDate() %>/<%= singleClient.thirdEmiDate.getMonth() + 1 %>/<%= singleClient.thirdEmiDate.getFullYear() %></td>
                       <% } %>
-                      <!-- Emi Date -->
-              
-                      <!-- Third paid date -->
-                      <% if(singleClient.thirdPaidDate) { %>
-                        <td><%= singleClient.thirdPaidDate.getDate() %>/<%= singleClient.thirdPaidDate.getMonth() + 1 %>/<%= singleClient.thirdPaidDate.getFullYear() %></td>
-                      <% }else{ %>
-                        <td style="background-color: #ccc;"></td>
-                      <% } %> 
-                      <!-- Third paid date -->
-              
+                    <% } %>
+                    <!-- Second next payment date -->
+
+                    <% if(singleClient.duration == "2 Months"){ %>
                       <!-- Paid all true -->
-                      <% if(singleClient.dueAmountsCleared3 || singleClient.dueAmountsCleared2 || singleClient.dueAmountsCleared1){ %>
+                      <% if(singleClient.dueAmountsCleared2 || singleClient.dueAmountsCleared1){ %>
                         <td style="background-color: green; color: #fff;">All Paid</td>
                       <% } %>
                       <!-- Paid all true -->
-                    </tr>
                     <% } %>
-              
-                  </table>
-                </div>
-            </div>
-          <% } %>
+                  </tr>
+            
+                  
 
-
-            <div class="services-wrapper">
-                  <!-- Edit Row Modal -->
-                  <div class="modal" id="editRowModal">
-                    <div class="modal-head">
-                      <h3>Edit This</h3>
-                      <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
-                    </div>
-                    <form action="/editService" method="POST">
-                      <input type="hidden" name="id"  />
-                      <input type="hidden" name="index"  />
-                      <input type="hidden" name="serviceNextDate"  />
-                     
-                      <div>
-                        <label for="status">Change Status <span>*</span></label>
-                        <select name="status" required>
-                            <option disabled selected>Select</option>
-                            <option value="Completed">Completed</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label for="serviceExec">Servicing Executive Name <span>*</span></label>
-                        <input type="text" name="serviceExec" required>
-                      </div>
-                      <div>
-                        <label for="serviceDate">Servicing Date <span>*</span></label>
-                        <input type="date" name="serviceDate" required>
-                      </div>
-                      <div>
-                        <label for="remark">Remarks </label>
-                        <input type="text" name="remark" >
-                      </div>
-                      <button type="submit">Add</button>
-                    </form>
-                  </div>
-                  <!-- Edit Row Modal -->
-
-
-                <div style="display: flex; justify-content: space-between; background-color: #00664b; padding: 10px 3px; color: #f1f1f1;" >
-                    <h3><%= singleClient.customerName %>'s Services</h3>
-                    <button class="downloadAsPdf"  onclick="downloadPageAsExcel('wpTable1', 'services')">Download table as excel <i class="far fa-file-excel"></i></button>
-                </div>
-                <table class="wptable" id="wpTable1">
-                    <tr>
-                        <th>S.No</th>
-                        <th>Service Due Date</th>
-                        <th>Service Status</th>
-                        <th>Service Date</th>
-                        <th>Next Service Date</th>
-                        <th>Service Executive</th>
-                        <th>Remarks</th>
-                    </tr>
-                    <% if(singleClient.services.length > 0){ %>
-                        <% singleClient.services.forEach((service, index) => { %>
-                            <tr style="background-color: #f1f1f1;">
-                                <td><%= index + 1 %></td>
-                                <td><%= new Date(service.DueServiceDate).getDate() %>/<%= new Date(service.DueServiceDate).getMonth() + 1 %>/<%= new Date(service.DueServiceDate).getFullYear() %></td>
-                               
-                                <% if(service.ServiceStatus == "Pending"){ %>
-                                  <td class="editable_cell"><%= service.ServiceStatus %>
-                                    <input type="hidden"  value="<%= service.ServiceNextDate%>">
-                                    <input type="hidden"  value="<%= singleClient._id%>">
-                                    <input type="hidden"  value="<%= index %>">
-                                    <a href="javascript:void(0)" class="editSerivceStatus edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                </td>
-                                <% }else{ %>
-                                  <td><%= service.ServiceStatus %></td>
-                                <% } %>
-                                
-
-                                <% if(service.ServicingDate !== ""){ %>
-                                  <td><%= new Date(service.ServicingDate).getDate() %>/<%= new Date(service.ServicingDate).getMonth() + 1 %>/<%= new Date(service.ServicingDate).getFullYear() %></td>
-                                <% }else{ %>
-                                  <td></td>
-                                <% } %>
-
-                                <% if(service.ServiceNextDate !== ""){ %>
-                                  <td><%= new Date(service.ServiceNextDate).getDate() %>/<%= new Date(service.ServiceNextDate).getMonth() + 1 %>/<%= new Date(service.ServiceNextDate).getFullYear() %></td>
-                                <% }else{ %>
-                                  <td></td>
-                                <% } %>
-
-                                <td><%= service.ServicingExecutive %></td>
-                                <td><%= service.ServicingRemark %></td>
-                            </tr>
-                        <% }) %>
+                  <% if(singleClient.duration === '3 Months'){ %>
+                  <tr style="background-color: #f1f1f1;">
+                    <td>3</td>
+            
+                    <!-- Third emi amount -->
+                      <td class="editable_cell1">
+                      </td>
+                    <!-- Third emi amount -->
+            
+                    <!-- Third Payment Status -->
+                      <% if(singleClient.dueAmountsCleared1 || singleClient.dueAmountsCleared2){ %>
+                          <td style="background-color: #ccc;"></td>
+                      <% }else{ %>
+                          <td class="editable_cell">
+                              <%= singleClient.thirdPaymentStatus %>
+                              <% if(singleClient.dueAmountsCleared1==true || singleClient.dueAmountsCleared2==true || singleClient.dueAmountsCleared3==true){ %>
+                              <% }else{ %>
+                                  <% if(singleClient.thirdPaymentStatus == "Pending" && singleClient.secondPaymentStatus == "Paid" && singleClient.firstPaymentStatus == "Paid"){ %>
+                                      <a href="javascript:void(0)"  class="edit edit3"><i class="fas fa-edit"></i></a>
+                                  <% } %>
+                              <% } %>
+                          </td>
+                      <% } %>
+                    <!-- Third Payment Status -->
+            
+                    <!-- Third Amount Paid -->
+                    <% if(singleClient.thirdPaidAmount){ %>
+                      <% if(singleClient.dueAmountsCleared3) { %>
+                        <td><%= singleClient.amount - singleClient.advancePayment - singleClient.firstPaidAmount - singleClient.secondPaidAmount %></td>
+                      <% }else{ %>
+                        <td id="paidAmt3"><%= singleClient.thirdPaidAmount %></td>
+                      <% } %>
+                    <% }else{ %>
+                      <td style="background-color: #ccc;" id="paidAmt3"></td>
                     <% } %>
-                    
+                    <!-- Third Amount Paid -->
+            
+                    <!-- Third remaining bal -->
+                    <% if(singleClient.thirdPaymentStatus == "Paid") { %>
+                      <% if(singleClient.dueAmountsCleared2 == true){ %>
+                        <td>0</td>
+                      <% }else{ %>
+                        <td><%= singleClient.amount - singleClient.advancePayment - singleClient.firstPaidAmount - singleClient.secondPaidAmount - singleClient.thirdPaidAmount %></td>
+                      <% } %>
+                    <% }else{ %>
+                      <td style="background-color: #ccc;"></td>
+                    <% } %> 
+                    <!-- Third remaining bal -->
+            
+                    <!-- Emi Date -->
+                    <% if(singleClient.dueAmountsCleared1 || singleClient.dueAmountsCleared2){ %>
+                      <td style="background-color: #ccc;"></td>
+                    <% }else{ %>
+                      <td><%= singleClient.thirdEmiDate.getDate() %>/<%= singleClient.thirdEmiDate.getMonth() + 1 %>/<%= singleClient.thirdEmiDate.getFullYear() %></td>
+                    <% } %>
+                    <!-- Emi Date -->
+            
+                    <!-- Third paid date -->
+                    <% if(singleClient.thirdPaidDate) { %>
+                      <td><%= singleClient.thirdPaidDate.getDate() %>/<%= singleClient.thirdPaidDate.getMonth() + 1 %>/<%= singleClient.thirdPaidDate.getFullYear() %></td>
+                    <% }else{ %>
+                      <td style="background-color: #ccc;"></td>
+                    <% } %> 
+                    <!-- Third paid date -->
+            
+                    <!-- Paid all true -->
+                    <% if(singleClient.dueAmountsCleared3 || singleClient.dueAmountsCleared2 || singleClient.dueAmountsCleared1){ %>
+                      <td style="background-color: green; color: #fff;">All Paid</td>
+                    <% } %>
+                    <!-- Paid all true -->
+                  </tr>
+                  <% } %>
+            
                 </table>
-            </div>
+              </div>
+          </div>
+        <% } %>
+
+
+          <div class="services-wrapper">
+                <!-- Edit Row Modal -->
+                <div class="modal" id="editRowModal">
+                  <div class="modal-head">
+                    <h3>Edit This</h3>
+                    <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+                  </div>
+                  <form action="/editService" method="POST">
+                    <input type="hidden" name="id"  />
+                    <input type="hidden" name="index"  />
+                    <input type="hidden" name="serviceNextDate"  />
+                    
+                    <div>
+                      <label for="status">Change Status <span>*</span></label>
+                      <select name="status" required>
+                          <option disabled selected>Select</option>
+                          <option value="Completed">Completed</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="serviceExec">Servicing Executive Name <span>*</span></label>
+                      <input type="text" name="serviceExec" required>
+                    </div>
+                    <div>
+                      <label for="serviceDate">Servicing Date <span>*</span></label>
+                      <input type="date" name="serviceDate" required>
+                    </div>
+                    <div>
+                      <label for="remark">Remarks </label>
+                      <input type="text" name="remark" >
+                    </div>
+                    <button type="submit">Add</button>
+                  </form>
+                </div>
+                <!-- Edit Row Modal -->
+
+
+              <div style="display: flex; justify-content: space-between; background-color: #00664b; padding: 10px 3px; color: #f1f1f1;" >
+                  <h3><%= singleClient.customerName %>'s Services</h3>
+                  <button class="downloadAsPdf"  onclick="downloadPageAsExcel('wpTable1', 'services')">Download table as excel <i class="far fa-file-excel"></i></button>
+              </div>
+              <table class="wptable" id="wpTable1">
+                  <tr>
+                      <th>S.No</th>
+                      <th>Service Due Date</th>
+                      <th>Service Status</th>
+                      <th>Service Date</th>
+                      <th>Next Service Date</th>
+                      <th>Service Executive</th>
+                      <th>Remarks</th>
+                  </tr>
+                  <% if(singleClient.services.length > 0){ %>
+                      <% singleClient.services.forEach((service, index) => { %>
+                          <tr style="background-color: #f1f1f1;">
+                              <td><%= index + 1 %></td>
+                              <td><%= new Date(service.DueServiceDate).getDate() %>/<%= new Date(service.DueServiceDate).getMonth() + 1 %>/<%= new Date(service.DueServiceDate).getFullYear() %></td>
+                              
+                              <% if(service.ServiceStatus == "Pending"){ %>
+                                <td class="editable_cell"><%= service.ServiceStatus %>
+                                  <input type="hidden"  value="<%= service.ServiceNextDate%>">
+                                  <input type="hidden"  value="<%= singleClient._id%>">
+                                  <input type="hidden"  value="<%= index %>">
+                                  <a href="javascript:void(0)" class="editSerivceStatus edit">
+                                      <i class="fas fa-edit"></i>
+                                  </a>
+                              </td>
+                              <% }else{ %>
+                                <td><%= service.ServiceStatus %></td>
+                              <% } %>
+                              
+
+                              <% if(service.ServicingDate !== ""){ %>
+                                <td><%= new Date(service.ServicingDate).getDate() %>/<%= new Date(service.ServicingDate).getMonth() + 1 %>/<%= new Date(service.ServicingDate).getFullYear() %></td>
+                              <% }else{ %>
+                                <td></td>
+                              <% } %>
+
+                              <% if(service.ServiceNextDate !== ""){ %>
+                                <td><%= new Date(service.ServiceNextDate).getDate() %>/<%= new Date(service.ServiceNextDate).getMonth() + 1 %>/<%= new Date(service.ServiceNextDate).getFullYear() %></td>
+                              <% }else{ %>
+                                <td></td>
+                              <% } %>
+
+                              <td><%= service.ServicingExecutive %></td>
+                              <td><%= service.ServicingRemark %></td>
+                          </tr>
+                      <% }) %>
+                  <% } %>
+                  
+              </table>
+          </div>
+      </div>
+    </div>
+
+    <div class="sales"> 
+      <!-- Edit Row Modal -->
+      <div class="modal" id="addSell">
+        <div class="modal-head">
+          <h3>Sell or Exchange</h3>
+          <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
         </div>
+        <form action="/addSell" method="POST">
+          <input type="hidden" name="id" value="<%= singleClient._id %>" />
+          
+          <div>
+            <label for="prodName">ProductName <span>*</span></label>
+            <input type="text" name="prodName" required>
+          </div>
+          <div>
+            <label for="amount">Amount <span>*</span></label>
+            <input type="number" name="amount" required>
+          </div>
+          <div>
+            <label for="paymentMode">Payment Mode <span>*</span></label>
+            <select name="paymentMode" required>
+              <option selected disabled>Select</option>
+              <option value="Cash">Cash</option>
+              <option value="Online">Online</option>
+            </select>
+          </div>
+          <div>
+            <label for="saleOrExchange">Sale/Exchange <span>*</span></label>
+            <select name="saleOrExchange" id="saleOrExchange" required>
+              <option selected disabled>Select</option>
+              <option value="Sale">Sale</option>
+              <option value="Exchange">Exchange</option>
+            </select>
+          </div>
+          <div id="soldDate">
+            <label for="soldDate">Sold Date</label>
+            <input type="date" name="soldDate" >
+          </div>
+          <div id="exchangeDate">
+            <label for="exchangeDate">Exchange Date</label>
+            <input type="date" name="exchangeDate" >
+          </div>
+          <div>
+            <label for="instExec">Installation Executive <span>*</span></label>
+            <input type="text" name="instExec">
+          </div>
+          <div>
+            <label for="instDate">Installation Date</label>
+            <input type="date" name="instDate">
+          </div>
+          <div>
+            <label for="remark">Remarks </label>
+            <input type="text" name="remark" >
+          </div>
+          <button type="submit">Add</button>
+        </form>
+      </div>
+      <!-- Edit Row Modal -->
+      <div class="table-upper">
+        <h3 style="text-align: center; width: 100%;">More Sales/Exchanges</h3>
+        <button class="downloadAsPdf openSellModal" style="width: 110px;">Add Sell <i class="fas fa-plus"></i></button>
+      </div>
+      <table class="wptable">
+        <tr>
+          <th>S.No</th>
+          <th>Product Name</th>
+          <th>Amount</th>
+          <th>Payment Mode</th>
+          <th>Sale/Exchange</th>
+          <th>Sold Date</th>
+          <th>Exchange Date</th>
+          <th>Installation Executive</th>
+          <th>Installation Date</th>
+          <th>Remarks</th>
+        </tr>
+        <% if(singleClient.salesAndExchanges.length){ %>
+          <% singleClient.salesAndExchanges.forEach((se, index) => { %>
+            <tr style="background-color: #f1f1f1;">
+              <td><%= index + 1 %></td>
+              <td><%= se.prodName %></td>
+              <td><%= se.amount %></td>
+              <td><%= se.paymentMode %></td>
+              <td><%= se.saleOrExchange %></td>
+
+              <% if(se.soldDate !== ''){ %>
+                <td><%= new Date(se.soldDate).getMonth() + 1 %>/<%= new Date(se.soldDate).getDate() %>/<%= new Date(se.soldDate).getFullYear() %></td>
+              <% }else{ %>
+                <td></td>
+              <% } %>
+
+              <% if(se.exchangeDate !== ''){ %>
+                <td><%= new Date(se.exchangeDate).getMonth() + 1 %>/<%= new Date(se.exchangeDate).getDate() %>/<%= new Date(se.exchangeDate).getFullYear() %></td>
+              <% }else{ %>
+                <td></td>
+              <% } %>
+
+              <td><%= se.instExec %></td>
+              
+              <% if(se.instDate !== ''){ %>
+                <td><%= new Date(se.instDate).getMonth() + 1 %>/<%= new Date(se.instDate).getDate() %>/<%= new Date(se.instDate).getFullYear() %></td>
+              <% }else{ %>
+                <td></td>
+              <% } %>
+              
+              <td><%= se.remark %></td>
+            </tr>
+          <% }) %>
+        <% } %>
+        
+      </table>
     </div>
 </div>
 <%- include('../partials/footer') -%>

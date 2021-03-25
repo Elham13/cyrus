@@ -702,5 +702,117 @@
             </div>
         </div>
     </div>
+
+    <div class="sales"> 
+      <!-- Edit Row Modal -->
+      <div class="modal" id="addSell">
+        <div class="modal-head">
+          <h3>Sell or Exchange</h3>
+          <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+        </div>
+        <form action="/solarAddSell" method="POST">
+          <input type="hidden" name="id" value="<%= singleClient._id %>" />
+          
+          <div>
+            <label for="prodName">ProductName <span>*</span></label>
+            <input type="text" name="prodName" required>
+          </div>
+          <div>
+            <label for="amount">Amount <span>*</span></label>
+            <input type="number" name="amount" required>
+          </div>
+          <div>
+            <label for="paymentMode">Payment Mode <span>*</span></label>
+            <select name="paymentMode" required>
+              <option selected disabled>Select</option>
+              <option value="Cash">Cash</option>
+              <option value="Online">Online</option>
+            </select>
+          </div>
+          <div>
+            <label for="saleOrExchange">Sale/Exchange <span>*</span></label>
+            <select name="saleOrExchange" id="saleOrExchange" required>
+              <option selected disabled>Select</option>
+              <option value="Sale">Sale</option>
+              <option value="Exchange">Exchange</option>
+            </select>
+          </div>
+          <div id="soldDate">
+            <label for="soldDate">Sold Date</label>
+            <input type="date" name="soldDate" >
+          </div>
+          <div id="exchangeDate">
+            <label for="exchangeDate">Exchange Date</label>
+            <input type="date" name="exchangeDate" >
+          </div>
+          <div>
+            <label for="instExec">Installation Executive <span>*</span></label>
+            <input type="text" name="instExec">
+          </div>
+          <div>
+            <label for="instDate">Installation Date</label>
+            <input type="date" name="instDate">
+          </div>
+          <div>
+            <label for="remark">Remarks </label>
+            <input type="text" name="remark" >
+          </div>
+          <button type="submit">Add</button>
+        </form>
+      </div>
+      <!-- Edit Row Modal -->
+      <div class="table-upper">
+        <h3 style="text-align: center; width: 100%;">More Sales/Exchanges</h3>
+        <button class="downloadAsPdf openSellModal" style="width: 110px;">Add Sell <i class="fas fa-plus"></i></button>
+      </div>
+      <table class="wptable">
+        <tr>
+          <th>S.No</th>
+          <th>Product Name</th>
+          <th>Amount</th>
+          <th>Payment Mode</th>
+          <th>Sale/Exchange</th>
+          <th>Sold Date</th>
+          <th>Exchange Date</th>
+          <th>Installation Executive</th>
+          <th>Installation Date</th>
+          <th>Remarks</th>
+        </tr>
+        <% if(singleClient.salesAndExchanges.length){ %>
+          <% singleClient.salesAndExchanges.forEach((se, index) => { %>
+            <tr style="background-color: #f1f1f1;">
+              <td><%= index + 1 %></td>
+              <td><%= se.prodName %></td>
+              <td><%= se.amount %></td>
+              <td><%= se.paymentMode %></td>
+              <td><%= se.saleOrExchange %></td>
+
+              <% if(se.soldDate !== ''){ %>
+                <td><%= new Date(se.soldDate).getMonth() + 1 %>/<%= new Date(se.soldDate).getDate() %>/<%= new Date(se.soldDate).getFullYear() %></td>
+              <% }else{ %>
+                <td></td>
+              <% } %>
+
+              <% if(se.exchangeDate !== ''){ %>
+                <td><%= new Date(se.exchangeDate).getMonth() + 1 %>/<%= new Date(se.exchangeDate).getDate() %>/<%= new Date(se.exchangeDate).getFullYear() %></td>
+              <% }else{ %>
+                <td></td>
+              <% } %>
+
+              <td><%= se.instExec %></td>
+              
+              <% if(se.instDate !== ''){ %>
+                <td><%= new Date(se.instDate).getMonth() + 1 %>/<%= new Date(se.instDate).getDate() %>/<%= new Date(se.instDate).getFullYear() %></td>
+              <% }else{ %>
+                <td></td>
+              <% } %>
+              
+              <td><%= se.remark %></td>
+            </tr>
+          <% }) %>
+        <% } %>
+        
+      </table>
+    </div>
 </div>
 <%- include('../partials/footer') -%>

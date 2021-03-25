@@ -625,6 +625,26 @@ const postEditClient = async (req, res) => {
     res.redirect(`/showSingleCust/${id}`);
 }
 
+const postAddSell = async (req, res) => {
+    const {id, prodName, amount, paymentMode, saleOrExchange, soldDate, exchangeDate, instExec, instDate, remark} = req.body;
+    const client = await Client.findById(id)
+    const obj = {
+        prodName,
+        amount,
+        paymentMode,
+        saleOrExchange,
+        soldDate,
+        exchangeDate,
+        instExec,
+        instDate,
+        remark
+    }
+    client.salesAndExchanges.push(obj);
+    await client.save();
+    res.redirect(`/showSingleCust/${id}`)
+}
+
+
 
 module.exports = {
     getTotalSales,
@@ -657,4 +677,5 @@ module.exports = {
     postDeleteExpense,
     postUpdateRemark,
     postEditClient,
+    postAddSell,
 };

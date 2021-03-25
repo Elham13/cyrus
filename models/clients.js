@@ -106,6 +106,10 @@ const ClientsSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
+    salesAndExchanges: {
+        type: Array,
+        default: []
+    },
     dateCreated: {
         type: Date,
         default: Date.now

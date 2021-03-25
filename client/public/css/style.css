@@ -419,7 +419,9 @@ ul.breadcrumb li a:hover {
 .modal form #prospectAmount,
 .modal form #nextPaymentDate,
 .modal form #followUpDate1,
-.modal form #nextServicingDate {
+.modal form #nextServicingDate,
+.modal form #soldDate,
+.modal form #exchangeDate{
   display: none;
 }
 .modal form .emi-checkbox {
@@ -955,3 +957,24 @@ ul.breadcrumb li a:hover {
   }
 }
 /*------------------------------------------------------------ Show Single Customer -----------------------------------------------------------------------  */
+
+/*------------------------------------------------------------ Sales -----------------------------------------------------------------------  */
+.sales{
+  width: 100%;
+  padding-top: 7%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.table-upper{
+  display: flex; 
+  justify-content: space-between; 
+  background-color: #00664b; 
+  padding: 10px 3px; 
+  color: #f1f1f1;
+  width: 100%;
+}
+
+/*------------------------------------------------------------ Sales -----------------------------------------------------------------------  */
