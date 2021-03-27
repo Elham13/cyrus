@@ -58,76 +58,177 @@
                 </tr> 
                 <% if(clients.length > 0) { %>
                   <% clients.forEach((service, index) => { %>
-                    <tr>
-                      <td rowspan="<%= service.services.length + 1 %>"><%= service.customerId %></td>
-                      <td rowspan="<%= service.services.length + 1 %>"><%= service.customerName %></td>
-                      <td rowspan="<%= service.services.length + 1 %>"><%= service.phoneNumber %></td>
-                      <td rowspan="<%= service.services.length + 1 %>"><%= service.address %></td>
-                      <td rowspan="<%= service.services.length + 1 %>"><%= service.installationDate.toLocaleDateString() %></td>
-                      <td rowspan="<%= service.services.length + 1 %>"><%= service.installationExecutive %></td>
-                      <td rowspan="<%= service.services.length + 1 %>">
-                        <% service.services.forEach(obj => { %>
-                          <% if(obj.ServiceStatus == "Pending"){ %>
-                            <%= new Date(obj.DueServiceDate).getDate() %>/<%= new Date(obj.DueServiceDate).getMonth() + 1 %>/<%= new Date(obj.DueServiceDate).getFullYear() %>
-                          <% } %>
-                        <% }) %>
-                      </td>
-                      <td class="th2">S.No</td>
-                      <td class="th2">Service Due Date</td>
-                      <td class="th2">Service Status</td>
-                      <td class="th2">Service Date</td>
-                      <td class="th2">Next Service Date</td>
-                      <td class="th2">Service Executive</td>
-                      <td class="th2">Remarks</td>
-                      <td class="th2">Delete</td>
-                    </tr>
-                    <!-- Services -->
-                    <% service.services.forEach((ser, ind) => { %>
-                      <tr class="service-tr">
-                        <td ><%= ind + 1 %></td>
-                        <td ><%= new Date(ser.DueServiceDate).toLocaleDateString() %></td>
 
-                        <% if(ser.ServiceStatus == "Pending"){ %>
-                          <td class="editable_cell"><%= ser.ServiceStatus %>
+                    <% if(service.services.length >= 2){ %>
+                      <tr>
+                        <td rowspan="3"><%= service.customerId %></td>
+                        <td rowspan="3"><%= service.customerName %></td>
+                        <td rowspan="3"><%= service.phoneNumber %></td>
+                        <td rowspan="3"><%= service.address %></td>
+                        <td rowspan="3"><%= service.installationDate.getMonth() + 1 %>/<%= service.installationDate.getDate() %>/<%= service.installationDate.getFullYear() %></td>
+                        <td rowspan="3"><%= service.installationExecutive %></td>
+                        <td rowspan="3">
+                          <% service.services.forEach(obj => { %>
+                            <% if(obj.ServiceStatus == "Pending"){ %>
+                              <%= new Date(obj.DueServiceDate).getMonth() + 1 %>/<%= new Date(obj.DueServiceDate).getDate() %>/<%= new Date(obj.DueServiceDate).getFullYear() %>
+                            <% } %>
+                          <% }) %>
+                        </td>
+                        <td rowspan="3"><%= service.services.length %></td>
+                        <td class="th2">Service Due Date</td>
+                        <td class="th2">Service Status</td>
+                        <td class="th2">Service Date</td>
+                        <td class="th2">Next Service Date</td>
+                        <td class="th2">Service Executive</td>
+                        <td class="th2">Remarks</td>
+                        <td class="th2">Delete</td>
+                      </tr>
+                    <% }else{ %>
+                      <tr>
+                        <td rowspan="2"><%= service.customerId %></td>
+                        <td rowspan="2"><%= service.customerName %></td>
+                        <td rowspan="2"><%= service.phoneNumber %></td>
+                        <td rowspan="2"><%= service.address %></td>
+                        <td rowspan="2"><%= service.installationDate.getMonth() + 1 %>/<%= service.installationDate.getDate() %>/<%= service.installationDate.getFullYear() %></td>
+                        <td rowspan="2"><%= service.installationExecutive %></td>
+                        <td rowspan="2">
+                          <% service.services.forEach(obj => { %>
+                            <% if(obj.ServiceStatus == "Pending"){ %>
+                              <%= new Date(obj.DueServiceDate).getMonth() + 1 %>/<%= new Date(obj.DueServiceDate).getDate() %>/<%= new Date(obj.DueServiceDate).getFullYear() %>
+                            <% } %>
+                          <% }) %>
+                        </td>
+                        <td rowspan="2"><%= service.services.length %></td>
+                        <td class="th2">Service Due Date</td>
+                        <td class="th2">Service Status</td>
+                        <td class="th2">Service Date</td>
+                        <td class="th2">Next Service Date</td>
+                        <td class="th2">Service Executive</td>
+                        <td class="th2">Remarks</td>
+                        <td class="th2">Delete</td>
+                      </tr>
+                    <% } %>
+                    <!-- Services -->
+                    <% if(service.services.length >= 2){ %>
+                      <tr class="service-tr">
+
+                        <!-- Service Due Date -->
+                        <td><%= new Date(service.services[service.services.length - 2].DueServiceDate).getMonth() + 1 %>/<%= new Date(service.services[service.services.length - 2].DueServiceDate).getDate() %>/<%= new Date(service.services[service.services.length - 2].DueServiceDate).getFullYear() %></td>
+                        <!-- Service Due Date -->
+
+                        <!-- Service Status -->
+                        <td><%= service.services[service.services.length - 2].ServiceStatus %></td>
+                        <!-- Service Status -->
+
+                        <!-- Servicing Date -->
+                          <td><%= new Date(service.services[service.services.length - 2].ServicingDate).getMonth() + 1 %>/<%= new Date(service.services[service.services.length - 2].ServicingDate).getDate() %>/<%= new Date(service.services[service.services.length - 2].ServicingDate).getFullYear() %></td>
+                        <!-- Servicing Date -->
+
+                        <!-- Next Servicing Date -->
+                          <td><%= new Date(service.services[service.services.length - 2].ServiceNextDate).getMonth() + 1 %>/<%= new Date(service.services[service.services.length - 2].ServiceNextDate).getDate() %>/<%= new Date(service.services[service.services.length - 2].ServiceNextDate).getFullYear() %></td>
+                        <!-- Next Servicing Date -->
+
+
+                        <!-- Servicing Executive -->
+                          <td><%= service.services[service.services.length - 2].ServicingExecutive %></td>
+                        <!-- Servicing Executive -->
+
+
+                        <!-- Remarks -->
+                          <td><%= service.services[service.services.length - 2].ServicingRemark %></td>
+                        <!-- Remarks -->
+
+                        <!-- Delet -->
+                        <td class="action-cell" rowspan="3">
+                          <form action="/solarDeleteService" method="POST">
+                              <input type="hidden" name="id" value="<%= service._id%>">
+                              <input type="hidden" name="index" value="<%= service.services.length - 2 %>">
+                              <button title="Delete" class="delete-row"><i class="fas fa-trash"></i></button>
+                          </form>
+                        </td>
+                        <!-- Delet -->
+                      </tr>
+
+                      <!-- Last first -->
+                      <tr class="service-tr">
+                        <td><%= new Date(service.services[service.services.length - 1].DueServiceDate).getMonth() + 1 %>/<%= new Date(service.services[service.services.length - 1].DueServiceDate).getDate() %>/<%= new Date(service.services[service.services.length - 1].DueServiceDate).getFullYear() %></td>
+                        <td class="editable_cell"><%= service.services[service.services.length - 1].ServiceStatus %>
+                          <a href="javascript:void(0)" class="editServiceBtn edit">
+                            <input type="hidden" name="id" value="<%= service._id %>">
+                            <i class="fas fa-edit"></i>
+                          </a>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <% }else{ %>
+                        <tr class="service-tr">
+                        
+                          <!-- Service Due Date -->
+                          <td><%= new Date(service.services[0].DueServiceDate).getMonth() + 1 %>/<%= new Date(service.services[0].DueServiceDate).getDate() %>/<%= new Date(service.services[0].DueServiceDate).getFullYear() %></td>
+                          <!-- Service Due Date -->
+  
+  
+                          <!-- Service Status -->
+                          <td class="editable_cell"><%= service.services[0].ServiceStatus %>
                             <a href="javascript:void(0)" class="editServiceBtn edit">
                               <input type="hidden" name="id" value="<%= service._id %>">
                               <i class="fas fa-edit"></i>
                             </a>
                           </td>
-                        <% }else{ %>
-                          <td><%= ser.ServiceStatus %></td>
-                        <% } %>
-                        
-
-                        <% if(ser.ServicingDate !== ""){ %>
-                          <td><%= new Date(ser.ServicingDate).toLocaleDateString() %></td>
-                        <% }else{ %>
+                          <!-- Service Status -->
+  
+  
+                          <!-- Servicing Date -->
+                          <% if(service.services[0].ServicingDate !== ''){ %>
+                            <td>
+                            <%= new Date(service.services[0].ServicingDate).getMonth() + 1 %>/<%= new Date(service.services[0].ServicingDate).getDate() %>/<%= new Date(service.services[0].ServicingDate).getFullYear() %>
+                            </td>
+                          <% }else{ %>
+                            <td></td>
+                          <% } %>
+                          <!-- Servicing Date -->
+  
+  
+                          <!-- Next Servicing Date -->
+                          <% if(service.services[0].ServiceNextDate !== ''){ %>
+                            <td>
+                            <%= new Date(service.services[0].ServiceNextDate).getMonth() + 1 %>/<%= new Date(service.services[0].ServiceNextDate).getDate() %>/<%= new Date(service.services[0].ServiceNextDate).getFullYear() %>
+                            </td>
+                          <% }else{ %>
+                            <td></td>
+                          <% } %>
+                          <!-- Next Servicing Date -->
+  
+  
+                          <!-- Servicing Executive -->
+                          <% if(service.services[0].ServicingExecutive !== ''){ %>
+                            <td>
+                            <%= service.services[0].ServicingExecutive %>
+                            </td>
+                          <% }else{ %>
+                            <td></td>
+                          <% } %>
+                          <!-- Servicing Executive -->
+  
+  
+                          <!-- Remarks -->
+                          <% if(service.services[0].ServicingRemark !== ''){ %>
+                            <td>
+                            <%= service.services[0].ServicingRemark %>
+                            </td>
+                          <% }else{ %>
+                            <td></td>
+                          <% } %>
+                          <!-- Remarks -->
+  
                           <td></td>
-                        <% } %>
+                        </tr>
+                      <% } %>
 
-                        <% if(ser.ServiceNextDate !== ""){ %>
-                          <td><%= new Date(ser.ServiceNextDate).toLocaleDateString() %></td>
-                        <% }else{ %>
-                          <td></td>
-                        <% } %>
-
-                        <td ><%= ser.ServicingExecutive %></td>
-                        <td ><%= ser.ServicingRemark %></td>
-
-                        <% if(service.services.length !== 1 && ind+1 !== service.services.length){ %>
-                          <td class="action-cell" rowspan="3">
-                            <form action="/deleteService" method="POST">
-                                <input type="hidden" name="id" value="<%= service._id%>">
-                                <input type="hidden" name="index" value="<%= ind %>">
-                                <button title="Delete" class="delete-row"><i class="fas fa-trash"></i></button>
-                            </form>
-                          </td>
-                        <% }else{ %>
-                          <td></td>
-                        <% } %>
-                      </tr>
-                    <% }) %>
-                    
                   <% }) %>
                 <% } %>
               </table>

@@ -577,6 +577,12 @@ ul.breadcrumb li a:hover {
 .th2{
   background-color: #929292;
   color: #fff;
+  font-size: 11px;
+  padding: 0;
+}
+
+.service-tr{
+  font-size: 11px;
 }
 
 .action-cell{

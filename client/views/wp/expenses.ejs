@@ -9,6 +9,8 @@
     <div class="wp-inner" id="printable">
       <div style="margin-top: 10px;">
         <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 5)" placeholder="Search by Purpose">
+        <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 3)" placeholder="Search by Executive">
+        <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 1)" placeholder="Search by Date">
       </div>
       <button onclick="printPageArea('printable')" class="downloadAsPdf">Print this page</button>
       <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('wpTable')">Download table as excel <i class="far fa-file-excel"></i></button>
@@ -68,7 +70,7 @@
               <% expenses.forEach((expense, index) => { %>
                 <tr>
                   <td><%= index + 1 %></td>
-                  <td><%= expense.expenseDate.toLocaleDateString() %></td>
+                  <td><%= expense.expenseDate.getMonth() + 1 %>/<%= expense.expenseDate.getDate() %>/<%= expense.expenseDate.getFullYear() %></td>
                   <td><%= expense.creatorName %></td>
                   <td><%= expense.executiveName %></td>
                   <td>&#8377; <%= expense.amount %></td>
