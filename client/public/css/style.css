@@ -984,3 +984,12 @@ ul.breadcrumb li a:hover {
 }
 
 /*------------------------------------------------------------ Sales -----------------------------------------------------------------------  */
+
+.subTotal{
+  background-color: red;
+  color: #fff;
+  float: right;
+  margin-right: 10px;
+  margin-left: 10px;
+  padding: 3px 20px;
+}

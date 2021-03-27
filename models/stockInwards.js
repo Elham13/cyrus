@@ -11,6 +11,7 @@ const StockInwards = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    remark: String,
     stockOutward: {
         type: Array,
         default: [],

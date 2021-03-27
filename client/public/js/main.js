@@ -46,11 +46,8 @@ const addminSidebarToggle = () => {
 
 }
 
-
-
 const hideAndShowModals = () => {
   const showModalBtns = document.querySelectorAll('.add');
-  console.log(showModalBtns)
   for(let btn of showModalBtns){
     
     btn.addEventListener('click', () => {
@@ -286,7 +283,6 @@ const downloadPageAsExcel = (tableID, filename = '') => {
   var downloadurl;
     var dataFileType = 'application/vnd.ms-excel';
     var tableSelect = document.getElementById(tableID);
-    console.log(tableSelect)
     var tableHTMLData = tableSelect.outerHTML.replace(/ /g, '%20');
     
     filename = filename?filename+'.xls':'completDetails.xls';
@@ -333,6 +329,28 @@ const hideAndShowCustomModal = (opentBtns, modalToOpen) => {
   }
 }
 
+const hideAndShowCustomModal1 = (opentBtns, modalToOpen) => {
+  for(let btn of opentBtns){
+    btn.onclick = () => {
+      modalToOpen.lastElementChild.children[1].value = btn.firstElementChild.value;
+      modalToOpen.lastElementChild.children[2].value = btn.children[1].value;
+      window.scrollTo(0, 0);
+      modalToOpen.style.opacity = '1';
+      modalToOpen.style.top = '50vh';
+      modalToOpen.style.zIndex = '1';
+    }
+  }
+
+  const btns = document.querySelectorAll('.close');
+  for(let btn of btns){
+    btn.addEventListener('click', () => {
+      modalToOpen.style.opacity = '0';
+      modalToOpen.style.top = '-150%';
+      modalToOpen.style.zIndex = '1';
+    });
+  }
+}
+
 const controlDropDown = () => {
   const statusDropDown = document.getElementById('statusDropDown');
   const followUpDate1 = document.getElementById('followUpDate1');
@@ -345,8 +363,6 @@ const controlDropDown = () => {
     }
   })
 }
-
-
 
 const customEditModal = (rows, modal) => {
   const editRow = document.querySelectorAll(rows);
@@ -412,6 +428,23 @@ const toggleSaleInputs = () => {
 }
 
 
+const findSubtotal = (tableId, colNo) => {
+  const subTotal = document.querySelector('.subTotal');
+  const table = document.getElementById(tableId);
+  const tableRow = table.getElementsByTagName('tr');
+  var sum = 0;
+
+  for(let tr of tableRow){
+    const td = tr.getElementsByTagName('td')[colNo];
+    if(td){
+      const val = td.textContent;
+      const number = parseInt(val.replace("₹", '').trim());
+      sum += number;
+    }
+  }
+  subTotal.innerText = `₹ ${sum}`;
+}
+
 
 const init = () => {
   const path = window.location.pathname;
@@ -439,6 +472,7 @@ const init = () => {
     hideAndShowBankDetais();
     toggleEmi();
     hideAndShowCustomModal(document.querySelectorAll('.remarkBtns'), document.getElementById('updateRemarkModal'));
+    findSubtotal("wpTable", 7);
   }
 
   if(path == '/wpTelecaling' || path == '/solarTelecaling'){
@@ -461,9 +495,16 @@ const init = () => {
   if(path=='/wpStockReport' || path=='/solarStockReports'){
     hideAndShowModals();
     hideAndShowCustomModal(document.querySelectorAll('.editNoOfProductsBtn'), document.getElementById('noOfProductsModale'));
+    hideAndShowCustomModal(document.querySelectorAll('.remarkBtns'), document.getElementById('updateRemarkModal'));
+    hideAndShowCustomModal1(document.querySelectorAll('.remarkBtns1'), document.getElementById('updateRemarkModal1'));
   }
 
-  if(path=='/wpExpenses'  || path=='/solarExpenses' ||  path=='/rsPropertiesSales'){
+  if(path=='/wpExpenses' || path=='/solarExpenses'){
+    hideAndShowModals();
+    findSubtotal("wpTable", 4);
+  } 
+
+  if(path=='/rsPropertiesSales'){
     hideAndShowModals();
   }
 

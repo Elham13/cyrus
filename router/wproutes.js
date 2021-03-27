@@ -228,12 +228,13 @@ const postProspects = async (req, res) => {
 }
 
 const postStockInwards = async (req, res) => {
-    const { creatorName, prodName, noOfProd } = req.body;
+    const { creatorName, prodName, noOfProd, remark } = req.body;
 
     const newStockInward = {
         creatorName: creatorName,
         productName: prodName.toUpperCase(),
         numberOfProducts: noOfProd,
+        remark: remark
     }
 
     const addStockInward = new StockInwards(newStockInward);
@@ -242,7 +243,7 @@ const postStockInwards = async (req, res) => {
 }
 
 const postStockOutwards = async (req, res) => {
-    const { creatorName, prodName, noOfProd, clientName, clientPhNo, technicianName } = req.body;
+    const { creatorName, prodName, noOfProd, clientName, clientPhNo, technicianName, remark } = req.body;
     const stocks = await StockInwards.findOne({productName: prodName.toUpperCase()});
     if(stocks !== null){
         const newStockOutward = {
@@ -252,6 +253,7 @@ const postStockOutwards = async (req, res) => {
             clientName: clientName,
             clientNumber: clientPhNo,
             technicianName: technicianName,
+            remark: remark
         }
         let outward = stocks.stockOutward;
         outward = [...outward, newStockOutward]; 
@@ -595,6 +597,37 @@ const postUpdateRemark = async (req, res) => {
     res.redirect('/wpTotalSales');
 }
 
+const postStockRemark = async (req, res) => {
+    const {remark, id} = req.body; 
+    const client = await StockInwards.findById(id);
+    const d = new Date();
+    const now = d.toLocaleDateString();
+    if(client.remark == ''){
+        client.remark = '('+now+')'+remark;
+    }else{
+        client.remark = '('+now+')'+remark+'. '+client.remark;
+    }
+    await client.save();
+    res.redirect('/wpStockReport');
+}
+
+const postStockOutwardRemark = async (req, res) => {
+    const {remark, id, index} = req.body;
+    const out = await StockInwards.findById(id);
+    const d = new Date();
+    const now = d.toLocaleDateString();
+
+    out.stockOutward[index].remark =  "remark";
+    if(out.stockOutward[index].remark){
+        out.stockOutward[index].remark = '('+now+')'+ remark;
+    }else{
+        out.stockOutward[index].remark = '('+now+')'+ remark +'. '+ out.stockOutward[index].remark;
+    }
+
+    await out.save();
+    res.redirect('/wpStockReport');
+}
+
 const postEditClient = async (req, res) => {
     const {id, custName, prodName, reference, phNumber, phNumber1, address, instExec, amount} = req.body;
     const client = await Client.findById(id);
@@ -661,6 +694,8 @@ module.exports = {
     postDeleteStockInward,
     postDeleteExpense,
     postUpdateRemark,
+    postStockRemark,
     postEditClient,
     postAddSell,
+    postStockOutwardRemark,
 };

@@ -65,12 +65,12 @@
                         <td rowspan="3"><%= service.customerName %></td>
                         <td rowspan="3"><%= service.phoneNumber %></td>
                         <td rowspan="3"><%= service.address %></td>
-                        <td rowspan="3"><%= service.installationDate.getMonth() + 1 %>/<%= service.installationDate.getDate() %>/<%= service.installationDate.getFullYear() %></td>
+                        <td rowspan="3"><%= service.installationDate.getDate() %>/<%= service.installationDate.getMonth() + 1 %>/<%= service.installationDate.getFullYear() %></td>
                         <td rowspan="3"><%= service.installationExecutive %></td>
                         <td rowspan="3">
                           <% service.services.forEach(obj => { %>
                             <% if(obj.ServiceStatus == "Pending"){ %>
-                              <%= new Date(obj.DueServiceDate).getMonth() + 1 %>/<%= new Date(obj.DueServiceDate).getDate() %>/<%= new Date(obj.DueServiceDate).getFullYear() %>
+                              <%= new Date(obj.DueServiceDate).getDate() %>/<%= new Date(obj.DueServiceDate).getMonth() + 1 %>/<%= new Date(obj.DueServiceDate).getFullYear() %>
                             <% } %>
                           <% }) %>
                         </td>
@@ -89,12 +89,12 @@
                         <td rowspan="2"><%= service.customerName %></td>
                         <td rowspan="2"><%= service.phoneNumber %></td>
                         <td rowspan="2"><%= service.address %></td>
-                        <td rowspan="2"><%= service.installationDate.getMonth() + 1 %>/<%= service.installationDate.getDate() %>/<%= service.installationDate.getFullYear() %></td>
+                        <td rowspan="2"><%= service.installationDate.getDate() %>/<%= service.installationDate.getMonth() + 1 %>/<%= service.installationDate.getFullYear() %></td>
                         <td rowspan="2"><%= service.installationExecutive %></td>
                         <td rowspan="2">
                           <% service.services.forEach(obj => { %>
                             <% if(obj.ServiceStatus == "Pending"){ %>
-                              <%= new Date(obj.DueServiceDate).getMonth() + 1 %>/<%= new Date(obj.DueServiceDate).getDate() %>/<%= new Date(obj.DueServiceDate).getFullYear() %>
+                              <%= new Date(obj.DueServiceDate).getDate() %>/<%= new Date(obj.DueServiceDate).getMonth() + 1 %>/<%= new Date(obj.DueServiceDate).getFullYear() %>
                             <% } %>
                           <% }) %>
                         </td>
@@ -114,7 +114,7 @@
                       <tr class="service-tr">
 
                         <!-- Service Due Date -->
-                        <td><%= new Date(service.services[service.services.length - 2].DueServiceDate).getMonth() + 1 %>/<%= new Date(service.services[service.services.length - 2].DueServiceDate).getDate() %>/<%= new Date(service.services[service.services.length - 2].DueServiceDate).getFullYear() %></td>
+                        <td><%= new Date(service.services[service.services.length - 2].DueServiceDate).getDate() %>/<%= new Date(service.services[service.services.length - 2].DueServiceDate).getMonth() + 1 %>/<%= new Date(service.services[service.services.length - 2].DueServiceDate).getFullYear() %></td>
                         <!-- Service Due Date -->
 
                         <!-- Service Status -->
@@ -122,11 +122,11 @@
                         <!-- Service Status -->
 
                         <!-- Servicing Date -->
-                          <td><%= new Date(service.services[service.services.length - 2].ServicingDate).getMonth() + 1 %>/<%= new Date(service.services[service.services.length - 2].ServicingDate).getDate() %>/<%= new Date(service.services[service.services.length - 2].ServicingDate).getFullYear() %></td>
+                          <td><%= new Date(service.services[service.services.length - 2].ServicingDate).getDate() %>/<%= new Date(service.services[service.services.length - 2].ServicingDate).getMonth() + 1 %>/<%= new Date(service.services[service.services.length - 2].ServicingDate).getFullYear() %></td>
                         <!-- Servicing Date -->
 
                         <!-- Next Servicing Date -->
-                          <td><%= new Date(service.services[service.services.length - 2].ServiceNextDate).getMonth() + 1 %>/<%= new Date(service.services[service.services.length - 2].ServiceNextDate).getDate() %>/<%= new Date(service.services[service.services.length - 2].ServiceNextDate).getFullYear() %></td>
+                          <td><%= new Date(service.services[service.services.length - 2].ServiceNextDate).getDate() %>/<%= new Date(service.services[service.services.length - 2].ServiceNextDate).getMonth() + 1 %>/<%= new Date(service.services[service.services.length - 2].ServiceNextDate).getFullYear() %></td>
                         <!-- Next Servicing Date -->
 
 
@@ -152,7 +152,7 @@
 
                       <!-- Last first -->
                       <tr class="service-tr">
-                        <td><%= new Date(service.services[service.services.length - 1].DueServiceDate).getMonth() + 1 %>/<%= new Date(service.services[service.services.length - 1].DueServiceDate).getDate() %>/<%= new Date(service.services[service.services.length - 1].DueServiceDate).getFullYear() %></td>
+                        <td><%= new Date(service.services[service.services.length - 1].DueServiceDate).getDate() %>/<%= new Date(service.services[service.services.length - 1].DueServiceDate).getMonth() + 1 %>/<%= new Date(service.services[service.services.length - 1].DueServiceDate).getFullYear() %></td>
                         <td class="editable_cell"><%= service.services[service.services.length - 1].ServiceStatus %>
                           <a href="javascript:void(0)" class="editServiceBtn edit">
                             <input type="hidden" name="id" value="<%= service._id %>">
@@ -169,7 +169,7 @@
                         <tr class="service-tr">
                         
                           <!-- Service Due Date -->
-                          <td><%= new Date(service.services[0].DueServiceDate).getMonth() + 1 %>/<%= new Date(service.services[0].DueServiceDate).getDate() %>/<%= new Date(service.services[0].DueServiceDate).getFullYear() %></td>
+                          <td><%= new Date(service.services[0].DueServiceDate).getDate() %>/<%= new Date(service.services[0].DueServiceDate).getMonth() + 1 %>/<%= new Date(service.services[0].DueServiceDate).getFullYear() %></td>
                           <!-- Service Due Date -->
   
   
@@ -186,7 +186,7 @@
                           <!-- Servicing Date -->
                           <% if(service.services[0].ServicingDate !== ''){ %>
                             <td>
-                            <%= new Date(service.services[0].ServicingDate).getMonth() + 1 %>/<%= new Date(service.services[0].ServicingDate).getDate() %>/<%= new Date(service.services[0].ServicingDate).getFullYear() %>
+                            <%= new Date(service.services[0].ServicingDate).getDate() %>/<%= new Date(service.services[0].ServicingDate).getMonth() + 1 %>/<%= new Date(service.services[0].ServicingDate).getFullYear() %>
                             </td>
                           <% }else{ %>
                             <td></td>
@@ -196,9 +196,7 @@
   
                           <!-- Next Servicing Date -->
                           <% if(service.services[0].ServiceNextDate !== ''){ %>
-                            <td>
-                            <%= new Date(service.services[0].ServiceNextDate).getMonth() + 1 %>/<%= new Date(service.services[0].ServiceNextDate).getDate() %>/<%= new Date(service.services[0].ServiceNextDate).getFullYear() %>
-                            </td>
+                            <td><%= new Date(service.services[0].ServiceNextDate).getDate() %>/<%= new Date(service.services[0].ServiceNextDate).getMonth() + 1 %>/<%= new Date(service.services[0].ServiceNextDate).getFullYear() %></td>
                           <% }else{ %>
                             <td></td>
                           <% } %>
