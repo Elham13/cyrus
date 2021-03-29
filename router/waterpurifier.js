@@ -68,6 +68,7 @@ const {
     postSolarEditClient,
     postSolarAddSell,
     postSolarDeleteService,
+    postSolarStockRemark,
 } = require('./solarroutes');
 
 const {
@@ -170,6 +171,8 @@ router.post('/solarUpdateRemark', postSolarUpdateRemark);
 router.post('/solarEditClient', postSolarEditClient);
 router.post('/solarAddSell', postSolarAddSell);
 router.post('/solarDeleteService', postSolarDeleteService);
+router.post('/solarStockRemark', postSolarStockRemark);
+
 
 router.get('/rsPropertiesInHand', ensureAuthenticated, checkRole('Admin',''), getRSPropertiesInHand)
 router.get('/rsPropertiesSales', ensureAuthenticated, checkRole('Admin',''), getRSPropertiesSales)

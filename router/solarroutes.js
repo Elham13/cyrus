@@ -162,11 +162,12 @@ const postTotalSales = async (req, res) => {
 }
 
 const postSolarStockInward = async (req, res) => { 
-    const { creatorName, prodName, noOfProd } = req.body;
+    const { creatorName, prodName, noOfProd, remark } = req.body;
     const newStockInward = {
         creatorName: creatorName,
         productName: prodName.toUpperCase(),
         numberOfProducts: noOfProd,
+        remark: remark,
     }
     const addStockInward = new SolarStockInwards(newStockInward);
     await addStockInward.save();
@@ -175,7 +176,7 @@ const postSolarStockInward = async (req, res) => {
 
 
 const postSolarStockOutward = async (req, res) => { 
-    const { creatorName, prodName, noOfProd, clientName, clientPhNo, technicianName } = req.body;
+    const { creatorName, prodName, noOfProd, clientName, clientPhNo, technicianName, remark } = req.body;
     const stocks = await SolarStockInwards.findOne({productName: prodName.toUpperCase()});
     if(stocks !== null){
         const newStockOutward = {
@@ -185,6 +186,7 @@ const postSolarStockOutward = async (req, res) => {
             clientName: clientName,
             clientNumber: clientPhNo,
             technicianName: technicianName,
+            remark: remark,
         }
         let outward = stocks.stockOutward;
         outward = [...outward, newStockOutward]; 
@@ -499,6 +501,20 @@ const postSolarDeleteService = async (req, res) => {
     res.redirect('/solarServicesPending');
 }
 
+const postSolarStockRemark = async (req, res) => {
+    const {remark, id} = req.body; 
+    const client = await SolarStockInwards.findById(id);
+    const d = new Date();
+    const now = d.toLocaleDateString();
+    if(client.remark == ''){
+        client.remark = '('+now+')'+remark;
+    }else{
+        client.remark = '('+now+')'+remark+'. '+client.remark;
+    }
+    await client.save();
+    res.redirect('/solarStockReports');
+}
+
 module.exports = {
     getSolarTotalSales,
     getSolarTelecaling,
@@ -525,4 +541,5 @@ module.exports = {
     postSolarEditClient,
     postSolarAddSell,
     postSolarDeleteService,
+    postSolarStockRemark,
 }

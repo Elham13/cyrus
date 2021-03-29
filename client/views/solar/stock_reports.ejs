@@ -7,11 +7,15 @@
     <li>Stock Reports</li>
 </ul>
     <div class="wp-inner" id="printable">
+      <div style="margin-top: 10px;" >
+        <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 2)" placeholder="Product Name">
+      </div>
       <button onclick="printPageArea('printable')" class="downloadAsPdf">Print this page</button>
       <button class="downloadAsPdf" onclick="downloadPageAsPdf('printable')">Download page as pdf <i class="far fa-file-pdf"></i></button>
       <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('wpTable')">Download table as excel <i class="far fa-file-excel"></i></button>
       <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
-            <div class="modal" id="modal">
+      <!-- Stock Inwards modal -->
+      <div class="modal" id="modal">
                 <div class="modal-head">
                 <h3>Stock inwards form</h3>
                 <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
@@ -28,24 +32,49 @@
                         <label for="noOfProd">Number of Products: <span>*</span></label>
                         <input type="number" name="noOfProd" required>
                     </div>
+                    <div>
+                      <label for="remark">Remarks:</label>
+                      <input type="text" name="remark" >
+                    </div>
                     <button type="submit">Add</button>
                 </form>
-            </div>
+      </div>
+      <!-- Stock Inwards modal -->
 
-            <div class="modal" id="noOfProductsModale">
-              <div class="modal-head">
-                <h3>Add more products</h3>
-                <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
-              </div>         
-                <form action="/solarAddMoreProduct" method="POST">
-                  <div>
-                    <label for="addMoreProduct">Number of products: <span>*</span></label>
-                    <input type="number" name="addMoreProduct" required>
-                  </div>
-                  <input type="hidden" name="id">
-                  <button type="submit">Add</button>
-                </form>
-            </div>
+      <!-- Add more product modal -->
+        <div class="modal" id="noOfProductsModale">
+          <div class="modal-head">
+            <h3>Add more products</h3>
+            <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+          </div>         
+            <form action="/solarAddMoreProduct" method="POST">
+              <div>
+                <label for="addMoreProduct">Number of products: <span>*</span></label>
+                <input type="number" name="addMoreProduct" required>
+              </div>
+              <input type="hidden" name="id">
+              <button type="submit">Add</button>
+            </form>
+        </div>
+      <!-- Add more product modal -->
+
+      <!-- Remark Modal -->
+      <div class="modal" id="updateRemarkModal">
+        <div class="modal-head">
+          <h3>Update remark</h3>
+          <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
+        </div>
+        <form action="/solarStockRemark" method="POST">
+          <div>
+            <label for="remark">Enter a remark:</label>
+            <input type="remark" name="remark" />
+          </div>
+          <input type="hidden" name="id" required />
+          <button type="submit">Update</button>
+        </form>
+      </div>
+      <!-- Remark Modal -->
+
 
             <h3 class="tableHeadin">Stock Inwards</h3>
             <table class="wptable" id="wpTable">
@@ -55,6 +84,7 @@
                     <th>Product name</th>
                     <th>Number of Products</th>
                     <th>Stock Available</th>
+                    <th>Remarks</th>
                     <th>Action</th>
                 </tr> 
                 <% if(stocks.length > 0) { %>
@@ -74,6 +104,10 @@
                         <% }else{ %>
                           <td><%= stock.numberOfProducts - stock.numberOfProductsDifference %></td>
                         <% } %> 
+                        
+                        <td class="editable_cell" style="padding-right: 20px"><%= stock.remark %>
+                          <a href="javascript:void(0)" class="edit remarkBtns"><input type="hidden" value="<%= stock._id %>"><i class="fas fa-edit"></i></a>
+                        </td>
 
                         <td class="action-cell">
                           <form action="/solarDeleteStockInward" method="POST">
@@ -81,11 +115,16 @@
                               <button title="Delete" class="delete-row"><i class="fas fa-trash"></i></button>
                           </form>
                         </td>
+
+                       
                     </tr>
                     <% }) %>
                 <% } %>
             </table>
 
+            <div style="margin-top: 10px;" >
+              <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTableOut', 2)" placeholder="Product Name">
+            </div>
             <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('wpTableOut')">Download table as excel <i class="far fa-file-excel"></i></button>
             <a href="javascript:void(0)" class="add" style="margin-bottom: -20px;">Add<span><i class="fas fa-plus"></i></span></a>
                 <div class="modal" id="modal">
@@ -117,6 +156,10 @@
                             <label for="technicianName">Technician Name: <span>*</span></label>
                             <input type="text" name="technicianName" required>
                         </div>
+                        <div>
+                            <label for="remark">Remark:</label>
+                            <input type="text" name="remark" required>
+                        </div>
                         <button type="submit">Add</button>
                     </form>
                 </div>
@@ -131,6 +174,7 @@
                       <th>Client Name</th>
                       <th>Client Number</th>
                       <th>Technician Name</th>
+                      <th>Reamrk</th>
                       <th>Delete</th>
                     </tr>
                     <% if(stocks.length > 0) { %>
@@ -145,6 +189,7 @@
                               <td><%= out.clientName %></td>
                               <td><%= out.clientNumber %></td>
                               <td><%= out.technicianName %></td>
+                              <td><%= out.remark %></td>
                               <td class="action-cell">
                                 <form action="/solarDeleteStockOutward" method="POST">
                                     <input type="hidden" name="id" value="<%= outward._id%>">

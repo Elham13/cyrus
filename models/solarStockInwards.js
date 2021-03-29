@@ -15,6 +15,7 @@ const StockInwards = new mongoose.Schema({
         type: Array,
         default: [],
     },
+    remark: String,
 });
 
 module.exports = mongoose.model("SolarStockInwards", StockInwards);
