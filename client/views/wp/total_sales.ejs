@@ -17,6 +17,8 @@
         </select>
         <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 11)" placeholder="Next Payment Date">
         <input type="number" class="filterTable" onkeyup="filterNumberTable(this, 'wpTable', 3)" placeholder="Search With Phone No">
+        <p class="subTotalWrapper">Total Customers: <span class="totalCustomer"><%= clients.length %></span></p>
+        <p class="subTotalWrapper">Subtotal: <span class="subTotal"></span></p>
       </div>
       <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
 
@@ -129,10 +131,9 @@
         </div>
       <!-- Remark Modal --> 
 
-      <button class="downloadAsPdf"  onclick="downloadPageAsExcel('wpTable', 'totalSales')">Download table as excel <i class="far fa-file-excel"></i></button>
+      <button class="downloadAsPdf"  onclick="fnExcelReport();">Download table as excel <i class="far fa-file-excel"></i></button>
       <button class="downloadAsPdf" onclick="downloadPageAsPdf('wpTable')">Download page as pdf <i class="far fa-file-pdf"></i></button>
       <button onclick="printPageArea('printable')" class="downloadAsPdf">Print this page</button> 
-      <span class="subTotal"></span>
 
         <table class="wptable" id="wpTable">
             <tr>

@@ -984,12 +984,14 @@ ul.breadcrumb li a:hover {
 }
 
 /*------------------------------------------------------------ Sales -----------------------------------------------------------------------  */
+.subTotalWrapper{
+  display: inline-block;
+  margin: 0 10px;
+}
 
-.subTotal{
+.subTotal,
+.totalCustomer{
   background-color: red;
   color: #fff;
-  float: right;
-  margin-right: 10px;
-  margin-left: 10px;
   padding: 3px 20px;
 }

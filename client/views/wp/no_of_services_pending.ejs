@@ -54,7 +54,8 @@
                   <th>Installation Date</th> 
                   <th>Installation Executive</th>
                   <th>Next Service Date</th>
-                  <th colspan="8" style="text-align: center;">Services</th>
+                  <th>Completed service</th>
+                  <th colspan="7" style="text-align: center;">Services</th>
                 </tr> 
                 <% if(clients.length > 0) { %>
                   <% clients.forEach((service, index) => { %>
@@ -74,7 +75,7 @@
                             <% } %>
                           <% }) %>
                         </td>
-                        <td rowspan="3"><%= service.services.length %></td>
+                        <td rowspan="3"><%= service.services.length - 1 %></td>
                         <td class="th2">Service Due Date</td>
                         <td class="th2">Service Status</td>
                         <td class="th2">Service Date</td>
@@ -98,7 +99,7 @@
                             <% } %>
                           <% }) %>
                         </td>
-                        <td rowspan="2"><%= service.services.length %></td>
+                        <td rowspan="2"><%= service.services.length - 1 %></td>
                         <td class="th2">Service Due Date</td>
                         <td class="th2">Service Status</td>
                         <td class="th2">Service Date</td>

@@ -7,8 +7,11 @@
     <li>Stock Reports</li>
 </ul>
     <div class="wp-inner" id="printable">
+      <div style="margin-top: 10px;" >
+        <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 2)" placeholder="Product Name">
+      </div>
       <button onclick="printPageArea('printable')" class="downloadAsPdf">Print this page</button>
-      <button class="downloadAsPdf" onclick="downloadPageAsPdf('printable')">Download page as pdf <i class="far fa-file-pdf"></i></button>
+      <button class="downloadAsPdf" onclick="downloadPageAsPdf('printable')">Download page as pdf <i class="far fa-file-pdf"></i></button> 
       <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('wpTable')">Download table as excel <i class="far fa-file-excel"></i></button>
       <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
             
@@ -135,6 +138,9 @@
                 <% } %>
             </table>
 
+            <div style="margin-top: 10px;" >
+              <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTableOut', 2)" placeholder="Product Name">
+            </div>
             <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('wpTableOut')">Download table as excel <i class="far fa-file-excel"></i></button>
             <a href="javascript:void(0)" class="add" style="margin-bottom: -20px;">Add<span><i class="fas fa-plus"></i></span></a>
                 <div class="modal" id="modal">
