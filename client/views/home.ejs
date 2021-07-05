@@ -1,12 +1,11 @@
-<%- include('./partials/header') -%>
-<%- include('./partials/navbar') -%> 
-    <div class="banner">
-        <% if(user){ %>
-            <h1>Welcome to Cyrus Group Mr <%= user.name %></h1>
-            <h3>Your role is <%= user.role %> </h3>
-        <% } else {%>
-            <h1>Welcome to Cyrus Group</h1>
-            <!-- <div class="home-cards-wrapper">
+<%- include('./partials/header') -%> <%- include('./partials/navbar') -%>
+<div class="banner">
+  <% if(user){ %>
+  <h1>Welcome to Cyrus Group Mr <%= user.name %></h1>
+  <h3>Your role is <%= user.role %></h3>
+  <% } else {%>
+  <h1>Welcome to Cyrus Group</h1>
+  <!-- <div class="home-cards-wrapper">
                 <div class="home-card">
                     <h3><span><i class="fas fa-tint"></i></span>Water Purifier</h3>
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa provident, eligendi laboriosam recusandae veritatis repudiandae, nesciunt esse beatae, dolore ab tempore maiores totam quae at delectus blanditiis? Ducimus, repudiandae sapiente!</p>
@@ -20,6 +19,6 @@
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa provident, eligendi laboriosam recusandae veritatis repudiandae, nesciunt esse beatae, dolore ab tempore maiores totam quae at delectus blanditiis? Ducimus, repudiandae sapiente!</p>
                 </div>
             </div>  -->
-        <% } %>
-    </div>
+  <% } %>
+</div>
 <%- include('./partials/footer') -%>

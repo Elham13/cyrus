@@ -1,0 +1,78 @@
+<%- include('../../partials/header') -%> <%- include('../../partials/navbar')
+-%>
+
+<div class="sc-wrapper">
+  <ul class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li><a href="/wp">Water Purifier</a></li>
+    <li><a href="/wpExpenses">Expenses</a></li>
+    <li>Edit data</li>
+  </ul>
+
+  <h2 class="title">Edit item</h2>
+
+  <%- include('../../partials/messages') -%>
+  <div class="editFormWrapper">
+    <form action="/editExpenses" method="POST">
+      <input type="hidden" name="id" value="<%= data._id %>" />
+
+      <label for="customerName">Executive Name</label>
+      <input
+        type="text"
+        name="executiveName"
+        id="customerName"
+        class="editFormInput"
+        value="<%= data.executiveName %>"
+      />
+
+      <label for="phoneNumber">Amount</label>
+      <input
+        type="number"
+        name="amount"
+        id="phoneNumber"
+        class="editFormInput"
+        value="<%= data.amount %>"
+      />
+
+      <label for="address">Purpose</label>
+      <input
+        type="text"
+        name="purpose"
+        id="address"
+        class="editFormInput"
+        value="<%= data.purpose %>"
+      />
+
+      <label for="city">Remarks</label>
+      <input
+        type="text"
+        name="remark"
+        class="editFormInput"
+        id="city"
+        value="<%= data.remark %>"
+      />
+
+      <label for="executiveName">Payment mode</label>
+      <input
+        type="text"
+        name="paymentMode"
+        id="executiveName"
+        class="editFormInput"
+        value="<%= data.paymentMode %>"
+      />
+
+      <label for="remarks">Expense Date</label>
+      <input
+        type="date"
+        name="expenseDate"
+        id="remarks"
+        class="editFormInput"
+        value="<%= data.expenseDate %>"
+      />
+
+      <input type="submit" class="editFormBtn" value="Edit" />
+    </form>
+  </div>
+</div>
+
+<%- include('../../partials/footer') -%>

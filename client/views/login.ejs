@@ -1,20 +1,20 @@
 <%- include('./partials/loginHeader') -%>
-  <div class="wrapper">
-    <div class="logo-wrapper">
-      <img src="images/logo.png" alt="logo" />
-    </div>
-    <h2 class="title">Login</h2>
-    <%- include('./partials/messages') -%>
-      <form action="/login" method="POST" class="form loginForm">
-        <div class="input-wrapper">
-          <label for="number">Mobile Number</label>
-          <input type="text" name="number" required />
-        </div>
-        <div class="input-wrapper">
-          <label for="password">Password</label>
-          <input type="password" name="password" required />
-        </div>
-        <button type="submit" class="submit-btn">Login</button>
-      </form>
+<div class="wrapper">
+  <div class="logo-wrapper">
+    <img src="images/logo.png" alt="logo" />
   </div>
-  <%- include('./partials/loginFooter') -%>
+  <h2 class="title">Login</h2>
+  <%- include('./partials/messages') -%>
+  <form action="/login" method="POST" class="form loginForm">
+    <div class="input-wrapper">
+      <label for="number">Mobile Number</label>
+      <input type="text" name="number" required />
+    </div>
+    <div class="input-wrapper">
+      <label for="password">Password</label>
+      <input type="password" name="password" required />
+    </div>
+    <button type="submit" class="submit-btn">Login</button>
+  </form>
+</div>
+<%- include('./partials/loginFooter') -%>

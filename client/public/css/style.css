@@ -164,7 +164,7 @@ ul.breadcrumb li a:hover {
   font-family: Tangerine;
   /* margin-top: 40px; */
 }
-.banner h3{
+.banner h3 {
   margin-top: 10px;
   font-size: unset;
 }
@@ -421,7 +421,7 @@ ul.breadcrumb li a:hover {
 .modal form #followUpDate1,
 .modal form #nextServicingDate,
 .modal form #soldDate,
-.modal form #exchangeDate{
+.modal form #exchangeDate {
   display: none;
 }
 .modal form .emi-checkbox {
@@ -560,7 +560,7 @@ ul.breadcrumb li a:hover {
   color: #f2f2f2;
 }
 
-.wptable tr:hover{
+.wptable tr:hover {
   background-color: #f0f0f0;
 }
 
@@ -574,24 +574,24 @@ ul.breadcrumb li a:hover {
   padding: 5px 10px;
 }
 
-.th2{
+.th2 {
   background-color: #929292;
   color: #fff;
   font-size: 11px;
   padding: 0;
 }
 
-.service-tr{
+.service-tr {
   font-size: 11px;
 }
 
-.action-cell{
+.action-cell {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
-.edit-row, 
-.delete-row{
+.edit-row,
+.delete-row {
   background-color: black;
   color: #fff;
   text-decoration: none;
@@ -601,19 +601,18 @@ ul.breadcrumb li a:hover {
   outline: none;
   cursor: pointer;
   border-radius: 2px;
-  margin: 0;
+  margin: 0 2px;
 }
-.edit-row:active, 
-.delete-row:active{
+.edit-row:active,
+.delete-row:active {
   transform: scale(0.8);
 }
-.edit-row{
+.edit-row {
   background-color: green;
 }
-.delete-row{
+.delete-row {
   background-color: red;
 }
-
 
 @media only screen and (max-width: 789px) {
   .wptable td,
@@ -630,7 +629,6 @@ ul.breadcrumb li a:hover {
 
 /* ------------------------------------------------------------Messages--------------------------------------------------------------------- */
 .messages {
-  background-color: #911600;
   width: 460px;
   display: flex;
   justify-content: space-between;
@@ -641,6 +639,15 @@ ul.breadcrumb li a:hover {
   padding: 10px 10px;
   border-radius: 5px;
   font-size: 16px;
+  margin: 0 auto;
+}
+
+.messages.success {
+  background-color: #017754;
+}
+
+.messages.failure {
+  background-color: #911600;
 }
 
 .messages .close {
@@ -847,7 +854,7 @@ ul.breadcrumb li a:hover {
 
 /*------------------------------------------------------------EMI Page -----------------------------------------------------------------------  */
 
-.emi-wrapper .section-head{
+.emi-wrapper .section-head {
   text-align: center;
   background-color: #00664b;
   padding: 10px;
@@ -869,7 +876,7 @@ ul.breadcrumb li a:hover {
   padding: 2px;
 }
 
-.emi-table th{
+.emi-table th {
   background-color: #000066;
   color: #f2f2f2;
 }
@@ -904,16 +911,13 @@ ul.breadcrumb li a:hover {
 }
 /*------------------------------------------------------------EMI Page -----------------------------------------------------------------------  */
 
-
 /*------------------------------------------------------------Service single Page -----------------------------------------------------------------------  */
-.services-wrapper{
-
+.services-wrapper {
 }
 /*------------------------------------------------------------Service single Page -----------------------------------------------------------------------  */
 
-
 /*------------------------------------------------------------ Show Single Customer -----------------------------------------------------------------------  */
-.donwload-page-btn-wrapper{
+.donwload-page-btn-wrapper {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
@@ -947,25 +951,25 @@ ul.breadcrumb li a:hover {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
-.sc-left{
+.sc-left {
   margin-right: 30px;
 }
-.sc-right{
+.sc-right {
   /* background-color: orchid; */
 }
 
 @media only print and (min-width: 600px) {
-  .sc-left{
+  .sc-left {
     margin-bottom: 40px;
   }
-  .downloadAsPdf{
+  .downloadAsPdf {
     display: none;
   }
 }
 /*------------------------------------------------------------ Show Single Customer -----------------------------------------------------------------------  */
 
 /*------------------------------------------------------------ Sales -----------------------------------------------------------------------  */
-.sales{
+.sales {
   width: 100%;
   padding-top: 7%;
   display: flex;
@@ -974,24 +978,69 @@ ul.breadcrumb li a:hover {
   flex-direction: column;
 }
 
-.table-upper{
-  display: flex; 
-  justify-content: space-between; 
-  background-color: #00664b; 
-  padding: 10px 3px; 
+.table-upper {
+  display: flex;
+  justify-content: space-between;
+  background-color: #00664b;
+  padding: 10px 3px;
   color: #f1f1f1;
   width: 100%;
 }
 
 /*------------------------------------------------------------ Sales -----------------------------------------------------------------------  */
-.subTotalWrapper{
+.subTotalWrapper {
   display: inline-block;
   margin: 0 10px;
 }
 
 .subTotal,
-.totalCustomer{
+.totalCustomer {
   background-color: red;
   color: #fff;
   padding: 3px 20px;
 }
+
+/*------------------------------------------------------------ Edit Formt -----------------------------------------------------------------------  */
+.editFormInput {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+  outline: none;
+}
+
+.editFormBtn {
+  background-color: #000066;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.editFormBtn:hover {
+  background-color: #000031;
+}
+
+.editFormWrapper {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  margin: 2rem;
+}
+
+.title {
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.disable {
+  pointer-events: none;
+  background-color: gray;
+}
+
+/*------------------------------------------------------------ Edit Formt -----------------------------------------------------------------------  */

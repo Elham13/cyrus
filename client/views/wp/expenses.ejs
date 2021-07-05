@@ -1,94 +1,138 @@
-<%- include('../partials/header') -%>
-<%- include('../partials/navbar') -%>
-<div class="wp-wrapper"> 
+<%- include('../partials/header') -%> <%- include('../partials/navbar') -%>
+<div class="wp-wrapper">
   <ul class="breadcrumb">
     <li><a href="/">Home</a></li>
     <li><a href="/wp">Water Purifier</a></li>
     <li>Expenses</li>
   </ul>
-    <div class="wp-inner" id="printable">
-      <div style="margin-top: 10px;">
-        <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 5)" placeholder="Search by Purpose">
-        <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 3)" placeholder="Search by Executive">
-        <input type="text" class="filterTable" onkeyup="filterTextTable(this, 'wpTable', 1)" placeholder="Search by Date">
-        <p class="subTotalWrapper">Subtotal: <span class="subTotal"></span></p>
-      </div>
-      <button onclick="printPageArea('printable')" class="downloadAsPdf">Print this page</button>
-      <button class="downloadAsPdf" id="downloadAsExcel" onclick="downloadPageAsExcel('wpTable')">Download table as excel <i class="far fa-file-excel"></i></button>
-      <button class="downloadAsPdf" onclick="downloadPageAsPdf('printable')">Download page as pdf <i class="far fa-file-pdf"></i></button>
-
-      <a href="javascript:void(0)" class="add">Add<span><i class="fas fa-plus"></i></span></a>
-        <div class="modal" id="modal">
-          <div class="modal-head"> 
-            <h3>Expenses form</h3>
-            <a href="javascript:void(0)" class="close" id="hideModal"><span><i class="fas fa-times"></i></span></a>
-          </div>               
-            <form action="/wpExpenses" method="POST">
-                <% if(user !== null){ %>
-                  <input type="hidden" name="creatorName" value="<%= user.name %>">
-                <% } %>
-                <div>
-                    <label for="date">Expense Date: <span>*</span></label>
-                    <input type="date" name="date" required >
-                </div>
-                <div>
-                    <label for="execName">Executive Name: <span>*</span></label>
-                    <input type="text" name="execName" required>
-                </div>
-                <div>
-                    <label for="amount">Amount: <span>*</span></label>
-                    <input type="number" name="amount" required>
-                </div>
-                <div>
-                    <label for="purpose">Purpose: <span>*</span></label>
-                    <input type="text" name="purpose" required>
-                </div>
-                <div>
-                    <label for="remark">Remarks: <span>*</span></label>
-                    <input type="text" name="remark" required>
-                </div>
-                <div>
-                    <label for="paymentMode">Payment Mode: <span>*</span></label>
-                    <div class="radio-btn-wrapper"><label for="paymentMode">Cash</label> <input type="radio" name="paymentMode" value="Cash" > </div>
-                    <div class="radio-btn-wrapper"><label for="paymentMode">Online</label> <input type="radio" name="paymentMode" value="Online" required> </div>
-                </div>
-                <button type="submit">Add</button>
-            </form>
-        </div>
-
-        <table class="wptable" id="wpTable">
-            <tr>
-              <th>S.No</th>
-              <th>Date</th>
-              <th>Creator name</th>
-              <th>Executive name</th>
-              <th>Amount</th>
-              <th>Purpose</th>
-              <th>Remarks</th>
-              <th>Payment mode</th>
-              <th>Delete</th>
-            </tr>
-            <% if(expenses.length > 0) { %>
-              <% expenses.forEach((expense, index) => { %>
-                <tr>
-                  <td><%= index + 1 %></td>
-                  <td><%= expense.expenseDate.getDate() %>/<%= expense.expenseDate.getMonth() + 1 %>/<%= expense.expenseDate.getFullYear() %></td>
-                  <td><%= expense.creatorName %></td>
-                  <td><%= expense.executiveName %></td>
-                  <td>&#8377; <%= expense.amount %></td>
-                  <td><%= expense.purpose %></td>
-                  <td><%= expense.remark %></td>
-                  <td><%= expense.paymentMode %></td>
-                  <td class="action-cell">
-                    <form action="/deleteExpense" method="POST">
-                        <input type="hidden" name="id" value="<%= expense._id%>">
-                        <button title="Delete" class="delete-row"><i class="fas fa-trash"></i></button>
-                    </form>
-                  </td>
-                </tr>
-              <% }) %>
-            <% } %>
-          </table>
+  <div class="wp-inner" id="printable">
+    <div style="margin-top: 10px">
+      <input
+        type="text"
+        class="filterTable"
+        onkeyup="filterTextTable(this, 'wpTable', 5)"
+        placeholder="Search by Purpose"
+      />
+      <input
+        type="text"
+        class="filterTable"
+        onkeyup="filterTextTable(this, 'wpTable', 3)"
+        placeholder="Search by Executive"
+      />
+      <input
+        type="text"
+        class="filterTable"
+        onkeyup="filterTextTable(this, 'wpTable', 1)"
+        placeholder="Search by Date"
+      />
+      <p class="subTotalWrapper">Subtotal: <span class="subTotal"></span></p>
     </div>
+    <button onclick="printPageArea('printable')" class="downloadAsPdf">
+      Print this page
+    </button>
+    <button
+      class="downloadAsPdf"
+      id="downloadAsExcel"
+      onclick="downloadPageAsExcel('wpTable')"
+    >
+      Download table as excel <i class="far fa-file-excel"></i>
+    </button>
+    <button class="downloadAsPdf" onclick="downloadPageAsPdf('printable')">
+      Download page as pdf <i class="far fa-file-pdf"></i>
+    </button>
+
+    <a href="javascript:void(0)" class="add"
+      >Add<span><i class="fas fa-plus"></i></span
+    ></a>
+    <div class="modal" id="modal">
+      <div class="modal-head">
+        <h3>Expenses form</h3>
+        <a href="javascript:void(0)" class="close" id="hideModal"
+          ><span><i class="fas fa-times"></i></span
+        ></a>
+      </div>
+      <form action="/wpExpenses" method="POST">
+        <% if(user !== null){ %>
+        <input type="hidden" name="creatorName" value="<%= user.name %>" />
+        <% } %>
+        <div>
+          <label for="date">Expense Date: <span>*</span></label>
+          <input type="date" name="date" required />
+        </div>
+        <div>
+          <label for="execName">Executive Name: <span>*</span></label>
+          <input type="text" name="execName" required />
+        </div>
+        <div>
+          <label for="amount">Amount: <span>*</span></label>
+          <input type="number" name="amount" required />
+        </div>
+        <div>
+          <label for="purpose">Purpose: <span>*</span></label>
+          <input type="text" name="purpose" required />
+        </div>
+        <div>
+          <label for="remark">Remarks: <span>*</span></label>
+          <input type="text" name="remark" required />
+        </div>
+        <div>
+          <label for="paymentMode">Payment Mode: <span>*</span></label>
+          <div class="radio-btn-wrapper">
+            <label for="paymentMode">Cash</label>
+            <input type="radio" name="paymentMode" value="Cash" />
+          </div>
+          <div class="radio-btn-wrapper">
+            <label for="paymentMode">Online</label>
+            <input type="radio" name="paymentMode" value="Online" required />
+          </div>
+        </div>
+        <button type="submit">Add</button>
+      </form>
+    </div>
+
+    <table class="wptable" id="wpTable">
+      <tr>
+        <th>S.No</th>
+        <th>Date</th>
+        <th>Creator name</th>
+        <th>Executive name</th>
+        <th>Amount</th>
+        <th>Purpose</th>
+        <th>Remarks</th>
+        <th>Payment mode</th>
+        <th>Delete</th>
+      </tr>
+      <% if(expenses.length > 0) { %> <% expenses.forEach((expense, index) => {
+      %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td>
+          <%= expense.expenseDate.getDate() %>/<%=
+          expense.expenseDate.getMonth() + 1 %>/<%=
+          expense.expenseDate.getFullYear() %>
+        </td>
+        <td><%= expense.creatorName %></td>
+        <td><%= expense.executiveName %></td>
+        <td>&#8377; <%= expense.amount %></td>
+        <td><%= expense.purpose %></td>
+        <td><%= expense.remark %></td>
+        <td><%= expense.paymentMode %></td>
+        <td class="action-cell">
+          <form action="/showEditExpenses/<%= expense._id %>" method="GET">
+            <button title="Edit" class="edit-row">
+              <i class="fas fa-edit"></i>
+            </button>
+          </form>
+          <form action="/deleteExpense" method="POST">
+            <input type="hidden" name="id" value="<%= expense._id%>" />
+            <button title="Delete" class="delete-row">
+              <i class="fas fa-trash"></i>
+            </button>
+          </form>
+        </td>
+      </tr>
+      <% }) %> <% } %>
+    </table>
+  </div>
 </div>
 <%- include('../partials/footer') -%>

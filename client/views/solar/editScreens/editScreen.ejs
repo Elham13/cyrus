@@ -1,0 +1,98 @@
+<%- include('../../partials/header') -%> <%- include('../../partials/navbar')
+-%>
+
+<div class="sc-wrapper">
+  <ul class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li><a href="/solar">Distribution</a></li>
+    <li><a href="/solarTelecaling">Telecaling Data</a></li>
+    <li>Edit data</li>
+  </ul>
+
+  <h2 class="title">Edit item</h2>
+
+  <%- include('../../partials/messages') -%>
+  <div class="editFormWrapper">
+    <form action="/solarEditTelecaling" method="POST">
+      <input type="hidden" name="id" value="<%= data._id %>" />
+
+      <label for="customerName">Customer Name</label>
+      <input
+        type="text"
+        name="custName"
+        id="customerName"
+        class="editFormInput"
+        value="<%= data.customerName %>"
+      />
+
+      <label for="phoneNumber">Phone number</label>
+      <input
+        type="tel"
+        name="phoneNumber"
+        id="phoneNumber"
+        class="editFormInput"
+        value="<%= data.phoneNumber %>"
+      />
+
+      <label for="address">Address</label>
+      <input
+        type="text"
+        name="address"
+        id="address"
+        class="editFormInput"
+        value="<%= data.address %>"
+      />
+
+      <label for="city">City</label>
+      <input
+        type="text"
+        name="city"
+        class="editFormInput"
+        id="city"
+        value="<%= data.city %>"
+      />
+
+      <label for="executiveName">Executive Name</label>
+      <input
+        type="text"
+        name="executiveName"
+        id="executiveName"
+        class="editFormInput"
+        value="<%= data.executiveName %>"
+      />
+
+      <label for="remarks">Remarks</label>
+      <input
+        type="text"
+        name="remarks"
+        id="remarks"
+        class="editFormInput"
+        value="<%= data.remarks %>"
+      />
+
+      <label for="statusDropDown">Status</label>
+      <select name="status" id="statusDropDown" class="editFormInput">
+        <option value="<%=  data.status %>" selected><%= data.status %></option>
+        <option value="FollowUp">Follow Up</option>
+        <option value="Not Interested">Not Interested</option>
+      </select>
+
+      <div id="followUpDate1">
+        <div>
+          <label for="date">Followup Date</label>
+          <input
+            type="date"
+            name="followUpDate"
+            id="date"
+            class="editFormInput"
+            value="<%= data.followUpDate %>"
+          />
+        </div>
+      </div>
+
+      <input type="submit" class="editFormBtn" value="Edit" />
+    </form>
+  </div>
+</div>
+
+<%- include('../../partials/footer') -%>
